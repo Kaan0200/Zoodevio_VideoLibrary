@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Transitions;
 
 namespace Zoodevio
 {
@@ -17,9 +18,21 @@ namespace Zoodevio
             InitializeComponent();
         }
 
+        #region Screen Lifecycle
+
         private void MainScreen_Load(object sender, EventArgs e)
         {
 
         }
+
+        #endregion
+
+        #region Button Clicks
+
+        private void librarySliderToggleButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        #endregion
     }
 }
