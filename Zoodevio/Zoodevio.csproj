@@ -46,16 +46,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainScreenControls\BasicSearchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainScreenControls\BasicSearchControl.Designer.cs">
+      <DependentUpon>BasicSearchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainScreenControls\GridViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainScreenControls\GridViewControl.Designer.cs">
+      <DependentUpon>GridViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainScreenControls\ListViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainScreenControls\ListViewControl.Designer.cs">
+      <DependentUpon>ListViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainScreen.Designer.cs">
       <DependentUpon>MainScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainScreenControls\MetadataViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainScreenControls\MetadataViewControl.Designer.cs">
+      <DependentUpon>MetadataViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MainScreenControls\LibraryPanelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainScreenControls\LibraryPanelControl.Designer.cs">
+      <DependentUpon>LibraryPanelControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainScreen.resx">
       <DependentUpon>MainScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainScreenControls\BasicSearchControl.resx">
+      <DependentUpon>BasicSearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainScreenControls\MetadataViewControl.resx">
+      <DependentUpon>MetadataViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -66,6 +102,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="MainScreenControls\LibraryPanelControl.resx">
+      <DependentUpon>LibraryPanelControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -33,12 +33,10 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.librarySliderToggleButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.basicSearchControl1 = new Zoodevio.BasicSearchControl();
+            this.metadataViewControl1 = new Zoodevio.MetadataViewControl();
+            this.libraryPanelControl1 = new Zoodevio.LibraryPanelControl();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -46,7 +44,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Location = new System.Drawing.Point(0, 462);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(922, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(946, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -58,7 +56,7 @@
             this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(922, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(946, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -76,54 +74,42 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.librarySliderToggleButton);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.treeView1);
-            this.panel1.Location = new System.Drawing.Point(0, 31);
+            this.panel1.Location = new System.Drawing.Point(312, 31);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(239, 428);
-            this.panel1.TabIndex = 2;
+            this.panel1.Size = new System.Drawing.Size(351, 350);
+            this.panel1.TabIndex = 5;
             // 
-            // librarySliderToggleButton
+            // basicSearchControl1
             // 
-            this.librarySliderToggleButton.Location = new System.Drawing.Point(213, 3);
-            this.librarySliderToggleButton.Name = "librarySliderToggleButton";
-            this.librarySliderToggleButton.Size = new System.Drawing.Size(23, 23);
-            this.librarySliderToggleButton.TabIndex = 4;
-            this.librarySliderToggleButton.Text = "<";
-            this.librarySliderToggleButton.UseVisualStyleBackColor = true;
-            this.librarySliderToggleButton.Click += new System.EventHandler(this.librarySliderToggleButton_Click);
+            this.basicSearchControl1.Location = new System.Drawing.Point(312, 387);
+            this.basicSearchControl1.Name = "basicSearchControl1";
+            this.basicSearchControl1.Size = new System.Drawing.Size(351, 72);
+            this.basicSearchControl1.TabIndex = 7;
             // 
-            // label2
+            // metadataViewControl1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Library";
+            this.metadataViewControl1.Location = new System.Drawing.Point(669, 31);
+            this.metadataViewControl1.Name = "metadataViewControl1";
+            this.metadataViewControl1.Size = new System.Drawing.Size(268, 428);
+            this.metadataViewControl1.TabIndex = 6;
             // 
-            // treeView1
+            // libraryPanelControl1
             // 
-            this.treeView1.Location = new System.Drawing.Point(0, 27);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(236, 398);
-            this.treeView1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            this.panel2.Location = new System.Drawing.Point(683, 31);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(239, 428);
-            this.panel2.TabIndex = 3;
+            this.libraryPanelControl1.AutoSize = true;
+            this.libraryPanelControl1.Location = new System.Drawing.Point(0, 31);
+            this.libraryPanelControl1.Name = "libraryPanelControl1";
+            this.libraryPanelControl1.Size = new System.Drawing.Size(306, 432);
+            this.libraryPanelControl1.TabIndex = 4;
             // 
             // MainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(922, 484);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(946, 484);
+            this.Controls.Add(this.basicSearchControl1);
+            this.Controls.Add(this.metadataViewControl1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.libraryPanelControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -133,8 +119,6 @@
             this.Load += new System.EventHandler(this.MainScreen_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,11 +130,10 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private LibraryPanelControl libraryPanelControl1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button librarySliderToggleButton;
+        private MetadataViewControl metadataViewControl1;
+        private BasicSearchControl basicSearchControl1;
     }
 }
 
