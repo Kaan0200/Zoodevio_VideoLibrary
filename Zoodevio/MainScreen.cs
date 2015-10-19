@@ -13,6 +13,9 @@ namespace Zoodevio
     public partial class MainScreen : Form
     {
         private bool _gridViewToggle; // true is gridview, false is listview
+        private bool _searchViewToggle = true;
+        private bool _metadataViewToggle = true;
+
 
         public MainScreen()
         {
@@ -28,5 +31,19 @@ namespace Zoodevio
 
         #endregion
 
+        private void hideMetadataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // swap the toggle, and then set the value to the control
+            Console.WriteLine("Toggled Metadata : " + !_metadataViewToggle);
+            _metadataViewToggle = !_metadataViewToggle;
+            metadataViewControl1.Visible = _metadataViewToggle;
+        }
+
+        private void hideSearchAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
+            _searchViewToggle = !_searchViewToggle;
+            basicSearchControl1.Visible = _searchViewToggle;
+        }
     }
 }
