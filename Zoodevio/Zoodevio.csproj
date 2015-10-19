@@ -90,6 +90,12 @@
     <EmbeddedResource Include="MainScreenControls\BasicSearchControl.resx">
       <DependentUpon>BasicSearchControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainScreenControls\GridViewControl.resx">
+      <DependentUpon>GridViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainScreenControls\ListViewControl.resx">
+      <DependentUpon>ListViewControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainScreenControls\MetadataViewControl.resx">
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
     </EmbeddedResource>

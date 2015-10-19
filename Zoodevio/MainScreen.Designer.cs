@@ -32,11 +32,16 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.mainSplitterContainer = new System.Windows.Forms.SplitContainer();
+            this.libraryPanelControl1 = new Zoodevio.LibraryPanelControl();
             this.basicSearchControl1 = new Zoodevio.BasicSearchControl();
             this.metadataViewControl1 = new Zoodevio.MetadataViewControl();
-            this.libraryPanelControl1 = new Zoodevio.LibraryPanelControl();
+            this.gridViewControl1 = new Zoodevio.GridViewControl();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
+            this.mainSplitterContainer.Panel1.SuspendLayout();
+            this.mainSplitterContainer.Panel2.SuspendLayout();
+            this.mainSplitterContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -44,7 +49,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Location = new System.Drawing.Point(0, 462);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(946, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(882, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -56,7 +61,7 @@
             this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(946, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(882, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -72,44 +77,63 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
-            // panel1
+            // mainSplitterContainer
             // 
-            this.panel1.Location = new System.Drawing.Point(312, 31);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(351, 350);
-            this.panel1.TabIndex = 5;
+            this.mainSplitterContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainSplitterContainer.Location = new System.Drawing.Point(0, 28);
+            this.mainSplitterContainer.Name = "mainSplitterContainer";
             // 
-            // basicSearchControl1
+            // mainSplitterContainer.Panel1
             // 
-            this.basicSearchControl1.Location = new System.Drawing.Point(312, 387);
-            this.basicSearchControl1.Name = "basicSearchControl1";
-            this.basicSearchControl1.Size = new System.Drawing.Size(351, 72);
-            this.basicSearchControl1.TabIndex = 7;
+            this.mainSplitterContainer.Panel1.Controls.Add(this.libraryPanelControl1);
             // 
-            // metadataViewControl1
+            // mainSplitterContainer.Panel2
             // 
-            this.metadataViewControl1.Location = new System.Drawing.Point(669, 31);
-            this.metadataViewControl1.Name = "metadataViewControl1";
-            this.metadataViewControl1.Size = new System.Drawing.Size(268, 428);
-            this.metadataViewControl1.TabIndex = 6;
+            this.mainSplitterContainer.Panel2.Controls.Add(this.gridViewControl1);
+            this.mainSplitterContainer.Panel2.Controls.Add(this.metadataViewControl1);
+            this.mainSplitterContainer.Panel2.Controls.Add(this.basicSearchControl1);
+            this.mainSplitterContainer.Size = new System.Drawing.Size(882, 434);
+            this.mainSplitterContainer.SplitterDistance = 316;
+            this.mainSplitterContainer.TabIndex = 2;
             // 
             // libraryPanelControl1
             // 
             this.libraryPanelControl1.AutoSize = true;
-            this.libraryPanelControl1.Location = new System.Drawing.Point(0, 31);
+            this.libraryPanelControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.libraryPanelControl1.Location = new System.Drawing.Point(3, 28);
             this.libraryPanelControl1.Name = "libraryPanelControl1";
-            this.libraryPanelControl1.Size = new System.Drawing.Size(306, 432);
-            this.libraryPanelControl1.TabIndex = 4;
+            this.libraryPanelControl1.Size = new System.Drawing.Size(308, 432);
+            this.libraryPanelControl1.TabIndex = 0;
+            // 
+            // basicSearchControl1
+            // 
+            this.basicSearchControl1.AutoSize = true;
+            this.basicSearchControl1.Location = new System.Drawing.Point(3, 332);
+            this.basicSearchControl1.Name = "basicSearchControl1";
+            this.basicSearchControl1.Size = new System.Drawing.Size(314, 99);
+            this.basicSearchControl1.TabIndex = 1;
+            // 
+            // metadataViewControl1
+            // 
+            this.metadataViewControl1.Location = new System.Drawing.Point(323, 28);
+            this.metadataViewControl1.Name = "metadataViewControl1";
+            this.metadataViewControl1.Size = new System.Drawing.Size(288, 380);
+            this.metadataViewControl1.TabIndex = 2;
+            // 
+            // gridViewControl1
+            // 
+            this.gridViewControl1.AutoSize = true;
+            this.gridViewControl1.Location = new System.Drawing.Point(3, 28);
+            this.gridViewControl1.Name = "gridViewControl1";
+            this.gridViewControl1.Size = new System.Drawing.Size(314, 298);
+            this.gridViewControl1.TabIndex = 3;
             // 
             // MainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(946, 484);
-            this.Controls.Add(this.basicSearchControl1);
-            this.Controls.Add(this.metadataViewControl1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.libraryPanelControl1);
+            this.ClientSize = new System.Drawing.Size(882, 484);
+            this.Controls.Add(this.mainSplitterContainer);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -119,6 +143,12 @@
             this.Load += new System.EventHandler(this.MainScreen_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.mainSplitterContainer.Panel1.ResumeLayout(false);
+            this.mainSplitterContainer.Panel1.PerformLayout();
+            this.mainSplitterContainer.Panel2.ResumeLayout(false);
+            this.mainSplitterContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).EndInit();
+            this.mainSplitterContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,8 +160,9 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer mainSplitterContainer;
         private LibraryPanelControl libraryPanelControl1;
-        private System.Windows.Forms.Panel panel1;
+        private GridViewControl gridViewControl1;
         private MetadataViewControl metadataViewControl1;
         private BasicSearchControl basicSearchControl1;
     }

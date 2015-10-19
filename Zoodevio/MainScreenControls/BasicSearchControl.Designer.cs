@@ -43,17 +43,19 @@
             // 
             // basicSearchGroupBox
             // 
+            this.basicSearchGroupBox.AutoSize = true;
             this.basicSearchGroupBox.Controls.Add(this.advancedSearchButton);
             this.basicSearchGroupBox.Controls.Add(this.textBox1);
             this.basicSearchGroupBox.Location = new System.Drawing.Point(3, 3);
             this.basicSearchGroupBox.Name = "basicSearchGroupBox";
-            this.basicSearchGroupBox.Size = new System.Drawing.Size(308, 78);
+            this.basicSearchGroupBox.Size = new System.Drawing.Size(308, 93);
             this.basicSearchGroupBox.TabIndex = 3;
             this.basicSearchGroupBox.TabStop = false;
             this.basicSearchGroupBox.Text = "Quick Filter";
             // 
             // advancedSearchButton
             // 
+            this.advancedSearchButton.Enabled = false;
             this.advancedSearchButton.Location = new System.Drawing.Point(168, 49);
             this.advancedSearchButton.Name = "advancedSearchButton";
             this.advancedSearchButton.Size = new System.Drawing.Size(134, 23);
@@ -65,12 +67,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.basicSearchGroupBox);
             this.Name = "BasicSearchControl";
-            this.Size = new System.Drawing.Size(314, 86);
+            this.Size = new System.Drawing.Size(314, 99);
             this.basicSearchGroupBox.ResumeLayout(false);
             this.basicSearchGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

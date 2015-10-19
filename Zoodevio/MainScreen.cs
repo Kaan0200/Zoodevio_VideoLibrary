@@ -12,6 +12,8 @@ namespace Zoodevio
 {
     public partial class MainScreen : Form
     {
+        private bool _gridViewToggle; // true is gridview, false is listview
+
         public MainScreen()
         {
             InitializeComponent();
@@ -25,5 +27,6 @@ namespace Zoodevio
         }
 
         #endregion
+
     }
 }
