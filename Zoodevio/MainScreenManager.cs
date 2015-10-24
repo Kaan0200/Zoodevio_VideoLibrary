@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zoodevio.Managers;
 
 namespace Zoodevio
 {
     class MainScreenManager
     {
+
         public void SetLibraryRoot(string rootURL)
         {
             DirectoryInfo root = new DirectoryInfo(rootURL);
@@ -22,5 +24,9 @@ namespace Zoodevio
             root.GetFiles();
         }
 
+        public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="MainScreenControls\MetadataViewControl.Designer.cs">
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainScreenManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainScreenControls\LibraryPanelControl.cs">
