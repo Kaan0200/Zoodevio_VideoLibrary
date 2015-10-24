@@ -1,6 +1,6 @@
 ﻿namespace Zoodevio.DataModel
 {
-    public class Preferences
+    public static class Folders
     {
          
     }

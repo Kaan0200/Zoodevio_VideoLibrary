@@ -1,6 +1,6 @@
 ﻿namespace Zoodevio.DataModel
 {
-    public class Folders
+    public static class Tags
     {
          
     }

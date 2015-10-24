@@ -35,6 +35,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,10 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\Database.cs" />
-    <Compile Include="DataModel\Files.cs" />
-    <Compile Include="DataModel\Folders.cs" />
-    <Compile Include="DataModel\Preferences.cs" />
-    <Compile Include="DataModel\Tags.cs" />
+    <Compile Include="DataModel\Objects\File.cs" />
+    <Compile Include="DataModel\Objects\Folder.cs" />
+    <Compile Include="DataModel\Objects\Preference.cs" />
+    <Compile Include="DataModel\Objects\Tag.cs" />
+    <Compile Include="DataModel\Tables\Files.cs" />
+    <Compile Include="DataModel\Tables\Folders.cs" />
+    <Compile Include="DataModel\Tables\Preferences.cs" />
+    <Compile Include="DataModel\Tables\Tags.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,6 +139,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="System.Data.SQLite.dll" />
     <Content Include="Transitions.dll" />
   </ItemGroup>
   <ItemGroup />

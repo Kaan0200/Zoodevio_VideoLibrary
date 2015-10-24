@@ -1,6 +1,6 @@
 ﻿namespace Zoodevio.DataModel
 {
-    public class Tags
+    public static class Preferences
     {
          
     }
