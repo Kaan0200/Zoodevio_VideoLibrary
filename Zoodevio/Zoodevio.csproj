@@ -75,6 +75,10 @@
     <Compile Include="MainScreen.Designer.cs">
       <DependentUpon>MainScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainScreenControls\Managers\FileManager.cs" />
+    <Compile Include="MainScreenControls\Managers\LibraryManager.cs" />
+    <Compile Include="MainScreenControls\Managers\MetadataManager.cs" />
+    <Compile Include="MainScreenControls\Managers\SearchManager.cs" />
     <Compile Include="MainScreenControls\MetadataViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

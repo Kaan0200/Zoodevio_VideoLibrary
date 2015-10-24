@@ -31,15 +31,15 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainSplitterContainer = new System.Windows.Forms.SplitContainer();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideSearchAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainSplitterContainer = new System.Windows.Forms.SplitContainer();
             this.libraryPanelControl1 = new Zoodevio.LibraryPanelControl();
             this.gridViewControl1 = new Zoodevio.GridViewControl();
             this.metadataViewControl1 = new Zoodevio.MetadataViewControl();
             this.basicSearchControl1 = new Zoodevio.BasicSearchControl();
-            this.hideSearchAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -75,6 +75,29 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideMetadataToolStripMenuItem,
+            this.hideSearchAreaToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // hideMetadataToolStripMenuItem
+            // 
+            this.hideMetadataToolStripMenuItem.Name = "hideMetadataToolStripMenuItem";
+            this.hideMetadataToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.hideMetadataToolStripMenuItem.Text = "Hide Metadata";
+            this.hideMetadataToolStripMenuItem.Click += new System.EventHandler(this.hideMetadataToolStripMenuItem_Click);
+            // 
+            // hideSearchAreaToolStripMenuItem
+            // 
+            this.hideSearchAreaToolStripMenuItem.Name = "hideSearchAreaToolStripMenuItem";
+            this.hideSearchAreaToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.hideSearchAreaToolStripMenuItem.Text = "Hide Search Area";
+            this.hideSearchAreaToolStripMenuItem.Click += new System.EventHandler(this.hideSearchAreaToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -100,22 +123,6 @@
             this.mainSplitterContainer.SplitterDistance = 316;
             this.mainSplitterContainer.TabIndex = 2;
             // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideMetadataToolStripMenuItem,
-            this.hideSearchAreaToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // hideMetadataToolStripMenuItem
-            // 
-            this.hideMetadataToolStripMenuItem.Name = "hideMetadataToolStripMenuItem";
-            this.hideMetadataToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
-            this.hideMetadataToolStripMenuItem.Text = "Hide Metadata";
-            this.hideMetadataToolStripMenuItem.Click += new System.EventHandler(this.hideMetadataToolStripMenuItem_Click);
-            // 
             // libraryPanelControl1
             // 
             this.libraryPanelControl1.AutoSize = true;
@@ -135,7 +142,7 @@
             // 
             // metadataViewControl1
             // 
-            this.metadataViewControl1.Location = new System.Drawing.Point(323, 28);
+            this.metadataViewControl1.Location = new System.Drawing.Point(323, 19);
             this.metadataViewControl1.Name = "metadataViewControl1";
             this.metadataViewControl1.Size = new System.Drawing.Size(288, 380);
             this.metadataViewControl1.TabIndex = 2;
@@ -147,13 +154,6 @@
             this.basicSearchControl1.Name = "basicSearchControl1";
             this.basicSearchControl1.Size = new System.Drawing.Size(314, 99);
             this.basicSearchControl1.TabIndex = 1;
-            // 
-            // hideSearchAreaToolStripMenuItem
-            // 
-            this.hideSearchAreaToolStripMenuItem.Name = "hideSearchAreaToolStripMenuItem";
-            this.hideSearchAreaToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
-            this.hideSearchAreaToolStripMenuItem.Text = "Hide Search Area";
-            this.hideSearchAreaToolStripMenuItem.Click += new System.EventHandler(this.hideSearchAreaToolStripMenuItem_Click);
             // 
             // MainScreen
             // 
