@@ -5,6 +5,11 @@
 
     public class SearchManager
     {
-         
+        private MainScreenManager _manager;
+
+        public SearchManager(MainScreenManager _manager)
+        {
+            this._manager = _manager;
+        }
     }
 }

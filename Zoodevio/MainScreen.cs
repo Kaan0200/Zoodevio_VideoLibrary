@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.Managers;
 
 namespace Zoodevio
 {
@@ -18,11 +19,21 @@ namespace Zoodevio
 
         private MainScreenManager _mainManager;
 
-
         public MainScreen()
         {
             InitializeComponent();
-            mainManager = new MainScreenManager();
+            SetupManagers();
+        }
+
+        // Setups the manager for the mainscreen and then gives itself to all children managers
+        private void SetupManagers()
+        {
+            _mainManager = new MainScreenManager();
+            var searchManager = new SearchManager(_mainManager);
+            var fileManager = new FileManager(_mainManager);
+            var metadataManager = new MetadataManager(_mainManager);
+            var libraryManager = new LibraryManager(_mainManager);
+            _mainManager.SetManagers(fileManager, libraryManager, metadataManager, searchManager);
         }
 
         #region Screen Lifecycle
