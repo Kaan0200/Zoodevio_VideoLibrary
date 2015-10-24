@@ -16,10 +16,13 @@ namespace Zoodevio
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
 
+        private MainScreenManager _mainManager;
+
 
         public MainScreen()
         {
             InitializeComponent();
+            mainManager = new MainScreenManager();
         }
 
         #region Screen Lifecycle
@@ -44,6 +47,15 @@ namespace Zoodevio
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
             basicSearchControl1.Visible = _searchViewToggle;
+        }
+
+        private void setLibraryRootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Get desired root file location
+            string rootURL = "$HOME/MyLibarry";
+
+            // Pass to main screen manager
+            _mainManager.SetLibraryRoot(rootURL);
         }
     }
 }
