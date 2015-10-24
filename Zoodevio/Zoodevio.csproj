@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModel\Database.cs" />
+    <Compile Include="DataModel\Files.cs" />
+    <Compile Include="DataModel\Folders.cs" />
+    <Compile Include="DataModel\Preferences.cs" />
+    <Compile Include="DataModel\Tags.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,6 +116,7 @@
     <EmbeddedResource Include="MainScreenControls\LibraryPanelControl.resx">
       <DependentUpon>LibraryPanelControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="database.sqlite" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -127,6 +133,7 @@
   <ItemGroup>
     <Content Include="Transitions.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
