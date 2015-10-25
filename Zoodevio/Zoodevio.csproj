@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\Database.cs" />
-    <Compile Include="DataModel\Objects\File.cs" />
+    <Compile Include="DataModel\Objects\VideoFile.cs" />
     <Compile Include="DataModel\Objects\Folder.cs" />
     <Compile Include="DataModel\Objects\Preference.cs" />
     <Compile Include="DataModel\Objects\Tag.cs" />

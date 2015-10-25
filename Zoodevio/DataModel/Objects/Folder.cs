@@ -13,13 +13,9 @@ namespace Zoodevio.DataModel.Objects
         public int Id { get; }
 
         // the folder's parent object
-        public Folder Parent { get; set; }
-
-        // the folder's name
-        public string Name { get; set; }
-
-        // the files in this folder
-        public File[] Files { get; set; }
+        public Folder Parent;
+        public string Name;
+        public VideoFile[] Files;
 
         // constructor for a new, empty folder
         public Folder(Folder parent, string name)
@@ -29,7 +25,7 @@ namespace Zoodevio.DataModel.Objects
         }
 
         // constructor for a folder with ID and files 
-        public Folder(int id, Folder parent, string name, File[] files)
+        public Folder(int id, Folder parent, string name, VideoFile[] files)
             : this(parent, name)
         {
             Id = id;
