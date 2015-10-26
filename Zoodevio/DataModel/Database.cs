@@ -17,10 +17,10 @@ namespace Zoodevio.DataModel
         // the SQLite connection. all database access is done through this class
         // so this connection is private.
         private static SQLiteConnection dbConnection = new SQLiteConnection(
-            "Data Source=" + DATABASE_FILE + ";Version=3");
+            "Data Source=" + DATABASE_FILE + ";Version=3;PRAGMA foreign_keys = 1");
         
         // 
-        public static string Read(string Table, )
+        //public static string Read(string Table, )
 
 
 }

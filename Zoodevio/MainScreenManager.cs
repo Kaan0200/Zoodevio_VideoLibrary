@@ -4,17 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zoodevio.Managers;
 
 namespace Zoodevio
 {
-    class MainScreenManager
+    public class MainScreenManager
     {
-        // This class sets the directory at the given URL as the Zoodevio library root
+        // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)
         {
             // If this directory exists, begin mapping file locations
             DirectoryInfo root = new DirectoryInfo(rootURL);
-            if (root.Exists()) {
+            if (root.Exists) {
                 // Clear old root and set new root
                 SetRootReference(root);
                 
@@ -23,7 +24,7 @@ namespace Zoodevio
             }
         }
 
-        // This digs into all of the given directory's subdirectories mapping file and directory locations.
+        // Recursively traverses a file structure mapping video file and folder locations
         private void MapDirectoryContents(DirectoryInfo subDir)
         {
             // Find all video files in this folder
@@ -33,12 +34,12 @@ namespace Zoodevio
             DirectoryInfo[] subDirs = GetImmediateSubDirectories(subDir);
             
             // For each subdirectory:
-            for (int i = 0; subDirs != null && i < subDirs.Length; i++)
+            for (int i = 0; i < subDirs.Length; i++)
             {
                 // Map its location in the database
                 MapDirectoryLocation(subDirs[i]);
 
-                // Continue the library traversal 
+                // Continue the library traversal within
                 MapDirectoryContents(subDirs[i]);
             }
         }
@@ -60,6 +61,7 @@ namespace Zoodevio
         private string[] GetSupportedFileExtensions()
         {
             // TODO: Get an array of supported file extensions in "xxx" format (no '.')
+            return new string[] { "mp4", "avi" };
         }
 
         // Set new library root reference to the given directory
@@ -99,6 +101,11 @@ namespace Zoodevio
                     MapFileLocation(videoFiles[j], extensions[i], subDir);
                 }
             }
+        }
+
+        public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

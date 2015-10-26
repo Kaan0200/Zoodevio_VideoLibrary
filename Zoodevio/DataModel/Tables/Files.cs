@@ -15,7 +15,7 @@ namespace Zoodevio.DataModel
     {
         private static string _table = "files"; 
 
-        // build a file object from a given name and add it to the database
+        // build a file object from a given path and add it to the database
         
 
         // get all file object(s) in the database that have a certain path
