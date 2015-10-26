@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -59,6 +63,7 @@
     <Compile Include="DataModel\Tables\Folders.cs" />
     <Compile Include="DataModel\Tables\Preferences.cs" />
     <Compile Include="DataModel\Tables\Tags.cs" />
+    <Compile Include="DataModel\Tag_Test.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -130,6 +135,7 @@
       <DependentUpon>LibraryPanelControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="database.sqlite" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

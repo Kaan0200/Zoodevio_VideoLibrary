@@ -20,7 +20,7 @@ namespace Zoodevio.DataModel
             "Data Source=" + DATABASE_FILE + ";Version=3;PRAGMA foreign_keys = 1");
         
         // 
-        public static string Read(string Table, )
+        //public static string Read(string Table, )
 
 
 }
