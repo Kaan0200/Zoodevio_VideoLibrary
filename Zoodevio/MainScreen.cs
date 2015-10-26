@@ -69,11 +69,15 @@ namespace Zoodevio
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
 
-            // Get the selected path for the root
-            string rootURL = fbd.SelectedPath;
+            // If the folder browser dialog was a success:
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                // Get the selected path for the root
+                string rootURL = fbd.SelectedPath;
 
-            // Pass to main screen manager
-            _mainManager.SetLibraryRoot(rootURL);
+                // Pass to main screen manager to interact with DB
+                _mainManager.SetLibraryRoot(rootURL);
+            }
         }
     }
 }
