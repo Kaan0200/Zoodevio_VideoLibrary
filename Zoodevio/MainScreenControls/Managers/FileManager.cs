@@ -4,9 +4,9 @@
     {
         private MainScreenManager _manager;
 
-        public FileManager(MainScreenManager _manager)
+        public FileManager(MainScreenManager manager)
         {
-            this._manager = _manager;
+            this._manager = manager;
         }
     }
 }

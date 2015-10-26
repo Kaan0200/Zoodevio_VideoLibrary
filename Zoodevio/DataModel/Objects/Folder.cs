@@ -17,6 +17,8 @@ namespace Zoodevio.DataModel.Objects
         public string Name;
         public VideoFile[] Files;
 
+        #region Constructor
+
         // constructor for a new, empty folder
         public Folder(Folder parent, string name)
         {
@@ -32,5 +34,6 @@ namespace Zoodevio.DataModel.Objects
             Files = files; 
         }
 
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ using Zoodevio.Managers;
 
 namespace Zoodevio
 {
-    class MainScreenManager
+    public class MainScreenManager
     {
 
         public void SetLibraryRoot(string rootURL)
@@ -26,7 +26,7 @@ namespace Zoodevio
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
