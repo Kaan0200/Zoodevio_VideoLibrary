@@ -40,7 +40,7 @@ namespace Zoodevio.DataModel
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
-                new SQLiteCommand("select * from '" + table + "' where '" + column + "' = '" + value + "'", _dbConnection);
+                new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
             _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
@@ -76,7 +76,7 @@ namespace Zoodevio.DataModel
         {
             _dbConnection.Open();
             SQLiteCommand com =
-                new SQLiteCommand("select * from '" + table + "' where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
+                new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
             _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
@@ -112,16 +112,59 @@ namespace Zoodevio.DataModel
         }
 
         // insert a new record into the database; return success or failure
-        public static Boolean SimpleInsertQuery(string table, params string[] rowdata)
+        // note: data string should be formatted correctly (ints without quotes, etc.)
+        public static Boolean SimpleInsertQuery(string table, 
+            string[] rows, string[] data)
         {
-            return false;
+            _dbConnection.Open();
+            string rowStatement = String.Join(", ", rows);
+            string dataStatement = String.Join("', '", data); 
+            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rows+") values ('"+data+")");
+            try
+            {
+                com.ExecuteNonQuery();
+                _dbConnection.Close(); 
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // update a record with new values in the database; return success or failure
-        public static Boolean SimpleUpdateQuery(string table, string identifierField, string identifier,
-            params string[] rowdata)
+        // note: data string should be formatted correctly (ints without quotes, etc.)
+        public static Boolean SimpleUpdateQuery(string table, string identifierField, int identifier,
+            string[] rows, string[] data)
         {
-            return false; 
+            _dbConnection.Open();
+            string setCommand = BuildSetCommand(rows, data); 
+            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier);
+            try
+            {
+                com.ExecuteNonQuery();
+                _dbConnection.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // builds a SET statement with a list of columns to set up 
+        private static string BuildSetCommand(string[] rows, string[] data)
+        {
+            string output = "";
+            for(int i = 0; i < rows.Length; i++)
+            {
+                output += rows[i] + " = " + data[i];
+                if (i < rows.Length - 1)
+                {
+                    output += ", "; 
+                }
+            }
+            return output; 
         }
 
 
