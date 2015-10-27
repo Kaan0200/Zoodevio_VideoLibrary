@@ -24,5 +24,19 @@ namespace Zoodevio.DataModel
 
             Assert.True(tag1.Value == "Chronicals Of Riddick");
         }
+
+        [Test]
+        public void Tag_GetNameTag_Accept()
+        {
+            var tag1 = new Tag("Title", DbType.String, true);
+            Assert.True(tag1.Name == "Title");
+        }
+
+        [Test]
+        public void Tag_GetDatabaseType_Accept()
+        {
+            var tag1 = new Tag("Filetype", DbType.String, false);
+            Assert.True(tag1.DatabaseType == DbType.String);
+        }
     }
 }

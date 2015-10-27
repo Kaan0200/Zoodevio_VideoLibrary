@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zoodevio.Managers;
 
@@ -45,6 +38,10 @@ namespace Zoodevio
 
         #endregion
 
+        #region Context Menu
+
+        #region View
+
         private void hideMetadataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // swap the toggle, and then set the value to the control
@@ -60,13 +57,31 @@ namespace Zoodevio
             basicSearchControl1.Visible = _searchViewToggle;
         }
 
+        #endregion
+
+        #region Settings
+
         private void setLibraryRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Get desired root file location
-            string rootURL = "$HOME/MyLibarry";
+            /** SET NEW LIBRARY ROOT **/
 
-            // Pass to main screen manager
-            _mainManager.SetLibraryRoot(rootURL);
+            // Start a folder browser dialog window to select root
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+
+            // If the folder browser dialog was a success:
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                // Get the selected path for the root
+                string rootURL = fbd.SelectedPath;
+
+                // Pass to main screen manager to interact with DB
+                _mainManager.SetLibraryRoot(rootURL);
+            }
         }
+
+        #endregion
+
+        #endregion
     }
 }
