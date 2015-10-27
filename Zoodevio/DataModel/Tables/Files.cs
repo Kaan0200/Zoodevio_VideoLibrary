@@ -12,26 +12,61 @@ namespace Zoodevio.DataModel
 {
     public static class Files 
     {
-        private static string _table = "files"; 
+        private static string _table = "files";
+
+        // add response codes, for adding files 
+        // addsuccessful: the videofile was updated successfully
+        // addfaileddatabase: the videofile couldn't be added to the DB (Connection issues?)
+        // addfailedoverwrite: the videofile wasn't added because overwrite = false
+        public enum AddResponses
+        {
+            AddSuccessful, AddFailedDatabase, AddFailedOverwrite
+        }
 
         // add a file to the database 
-        // returns true if successful, false otherwise
-        // TODO 
-        public static Boolean AddFile(VideoFile file)
+        // returns a response code
+        public static AddResponses AddFile(VideoFile file, Boolean overwrite)
         {
-            return false;
+            // locate the video file if it exists
+            VideoFile databaseFile = GetFile(file.Id);
+            if (databaseFile == null)
+            {
+                // insert a new file if none exists
+                Boolean success = Database.SimpleInsertQuery(_table, file.Path,
+                    DateTime.Now.ToString(),
+                    DateTime.Now.ToString());
+                return (success) ? AddResponses.AddSuccessful : AddResponses.AddFailedDatabase;
+            }
+            else if (overwrite)
+            {
+                // overwrite the old file if overwrite true
+                Boolean success = Database.SimpleUpdateQuery(_table, file.Id,
+                    file.Path,
+                    databaseFile.DateAdded,
+                    DateTime.Now.ToString());
+                return (success) ? AddResponses.AddSuccessful : AddResponses.AddFailedDatabase;
+            }
+            else
+            {
+                return AddResponses.AddFailedOverwrite;
+            }
         }
 
         // add multiple files to the database
-        // returns -1 if all files added successfully
-        // otherwise, returns the index of the failed file 
-        // TODO
-        public static int AddFiles(List<VideoFile> files)
+        // returns an array of response codes - one per file
+        public static AddResponses[] AddFiles(List<VideoFile> files, Boolean overwrite)
         {
-            return 0;
+            AddResponses[] responses = new AddResponses[files.Count];
+            for(int i = 0; i < files.Count; i++)
+            {
+                responses[i] = AddFile(files[i], overwrite);
+            }
+            return responses; 
         }
 
         // get all file object(s) in the database that have a certain path
+        // WARNING: adds a null entry if data doesn't exist
+        // probably need to improve that behavior
         public static List<VideoFile> GetVideoFiles(String path)
         {
             List<IDataRecord> data = Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both);
@@ -53,8 +88,13 @@ namespace Zoodevio.DataModel
         }
 
         // generate a video file from a row of raw data
+        // or null if no data exists
         private static VideoFile VideoFileFromRecord(IDataRecord row)
         {
+            if (row == null)
+            {
+                return null;
+            }
             int id = row.GetInt32(0); 
             return new VideoFile(
                 id,
