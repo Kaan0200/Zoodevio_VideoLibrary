@@ -20,5 +20,16 @@ namespace Zoodevio.DataModel.Objects
 
         // the preference data
         public string Data; 
+
+        // preferences must be constructed with all relevant data 
+        // since they are never added or deleted, that's easy
+        public Preference(int id, string name, string datatype, string data)
+        {
+            Id = id;
+            Name = name;
+            DataType = datatype;
+            Data = data;
+        }
+
     }
 }
