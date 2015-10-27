@@ -36,10 +36,12 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static List<IDataRecord> SimpleReadQuery(string table, string column, string value)
         {
+            _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
-                new SQLiteCommand("select * from '" + table + "' where '" + column + "' = '" + value + "'");
+                new SQLiteCommand("select * from '" + table + "' where '" + column + "' = '" + value + "'", _dbConnection);
+            _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
         }
@@ -72,8 +74,10 @@ namespace Zoodevio.DataModel
         // perform a LIKE query on a given database for a given column/input string
         public static List<IDataRecord> ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            _dbConnection.Open();
             SQLiteCommand com =
-                new SQLiteCommand("select * from '" + table + "' where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'");
+                new SQLiteCommand("select * from '" + table + "' where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
+            _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
         }
@@ -107,7 +111,19 @@ namespace Zoodevio.DataModel
             return data;
         }
 
-        // TODO: add write queries
+        // insert a new record into the database; return success or failure
+        public static Boolean SimpleInsertQuery(string table, params string[] rowdata)
+        {
+            return false;
+        }
+
+        // update a record with new values in the database; return success or failure
+        public static Boolean SimpleUpdateQuery(string table, string identifierField, string identifier,
+            params string[] rowdata)
+        {
+            return false; 
+        }
+
 
     }
 }
