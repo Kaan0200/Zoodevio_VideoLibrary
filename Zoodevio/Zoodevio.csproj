@@ -60,6 +60,7 @@
     <Compile Include="DataModel\Objects\Folder.cs" />
     <Compile Include="DataModel\Objects\Preference.cs" />
     <Compile Include="DataModel\Objects\Tag.cs" />
+    <Compile Include="DataModel\Response.cs" />
     <Compile Include="DataModel\Tables\Files.cs" />
     <Compile Include="DataModel\Tables\Folders.cs" />
     <Compile Include="DataModel\Tables\Preferences.cs" />

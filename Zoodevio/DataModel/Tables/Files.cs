@@ -13,19 +13,10 @@ namespace Zoodevio.DataModel
     public static class Files 
     {
         private static string _table = "files";
-
-        // add response codes, for adding files 
-        // addsuccessful: the videofile was updated successfully
-        // addfaileddatabase: the videofile couldn't be added to the DB (Connection issues?)
-        // addfailedoverwrite: the videofile wasn't added because overwrite = false
-        public enum Responses
-        {
-            Successful, FailedDatabase, FailedOverwrite
-        }
-
+        
         // add a file to the database, or ovewrites an existing file 
         // returns a response code
-        public static Responses AddFile(VideoFile file, Boolean overwrite)
+        public static Response AddFile(VideoFile file, Boolean overwrite)
         {
             // locate the video file if it exists
             VideoFile databaseFile = GetFile(file.Id);
@@ -46,30 +37,30 @@ namespace Zoodevio.DataModel
                 // insert a new file if none exists
                 Boolean success = Database.SimpleInsertQuery(_table, rows, data);
 
-                return (success) ? Responses.Successful : Responses.FailedDatabase;
+                return (success) ? Response.Success : Response.FailedDatabase;
             }
             else if (overwrite)
             {
                 // overwrite the old file if overwrite true
                 Boolean success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data); 
-                return (success) ? Responses.Successful : Responses.FailedDatabase;
+                return (success) ? Response.Success : Response.FailedDatabase;
             }
             else
             {
-                return Responses.FailedOverwrite;
+                return Response.FailedOverwrite;
             }
         }
 
         // add multiple files to the database
         // returns an array of response codes - one per file
-        public static Responses[] AddFiles(List<VideoFile> files, Boolean overwrite)
+        public static Response[] AddFiles(List<VideoFile> files, Boolean overwrite)
         {
-            Responses[] responses = new Responses[files.Count];
+            Response[] Response = new Response[files.Count];
             for(int i = 0; i < files.Count; i++)
             {
-                responses[i] = AddFile(files[i], overwrite);
+                Response[i] = AddFile(files[i], overwrite);
             }
-            return responses; 
+            return Response; 
         }
 
         // get all file object(s) in the database that have a certain path

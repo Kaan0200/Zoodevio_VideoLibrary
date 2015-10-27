@@ -3,6 +3,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Zoodevio.DataModel.Objects
 {
@@ -12,22 +13,23 @@ namespace Zoodevio.DataModel.Objects
         // does not exist in new Folder objects not yet in the database
         public int Id { get; }
 
-        // the folder's parent object
-        public Folder Parent;
+        // the folder's parent 
+        // stored as int id to avoid redundant lookup chains
+        public int ParentId;
         public string Name;
-        public VideoFile[] Files;
+        public List<VideoFile> Files;
 
         #region Constructor
 
         // constructor for a new, empty folder
-        public Folder(Folder parent, string name)
+        public Folder(int parent, string name)
         {
-            Parent = parent;
+            ParentId = parent;
             Name = name;
         }
 
         // constructor for a folder with ID and files 
-        public Folder(int id, Folder parent, string name, VideoFile[] files)
+        public Folder(int id, int parent, string name, List<VideoFile> files)
             : this(parent, name)
         {
             Id = id;
