@@ -72,9 +72,8 @@ namespace Zoodevio.DataModel
         // perform a LIKE query on a given database for a given column/input string
         public static List<IDataRecord> ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
-            string valueWithWildcards = GetWildcardedString(value, loc);
             SQLiteCommand com =
-                new SQLiteCommand("select * from '" + table + "' where '" + column + "' = '" + value + "'");
+                new SQLiteCommand("select * from '" + table + "' where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'");
             return ConvertReaderRows(com.ExecuteReader());
 
         }
