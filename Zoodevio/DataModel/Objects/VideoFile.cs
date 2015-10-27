@@ -3,6 +3,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Zoodevio.DataModel.Objects
 {
@@ -13,23 +15,30 @@ namespace Zoodevio.DataModel.Objects
         public int Id { get; }
 
         // the full on-system path to the file
-        public string Path;
+        public string Path { get; }
 
         // the date the file was added to the database
         public DateTime DateAdded { get; }
 
         // the date the file was last edited and saved (in Zoodevio)
-        public DateTime DateEdited;
+        public DateTime DateEdited { get; }
 
         // the tags associated with this file
-        public Tag[] Tags;
+        public List<TagEntry> Tags;
 
         // constructor for a new file entity
-        public VideoFile(string path, Tag[] tags)
+        public VideoFile(string path, List<TagEntry> tags)
         {
             Path = path;
             Tags = tags;
         }
 
+        // constructor for file entity with data
+        public VideoFile(int id, string path, List<TagEntry> tags, DateTime dateAdded, DateTime dateEdited) : this(path, tags)
+        {
+            Id = id;
+            DateAdded = dateAdded;
+            DateEdited = dateEdited; 
+        }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Data;
+﻿/*
+ * Represents a type of tag in Zoodevio. 
+ * Note that tag entries are handled in TagEntry.
+ */ 
+using System.Data;
 
 namespace Zoodevio.DataModel.Objects
 {
@@ -9,6 +13,7 @@ namespace Zoodevio.DataModel.Objects
         private DbType _databaseType; // type when stored in DB
         private bool _isModifiable;   
 
+        // tags with full info for purposes of managing tags
         public Tag(string name, DbType databaseType, bool isModifiable)
         {
             Name = name;
