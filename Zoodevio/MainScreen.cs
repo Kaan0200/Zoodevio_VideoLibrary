@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -62,11 +63,21 @@ namespace Zoodevio
 
         private void setLibraryRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Get desired root file location
-            string rootURL = "$HOME/MyLibarry";
+            /** SET NEW LIBRARY ROOT **/
 
-            // Pass to main screen manager
-            _mainManager.SetLibraryRoot(rootURL);
+            // Start a folder browser dialog window to select root
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+
+            // If the folder browser dialog was a success:
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                // Get the selected path for the root
+                string rootURL = fbd.SelectedPath;
+
+                // Pass to main screen manager to interact with DB
+                _mainManager.SetLibraryRoot(rootURL);
+            }
         }
     }
 }
