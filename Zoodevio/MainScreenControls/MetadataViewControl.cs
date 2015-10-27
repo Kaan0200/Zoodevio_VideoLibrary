@@ -20,10 +20,9 @@ namespace Zoodevio
 
         public void PopulateFields(VideoFile inputFile)
         {
-            foreach (Tag t in inputFile.Tags)
+            foreach (TagEntry t in inputFile.Tags)
             {
-                if (t.Name == "Title") { }
-                // do for every fillable field
+                // TODO: lookup tag in database, populate fields accordingly 
             }
         }
 

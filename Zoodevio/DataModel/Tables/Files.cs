@@ -18,45 +18,53 @@ namespace Zoodevio.DataModel
         // addsuccessful: the videofile was updated successfully
         // addfaileddatabase: the videofile couldn't be added to the DB (Connection issues?)
         // addfailedoverwrite: the videofile wasn't added because overwrite = false
-        public enum AddResponses
+        public enum Responses
         {
-            AddSuccessful, AddFailedDatabase, AddFailedOverwrite
+            Successful, FailedDatabase, FailedOverwrite
         }
 
-        // add a file to the database 
+        // add a file to the database, or ovewrites an existing file 
         // returns a response code
-        public static AddResponses AddFile(VideoFile file, Boolean overwrite)
+        public static Responses AddFile(VideoFile file, Boolean overwrite)
         {
             // locate the video file if it exists
             VideoFile databaseFile = GetFile(file.Id);
+            string[] rows = 
+            {
+                "path",
+                "date_added",
+                "date_edited"
+            };
+            string[] data =
+            {
+                file.Path,
+                (file.DateAdded != null) ? file.DateAdded.ToString() : DateTime.Now.ToString(),
+                DateTime.Now.ToString(),
+            };
             if (databaseFile == null)
             {
                 // insert a new file if none exists
-                Boolean success = Database.SimpleInsertQuery(_table, file.Path,
-                    DateTime.Now.ToString(),
-                    DateTime.Now.ToString());
-                return (success) ? AddResponses.AddSuccessful : AddResponses.AddFailedDatabase;
+                Boolean success = Database.SimpleInsertQuery(_table, rows, data);
+
+                return (success) ? Responses.Successful : Responses.FailedDatabase;
             }
             else if (overwrite)
             {
                 // overwrite the old file if overwrite true
-                Boolean success = Database.SimpleUpdateQuery(_table, file.Id,
-                    file.Path,
-                    databaseFile.DateAdded,
-                    DateTime.Now.ToString());
-                return (success) ? AddResponses.AddSuccessful : AddResponses.AddFailedDatabase;
+                Boolean success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data); 
+                return (success) ? Responses.Successful : Responses.FailedDatabase;
             }
             else
             {
-                return AddResponses.AddFailedOverwrite;
+                return Responses.FailedOverwrite;
             }
         }
 
         // add multiple files to the database
         // returns an array of response codes - one per file
-        public static AddResponses[] AddFiles(List<VideoFile> files, Boolean overwrite)
+        public static Responses[] AddFiles(List<VideoFile> files, Boolean overwrite)
         {
-            AddResponses[] responses = new AddResponses[files.Count];
+            Responses[] responses = new Responses[files.Count];
             for(int i = 0; i < files.Count; i++)
             {
                 responses[i] = AddFile(files[i], overwrite);
@@ -102,6 +110,13 @@ namespace Zoodevio.DataModel
                 Tags.GetFileTags(id),
                 Convert.ToDateTime(row.GetDateTime(2)),
                 Convert.ToDateTime(row.GetDateTime(3)));
+        }
+
+        // delete a file from the database by ID 
+        public static Boolean DeleteFile(VideoFile file)
+        {
+            // no need to check if it exists; nothing will happen if not
+            return Database.SimpleDeleteQuery(_table, "id", file.Id); 
         }
 
     }
