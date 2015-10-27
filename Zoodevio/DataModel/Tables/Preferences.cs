@@ -21,7 +21,7 @@ namespace Zoodevio.DataModel
         public static Preference Lookup(int id)
         {
             List<IDataRecord> data = Database.SimpleReadQuery(_table,
-                "id", id);
+                "id", id.ToString());
             IDataRecord row = data[0];
             return new Preference(
                 row.GetInt32(0),
