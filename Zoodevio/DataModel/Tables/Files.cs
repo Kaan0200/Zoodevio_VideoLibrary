@@ -13,6 +13,7 @@ namespace Zoodevio.DataModel
     public static class Files 
     {
         private static string _table = "files";
+        private static string _fileLocationsTable = "file_locations";
         
         // add a file to the database, or ovewrites an existing file 
         // returns a response code
@@ -107,6 +108,15 @@ namespace Zoodevio.DataModel
         {
             // no need to check if it exists; nothing will happen if not
             return Database.SimpleDeleteQuery(_table, "id", file.Id); 
+        }
+
+        // clear the database of all files 
+        // WARNING: silently kills the files DB! BEWARE! 
+        // also kills their relative locations 
+        // should probably only be called along with DeleteAllFolders() 
+        public static bool DeleteAllFiles()
+        {
+            return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
         }
 
     }

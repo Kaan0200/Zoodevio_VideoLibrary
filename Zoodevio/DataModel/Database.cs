@@ -169,7 +169,7 @@ namespace Zoodevio.DataModel
 
         // deletes a row from the database
         // returns true if successful, false if failed
-        public static Boolean SimpleDeleteQuery(string table, string identifier, int id)
+        public static bool SimpleDeleteQuery(string table, string identifier, int id)
         {
             _dbConnection.Open();
             SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id);
@@ -184,6 +184,22 @@ namespace Zoodevio.DataModel
             }
         }
 
+        // truncates a database table
+        // WARNING: THIS KILLS THE TABLE (silently)
+        public static bool TruncateTable(string table)
+        {
+            _dbConnection.Open(); 
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum");
+            try
+            {
+                com.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
     }
 }
