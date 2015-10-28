@@ -19,10 +19,30 @@ namespace Zoodevio.DataModel
         public void Tag_ModifyTitleTag_Accept()
         {
             var tag1 = new Tag("Title", "DbType", true); 
-            tag1.Value = "Chronicals Of Riddick";
+            tag1.Name = "Chronicals Of Riddick";
             // we should be able to modify tags, so when pulling back the value it should be changed
 
-            Assert.True(tag1.Value == "Chronicals Of Riddick");
+            Assert.True(tag1.Name == "Chronicals Of Riddick");
+        }
+
+        [Test]
+        public void Tag_ModifyDataTypeTag_Accept()
+        {
+            var tag1 = new Tag("Title", "DbType", true);
+            tag1.DataType = "OtherDbType";
+            // we should be able to modify tags, so when pulling back the value it should be changed
+
+            Assert.True(tag1.DataType == "OtherDbType");
+        }
+
+        [Test]
+        public void Tag_NotModifyTitleTag_Accept()
+        {
+            var tag1 = new Tag("Title", "DbType", false);
+            tag1.Name = "Chronicals Of Riddick";
+            // we should be able to modify tags, so when pulling back the value it should be changed
+
+            Assert.True(tag1.Name == "Title");
         }
 
         [Test]
