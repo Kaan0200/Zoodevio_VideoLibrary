@@ -17,7 +17,6 @@ namespace Zoodevio
 
         public BasicSearchControl()
         {
-            _manager = new SearchManager();
             InitializeComponent();
         }
     }

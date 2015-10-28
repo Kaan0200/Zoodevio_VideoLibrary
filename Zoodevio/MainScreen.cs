@@ -9,6 +9,7 @@ namespace Zoodevio
         private bool _gridViewToggle; // true is gridview, false is listview
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
+        private bool _isGridViewNotListView = false;
 
         private MainScreenManager _mainManager;
 
@@ -16,17 +17,15 @@ namespace Zoodevio
         {
             InitializeComponent();
             SetupManagers();
+
+            gridViewControl.Visible = _isGridViewNotListView;
+            gridViewControl.Visible = !_isGridViewNotListView;
         }
 
-        // Setups the manager for the mainscreen and then gives itself to all children managers
+        // Setups the manager for the MainScreenManager
         private void SetupManagers()
         {
-            _mainManager = new MainScreenManager();
-            var searchManager = new SearchManager(_mainManager);
-            var fileManager = new FileManager(_mainManager);
-            var metadataManager = new MetadataManager(_mainManager);
-            var libraryManager = new LibraryManager(_mainManager);
-            _mainManager.SetManagers(fileManager, libraryManager, metadataManager, searchManager);
+            _mainManager = new MainScreenManager(this);
         }
 
         #region Screen Lifecycle
@@ -47,14 +46,22 @@ namespace Zoodevio
             // swap the toggle, and then set the value to the control
             Console.WriteLine("Toggled Metadata : " + !_metadataViewToggle);
             _metadataViewToggle = !_metadataViewToggle;
-            metadataViewControl1.Visible = _metadataViewToggle;
+            metadataViewControl.Visible = _metadataViewToggle;
         }
 
         private void hideSearchAreaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
-            basicSearchControl1.Visible = _searchViewToggle;
+            basicSearchControl.Visible = _searchViewToggle;
+        }
+
+        private void toggleListViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Toggled between List and Grid view :");
+            _isGridViewNotListView = !_isGridViewNotListView;
+            gridViewControl.Visible = _isGridViewNotListView;
+            listViewControl.Visible = !_isGridViewNotListView;
         }
 
         #endregion

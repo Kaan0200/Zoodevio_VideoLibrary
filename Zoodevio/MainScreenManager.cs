@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
@@ -13,10 +14,24 @@ namespace Zoodevio
 {
     public class MainScreenManager
     {
-        // Column indices for database queries
-        public const int COL_ID = 0;
-        public const int COL_FILEID = 2;
-        public const int COL_DATA = 3;
+        public MainScreen Control;
+
+
+        public FileManager FileManager;
+        public LibraryManager LibraryManager;
+        public MetadataManager MetadataManager;
+        public SearchManager SearchManager;
+
+        public MainScreenManager(MainScreen control)
+        {
+            Control = control;
+            // control is set, create the other managers
+            FileManager = new FileManager(this);
+            LibraryManager = new LibraryManager(this);
+            MetadataManager = new MetadataManager(this);
+            SearchManager = new SearchManager(this);
+            // set them to their respective controls
+        }
 
         // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)

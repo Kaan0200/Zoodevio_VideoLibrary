@@ -44,7 +44,7 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _value = Value;
+                    _value = value;
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _name = Name;
+                    _name = value;
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _dataType = DataType; 
+                    _dataType = value; 
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _canSearch = CanSearch; 
+                    _canSearch = value; 
                 }
             }
 
@@ -108,7 +108,7 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _canSort = CanSort;
+                    _canSort = value;
                 }
             }
 
