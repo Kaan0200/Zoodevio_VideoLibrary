@@ -196,7 +196,7 @@ namespace Zoodevio.DataModel
                 type.Name,
                 type.CanSearch.ToString(),
                 type.CanSort.ToString(),
-                type.Required.ToString(),
+                type.Required ? "1" : "0",
                 type.DataType,
             };
             if (type.IsModifiable)
