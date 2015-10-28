@@ -12,8 +12,6 @@ namespace Zoodevio
 {
     public class MainScreenManager
     {
-        private int folderCount = 0;
-
         // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)
         {
@@ -30,6 +28,7 @@ namespace Zoodevio
                 else
                 {
                     // Failed to set new library root, handle error
+                    throw new Exception("Failed to set selected directory as library root.");
                 }
             }
         }
@@ -38,16 +37,18 @@ namespace Zoodevio
         private void PeruseDirectory(DirectoryInfo dir, Folder folder)
         {
             // Get all immediately contained subdirectories
-            DirectoryInfo[] subDirs = GetImmediateSubDirectories(dir);
+            DirectoryInfo[] children = GetImmediateSubDirectories(dir);
 
             // For each subdirectory:
-            for (int i = 0; i < subDirs.Length; i++)
+            for (int i = 0; i < children.Length; i++)
             {
-                // Map its location in the database
-                Folder subFolder = MapDirectoryAndContents(subDirs[i], folder.Id);
+                // Map its location and contents in the database
+                Folder childFolder = MapDirectoryAndContents(children[i], folder.Id);
 
-                // Continue the library traversal within
-                PeruseDirectory(subDirs[i], subFolder);
+                if (childFolder != null)
+                {   // Continue the library traversal within
+                    PeruseDirectory(children[i], childFolder);
+                }
             }
         }
 
@@ -82,22 +83,27 @@ namespace Zoodevio
         // Adds a directory in the library structure as a "Folder" object in the database
         private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
         {
-            // Get folder ID
-            int folderID = folderCount++;
+            // Try to add this directory as a folder in the database
+            Folder folder = new Folder(parentID, dir.Name);
+            Response response = Folders.AddFolder(folder, true);
+            
+            // If the folder was added successfully:
+            if (response == Response.Success)
+            {  
+                // Add all the contained video files to the database
+                MapContainedVideoFiles(dir, folder.Id);
 
-            // Find all video files in this folder
-            List<VideoFile> files = MapContainedVideoFiles(dir, folderID);
-            Folder folder = new Folder(folderID, parentID, dir.Name, files);
-            Folders.AddFolder(folder, true);
-            return folder;
+                // Return the successfully added folder
+                return folder;
+            }
+
+            // Otherwise stop digging in this directory
+            return null;
         }
 
-        // This returns a list of DB VideoFile objects representing all video files in a directory
-        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo subDir, int folderID)
+        // This adds all video files in a directory to the database
+        private void MapContainedVideoFiles(DirectoryInfo subDir, int parentID)
         {
-            // Prepare file list
-            List<VideoFile> files = new List<VideoFile>();
-
             // Get all supported file extensions
             string[] extensions = GetSupportedFileExtensions();
 
@@ -109,12 +115,20 @@ namespace Zoodevio
 
                 // For each video file with the current extension:
                 for (int j = 0; j < videoFiles.Length; j++)
-                {   // Create the DB object and add it to the list
-                    files.Add(new VideoFile(videoFiles[j].FullName, new List<TagEntry>()));
+                {  
+                    // Create a database VideoFile object for the file
+                    VideoFile file = new VideoFile(videoFiles[j].FullName, new List<TagEntry>());
+                    
+                    // Try to add the file to the database
+                    Response response = Files.AddFile(file, true);
+
+                    // If file addition was unsuccessful:
+                    if (response != Response.Success) 
+                    {
+                        Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
+                    }
                 }
             }
-            Files.AddFiles(files, true);
-            return files;
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
