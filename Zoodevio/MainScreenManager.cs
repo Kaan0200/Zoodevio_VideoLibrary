@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,11 @@ namespace Zoodevio
 {
     public class MainScreenManager
     {
+        // Column indices for database queries
+        public const int COL_ID = 0;
+        public const int COL_FILEID = 2;
+        public const int COL_DATA = 3;
+
         // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)
         {
@@ -22,7 +28,10 @@ namespace Zoodevio
                 Folder rootFolder = SetRootReference(rootDir);
                 
                 if (rootFolder != null)
-                {   
+                {
+                    // Add files in top level root directory
+                    MapContainedVideoFiles(rootDir, rootFolder.Id);
+
                     // Traverse this directory mapping all file/folder locations
                     PeruseDirectory(rootDir, rootFolder);
                 }
@@ -117,7 +126,7 @@ namespace Zoodevio
             // If setting the new root was successful:
             if (response == Response.Success)
             {
-                // Wipe all files too
+                // Wipe all existing files
                 Files.DeleteAllFiles();
 
                 // Begin building the tree from the root folder
@@ -149,14 +158,15 @@ namespace Zoodevio
         private string[] GetSupportedFileExtensions()
         {
             // TODO: Get an array of supported file extensions in "xxx" format (no '.')
-            return new string[] { "mp4", "avi" };
+            return new string[] { "mp4", "avi", "mov", "flv" };
         }
 
-        // This gets the initialized list of default tags a video file has
+        // This gets a list of default required tags a video file has
         private List<TagEntry> GetDefaultTags()
         {
-            //  TODO: Retrieve tags from DB
-            return null;
+            // TODO: Get default tags from DB
+            List<TagEntry> defaultTags = new List<TagEntry>();
+            return defaultTags;
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
