@@ -4,43 +4,50 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zoodevio.DataModel;
+using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
 
 namespace Zoodevio
 {
     public class MainScreenManager
     {
+        private int folderCount = 0;
+
         // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)
         {
             // If this directory exists, begin mapping file locations
-            DirectoryInfo root = new DirectoryInfo(rootURL);
-            if (root.Exists) {
+            DirectoryInfo rootDir = new DirectoryInfo(rootURL);
+            if (rootDir.Exists) {
                 // Clear old root and set new root
-                SetRootReference(root);
+                Folder root = SetRootReference(rootDir);
                 
-                // Traverse this directory mapping all file/folder locations
-                MapDirectoryContents(root);
+                if (root != null)
+                {   // Traverse this directory mapping all file/folder locations
+                    PeruseDirectory(rootDir, root);
+                }
+                else
+                {
+                    // Failed to set new library root, handle error
+                }
             }
         }
 
         // Recursively traverses a file structure mapping video file and folder locations
-        private void MapDirectoryContents(DirectoryInfo subDir)
+        private void PeruseDirectory(DirectoryInfo dir, Folder folder)
         {
-            // Find all video files in this folder
-            MapAllContainedFileLocations(subDir);
-
             // Get all immediately contained subdirectories
-            DirectoryInfo[] subDirs = GetImmediateSubDirectories(subDir);
-            
+            DirectoryInfo[] subDirs = GetImmediateSubDirectories(dir);
+
             // For each subdirectory:
             for (int i = 0; i < subDirs.Length; i++)
             {
                 // Map its location in the database
-                MapDirectoryLocation(subDirs[i]);
+                Folder subFolder = MapDirectoryAndContents(subDirs[i], folder.Id);
 
                 // Continue the library traversal within
-                MapDirectoryContents(subDirs[i]);
+                PeruseDirectory(subDirs[i], subFolder);
             }
         }
 
@@ -53,6 +60,7 @@ namespace Zoodevio
             } catch (Exception e)
             {    // Something went wrong with permissions or nonexistent references
                 Console.WriteLine("Error getting subdirectories, not sure how to handle yet");
+                Console.WriteLine(e.StackTrace);
                 return new DirectoryInfo[0];
             }
         }
@@ -65,27 +73,31 @@ namespace Zoodevio
         }
 
         // Set new library root reference to the given directory
-        private void SetRootReference(DirectoryInfo root)
+        private Folder SetRootReference(DirectoryInfo root)
         {
             // TODO: Tell the database to remove its reference to any existing library root
-            // TODO: Set the new root reference to the given directory
+            return MapDirectoryAndContents(root, -1);
         }
 
         // Adds a directory in the library structure as a "Folder" object in the database
-        private void MapDirectoryLocation(DirectoryInfo dir)
+        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
         {
-            // TODO: Add this directory to the database as a folder object
+            // Get folder ID
+            int folderID = folderCount++;
+
+            // Find all video files in this folder
+            List<VideoFile> files = MapContainedVideoFiles(dir, folderID);
+            Folder folder = new Folder(folderID, parentID, dir.Name, files);
+            Folders.AddFolder(folder, true);
+            return folder;
         }
 
-        // Adds a supported video file to the library as a "File" object in the database
-        private void MapFileLocation(FileInfo videoFile, String extension, DirectoryInfo parentDir)
+        // This returns a list of DB VideoFile objects representing all video files in a directory
+        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo subDir, int folderID)
         {
-            // TODO: Add this file to the database under the specified parent folder
-        }
+            // Prepare file list
+            List<VideoFile> files = new List<VideoFile>();
 
-        // This maps the location of every supported video file in a given directory
-        private void MapAllContainedFileLocations(DirectoryInfo subDir)
-        {
             // Get all supported file extensions
             string[] extensions = GetSupportedFileExtensions();
 
@@ -97,10 +109,12 @@ namespace Zoodevio
 
                 // For each video file with the current extension:
                 for (int j = 0; j < videoFiles.Length; j++)
-                {   // Map its location in the database
-                    MapFileLocation(videoFiles[j], extensions[i], subDir);
+                {   // Create the DB object and add it to the list
+                    files.Add(new VideoFile(videoFiles[j].FullName, new List<TagEntry>()));
                 }
             }
+            Files.AddFiles(files, true);
+            return files;
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
