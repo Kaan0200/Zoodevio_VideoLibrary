@@ -71,6 +71,7 @@
     <Compile Include="DataModel\Tests\ObjectsTests\TagEntry_Test.cs" />
     <Compile Include="DataModel\Tests\ObjectsTests\Tag_Test.cs" />
     <Compile Include="DataModel\Tests\ObjectsTests\VideoFile_Test.cs" />
+    <Compile Include="DataModel\Tests\TablesTests\Files_Test.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,9 +161,7 @@
     <Content Include="System.Data.SQLite.dll" />
     <Content Include="Transitions.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataModel\Tests\TablesTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

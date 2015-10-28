@@ -29,6 +29,7 @@ namespace Zoodevio.DataModel.Tests
 
             Assert.True(tagEntry1.Equals(tagEntry2));
             Assert.False(tagEntry1.Equals(tagEntry3));
+            Assert.False(tagEntry1.Equals(null));
         }
 
         [Test]
@@ -41,6 +42,7 @@ namespace Zoodevio.DataModel.Tests
 
             Assert.True(tagEntry1.isIdentical(tagEntry2));
             Assert.False(tagEntry1.isIdentical(tagEntry3));
+            Assert.False(tagEntry1.isIdentical(null));
         }
     }
 }
