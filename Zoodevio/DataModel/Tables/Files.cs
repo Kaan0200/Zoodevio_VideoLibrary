@@ -52,7 +52,7 @@ namespace Zoodevio.DataModel
 
         // add multiple files to the database
         // returns an array of response codes - one per file
-        public static Response[] AddFiles(List<VideoFile> files, Boolean overwrite)
+        public static Response[] AddFiles(List<VideoFile> files, bool overwrite)
         {
             Response[] Response = new Response[files.Count];
             for(int i = 0; i < files.Count; i++)

@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="DataModel\Database.cs" />
     <Compile Include="DataModel\Tests\Database_Test.cs" />
-    <Compile Include="DataModel\Tests\Folder_Test.cs" />
+    <Compile Include="DataModel\Tests\ObjectsTests\Folder_Test.cs" />
     <Compile Include="DataModel\Objects\TagEntry.cs" />
     <Compile Include="DataModel\Objects\VideoFile.cs" />
     <Compile Include="DataModel\Objects\Folder.cs" />
@@ -67,9 +67,10 @@
     <Compile Include="DataModel\Tables\Folders.cs" />
     <Compile Include="DataModel\Tables\Preferences.cs" />
     <Compile Include="DataModel\Tables\Tags.cs" />
-    <Compile Include="DataModel\Tests\Preference_Test.cs" />
-    <Compile Include="DataModel\Tests\Tag_Test.cs" />
-    <Compile Include="DataModel\Tests\VideoFile_Test.cs" />
+    <Compile Include="DataModel\Tests\ObjectsTests\Preference_Test.cs" />
+    <Compile Include="DataModel\Tests\ObjectsTests\TagEntry_Test.cs" />
+    <Compile Include="DataModel\Tests\ObjectsTests\Tag_Test.cs" />
+    <Compile Include="DataModel\Tests\ObjectsTests\VideoFile_Test.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -159,7 +160,9 @@
     <Content Include="System.Data.SQLite.dll" />
     <Content Include="Transitions.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataModel\Tests\TablesTests\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
