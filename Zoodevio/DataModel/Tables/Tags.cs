@@ -2,9 +2,11 @@
  * Manages tags for video files in the database.
  * Includes creating, modifying, and deleting tags, and getting, adding, and removing tags from files in the DB.
  */
- 
+
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -19,9 +21,9 @@ namespace Zoodevio.DataModel
         private const int CHUNK_SIZE = 2*1024; 
 
         // get tags associated with a given file id 
-        public static List<TagEntry> GetFileTags(int id)
+        public static List<TagEntry> GetFileTags(int fileId)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_tagsTable, "file_id", id.ToString());
+            List<IDataRecord> data = Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString());
             List<TagEntry> tags = new List<TagEntry>(); 
             foreach (IDataRecord row in data)
             {
@@ -33,6 +35,48 @@ namespace Zoodevio.DataModel
                     ));
             }
             return tags;
+        }
+
+        // update the tags associated with a certain file id 
+        public static bool[] UpdateFileTags(int fileId, List<TagEntry> tags)
+        {
+            List<TagEntry> oldTags = GetFileTags(fileId);
+            bool[] responses = new bool[tags.Count];
+            for(int i = 0; i < tags.Count; i++)
+            {
+                responses[i] = UpdateFileTag(fileId, tags[i], oldTags); 
+            }
+            return responses;
+        }
+
+        // update a single tag associated with a file 
+        public static bool UpdateFileTag(int fileId, TagEntry tag, List<TagEntry> oldTags)
+        {
+            bool success;
+            string[] rows =
+                {
+                    "type_id",
+                    "file_id",
+                    "data"
+                };
+            string[] data =
+            {
+                  tag.TypeId.ToString(),
+                  tag.FileId.ToString(),
+                  tag.Data.ToString()
+            };
+            if (oldTags.Contains(tag))
+            {
+                TagEntry oldTag = oldTags[(oldTags.IndexOf(tag))];
+
+                success = Database.SimpleUpdateQuery(_tagsTable, "id",
+                    oldTag.Id, rows, data);
+            }
+            else
+            {
+                success = Database.SimpleInsertQuery(_tagsTable, rows, data); 
+            }
+            return success; 
         }
 
         // get all tags of a certain type 
@@ -110,20 +154,90 @@ namespace Zoodevio.DataModel
             return file; 
         }
 
-        // add or modify a tag type within the database 
-        public static Response AddCustomTag(Tag tag)
+        // get a tag type entry from the database
+        public static Tag GetTagType(int id)
         {
-            return Response.FailedDatabase;
+            List<IDataRecord> data = Database.SimpleReadQuery(_typesTable, "id", id.ToString());
+            return TagTypeFromRecord(data[0]); 
+        }
+
+        private static Tag TagTypeFromRecord(IDataRecord row)
+        {
+            if (row == null)
+            {
+                return null;
+            }
+            return new Tag(
+                row.GetInt32(0),
+                row.GetString(1),
+                row.GetBoolean(2),
+                row.GetBoolean(3),
+                row.GetBoolean(4),
+                row.GetString(5),
+                row.GetBoolean(6));
+        }
+
+        // add or modify a tag type within the database 
+        public static Response AddCustomTag(Tag type, bool overwrite)
+        {
+            Tag dbType = GetTagType(type.Id);
+            string[] rows =
+            {
+                "id",
+                "name",
+                "can_search",
+                "can_sort",
+                "required",
+                "data_type",
+            };
+            string[] data =
+            {
+                type.Id.ToString(),
+                type.Name,
+                type.CanSearch.ToString(),
+                type.CanSort.ToString(),
+                type.Required.ToString(),
+                type.DataType,
+            };
+            if (type.IsModifiable)
+            {
+                if (dbType == null)
+                {
+                    bool success = Database.SimpleInsertQuery(_typesTable, rows, data);
+                    return (success) ? Response.Success : Response.FailedDatabase;
+
+                }
+                else if (overwrite)
+                {
+                    // overwrite the old file if overwrite true
+                    bool success = Database.SimpleUpdateQuery(_tagsTable, "id", type.Id, rows, data);
+                    return (success) ? Response.Success : Response.FailedDatabase;
+                }
+                else
+                {
+                    return Response.FailedOverwrite;
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Unmodifiable tag passed!");
+            }
         }
 
         // delete a custom tag type from the database
-        public static Response DeleteCustomTag(int id)
+        public static bool DeleteCustomTag(int id)
         {
-            return Response.FailedDatabase; 
+            // get the tag and make sure it can be modfiied
+            Tag type = GetTagType(id);
+            if (type.IsModifiable)
+            {
+                return Database.SimpleDeleteQuery(_tagsTable, "id", type.Id);
+            }
+            else
+            {
+                return false; 
+            }
         }
-        
 
-
-        
     }
 }

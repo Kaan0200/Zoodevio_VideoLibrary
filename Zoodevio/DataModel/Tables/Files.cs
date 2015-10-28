@@ -16,7 +16,7 @@ namespace Zoodevio.DataModel
         
         // add a file to the database, or ovewrites an existing file 
         // returns a response code
-        public static Response AddFile(VideoFile file, Boolean overwrite)
+        public static Response AddFile(VideoFile file, bool overwrite)
         {
             // locate the video file if it exists
             VideoFile databaseFile = GetFile(file.Id);
@@ -35,14 +35,13 @@ namespace Zoodevio.DataModel
             if (databaseFile == null)
             {
                 // insert a new file if none exists
-                Boolean success = Database.SimpleInsertQuery(_table, rows, data);
-
+                bool success = Database.SimpleInsertQuery(_table, rows, data);
                 return (success) ? Response.Success : Response.FailedDatabase;
             }
             else if (overwrite)
             {
                 // overwrite the old file if overwrite true
-                Boolean success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data); 
+                bool success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data); 
                 return (success) ? Response.Success : Response.FailedDatabase;
             }
             else

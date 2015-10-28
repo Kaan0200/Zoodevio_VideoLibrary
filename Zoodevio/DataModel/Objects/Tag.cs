@@ -10,15 +10,29 @@ namespace Zoodevio.DataModel.Objects
     {
         private string _name;         // unique tag name
         private string _value;        // string value of the tag
-        private DbType _databaseType; // type when stored in DB
-        private bool _isModifiable;   
+        private string _dataType; 
+        private int _id; 
+        private bool _isModifiable;
+        private bool _canSearch;
+        private bool _canSort;
+        private bool _required;
 
-        // tags with full info for purposes of managing tags
-        public Tag(string name, DbType databaseType, bool isModifiable)
+        // tags with some info for purposes of managing tags
+        public Tag(string name, string databaseType, bool isModifiable)
         {
-            Name = name;
-            DatabaseType = databaseType;
-            IsModifiable = isModifiable;
+            _name = name;
+            _dataType = databaseType;
+            _isModifiable = isModifiable;
+        }
+
+        // tags with all info - for getting from database
+        public Tag(int id, string name, bool canSearch, bool canSort, bool required,
+            string dataType, bool isModifiable) : this(name, dataType, isModifiable)
+        {
+            _id = id; 
+            _canSearch = canSearch;
+            _canSort = canSort;
+            _required = required;
         }
 
         #region Variable Accessors
@@ -30,17 +44,76 @@ namespace Zoodevio.DataModel.Objects
             {
                 if (IsModifiable)
                 {
-                    _value = value;
+                    _value = Value;
                 }
             }
         }
 
-        public string Name { get; }
+        public int Id
+        {
+            get { return _id;  }
+        }
 
-        public DbType DatabaseType { get; }
+        public string Name
+        {
+            get { return _name;  }
+            set
+            {
+                if (IsModifiable)
+                {
+                    _name = Name;
+                }
+            }
+        }
 
-        public bool IsModifiable { get; }
+        public string DataType
+        {
+            get { return _dataType;  }
+            set
+            {
+                if (IsModifiable)
+                {
+                    _dataType = DataType; 
+                }
+            }
+        }
 
+        public bool IsModifiable
+        {
+            get { return _isModifiable;  }
+        }
+
+        public bool Required
+        {
+            get { return _required;  }
+        }
+
+        public bool CanSearch
+        {
+            get { return _canSearch; }
+            set
+            {
+                if (IsModifiable)
+                {
+                    _canSearch = CanSearch; 
+                }
+            }
+
+        }
+
+        public bool CanSort
+        {
+            get { return _canSort; }
+            set
+            {
+                if (IsModifiable)
+                {
+                    _canSort = CanSort;
+                }
+            }
+
+        }
+        
         #endregion
     }
 }
