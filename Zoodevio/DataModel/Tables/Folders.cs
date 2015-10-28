@@ -136,6 +136,18 @@ namespace Zoodevio.DataModel
             return files;
         } 
 
+
+        // clear the database of all folders and reset the hierarchy
+        // setting a provided folder as root 
+        // WARNING: silently kills the folders DB! BEWARE! 
+        // does not kill file locations. to do that, call DeleteAllFiles() 
+        // should probably only be called along with DeleteAllFiles() for that reason
+        public static Response DeleteAllFolders(Folder newRoot)
+        {
+            Database.TruncateTable(_table);
+            return AddFolder(newRoot, false); 
+        }
+
         // TODO: folder tree implementation
 
     }
