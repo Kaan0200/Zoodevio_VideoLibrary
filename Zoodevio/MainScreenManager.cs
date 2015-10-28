@@ -4,12 +4,32 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Zoodevio.Managers;
 
 namespace Zoodevio
 {
     public class MainScreenManager
     {
+        public MainScreen Control;
+
+
+        public FileManager FileManager;
+        public LibraryManager LibraryManager;
+        public MetadataManager MetadataManager;
+        public SearchManager SearchManager;
+
+        public MainScreenManager(MainScreen control)
+        {
+            Control = control;
+            // control is set, create the other managers
+            FileManager = new FileManager(this);
+            LibraryManager = new LibraryManager(this);
+            MetadataManager = new MetadataManager(this);
+            SearchManager = new SearchManager(this);
+            // set them to their respective controls
+        }
+
         // Sets the directory at the given URL as the Zoodevio library root
         public void SetLibraryRoot(string rootURL)
         {
