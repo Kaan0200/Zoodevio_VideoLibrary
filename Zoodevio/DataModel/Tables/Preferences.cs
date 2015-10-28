@@ -33,7 +33,7 @@ namespace Zoodevio.DataModel
 
         // only the data of a preference is ever modified
         // the rest is specified by design doc
-        public static Boolean Modify(int id, string data)
+        public static bool Modify(int id, string data)
         {
             string[] rows = {"data"};
             string[] dbData = new string[1];

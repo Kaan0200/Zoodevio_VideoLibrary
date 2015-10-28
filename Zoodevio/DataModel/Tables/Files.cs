@@ -104,7 +104,7 @@ namespace Zoodevio.DataModel
         }
 
         // delete a file from the database by ID 
-        public static Boolean DeleteFile(VideoFile file)
+        public static bool DeleteFile(VideoFile file)
         {
             // no need to check if it exists; nothing will happen if not
             return Database.SimpleDeleteQuery(_table, "id", file.Id); 

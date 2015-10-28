@@ -94,7 +94,7 @@ namespace Zoodevio.DataModel
 
         // delete a file from the database by ID
         // returns true if successful, false otherwise
-        public static Boolean DeleteFolder(Folder folder)
+        public static bool DeleteFolder(Folder folder)
         {
             return Database.SimpleDeleteQuery(_table, "id", folder.Id); 
         }

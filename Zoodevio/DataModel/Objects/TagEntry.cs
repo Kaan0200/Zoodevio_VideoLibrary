@@ -26,5 +26,31 @@ namespace Zoodevio.DataModel.Objects
             Data = data;
         }
 
+        // tags which are equal have the same type 
+        // this is so that tags can be easily searched for and updated
+        // please note: use EqualsWithData for real data equality
+        public bool Equals(TagEntry tag)
+        {
+            if ((object) tag == null)
+            {
+                return false;
+            }
+
+            return (TypeId == tag.TypeId); 
+        }
+
+        // verifies that two tag objects represent the same exact tag in the database
+        public bool isIdentical(TagEntry tag)
+        {
+            if ((object)tag == null)
+            {
+                return false;
+            }
+
+            return (TypeId == tag.TypeId) && (Id == tag.Id) && (Data.Equals(tag.Data)); 
+        }
+
+
+
     }
 }
