@@ -26,37 +26,107 @@ namespace Zoodevio.DataModel
         }
 
         [Test]
+        public void Tag_NotModifyTitleTag_Accept()
+        {
+            var tag1 = new Tag("Title", "DbType", false);
+            tag1.Name = "Chronicals Of Riddick";
+            // we should not be able to modify tags, so when pulling back the value it should be changed
+
+            Assert.True(tag1.Name == "Title");
+        }
+
+        [Test]
         public void Tag_ModifyDataTypeTag_Accept()
         {
             var tag1 = new Tag("Title", "DbType", true);
             tag1.DataType = "OtherDbType";
-            // we should be able to modify tags, so when pulling back the value it should be changed
 
             Assert.True(tag1.DataType == "OtherDbType");
         }
 
         [Test]
-        public void Tag_NotModifyTitleTag_Accept()
+        public void Tag_NotModifyDataTypeTag_Accept()
         {
             var tag1 = new Tag("Title", "DbType", false);
-            tag1.Name = "Chronicals Of Riddick";
-            // we should be able to modify tags, so when pulling back the value it should be changed
+            tag1.DataType = "OtherDbType";
 
-            Assert.True(tag1.Name == "Title");
+            Assert.True(tag1.DataType == "DbType");
+        }
+
+        [Test]
+        public void Tag_ModifyCanSearchTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            tag1.CanSearch = false;
+
+            Assert.False(tag1.CanSearch);
+        }
+
+        [Test]
+        public void Tag_NotModifyCanSearchTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", false);
+            tag1.CanSearch = false;
+
+            Assert.True(tag1.CanSearch);
+        }
+
+        [Test]
+        public void Tag_ModifyCanSortTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            tag1.CanSort = false;
+
+            Assert.False(tag1.CanSort);
+        }
+
+        [Test]
+        public void Tag_GetIdTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            Assert.True(tag1.Id == 0);
         }
 
         [Test]
         public void Tag_GetNameTag_Accept()
         {
-            var tag1 = new Tag("Title", "DbType", true);
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
             Assert.True(tag1.Name == "Title");
+        }
+
+        [Test]
+        public void Tag_GetCanSearchTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            Assert.True(tag1.CanSearch);
+        }
+
+        [Test]
+        public void Tag_GetCanSortTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            Assert.True(tag1.CanSort);
+        }
+
+        [Test]
+        public void Tag_GetCanRequiredTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            Assert.True(tag1.Required);
         }
 
         [Test]
         public void Tag_GetDatabaseType_Accept()
         {
-            var tag1 = new Tag("Filetype", "DbType", false);
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
             Assert.True(tag1.DataType == "DbType");
+        }
+
+        [Test]
+        public void Tag_GetIsModifiableTag_Accept()
+        {
+            var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);
+            Assert.True(tag1.IsModifiable);
         }
     }
 }

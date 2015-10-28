@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\Database.cs" />
+    <Compile Include="DataModel\Tests\Database_Test.cs" />
     <Compile Include="DataModel\Tests\Folder_Test.cs" />
     <Compile Include="DataModel\Objects\TagEntry.cs" />
     <Compile Include="DataModel\Objects\VideoFile.cs" />
