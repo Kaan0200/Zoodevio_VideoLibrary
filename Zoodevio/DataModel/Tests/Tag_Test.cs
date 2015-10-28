@@ -18,7 +18,7 @@ namespace Zoodevio.DataModel
         // {Object Being Tested}_{Testing what?}_{Result}
         public void Tag_ModifyTitleTag_Accept()
         {
-            var tag1 = new Tag("Title", DbType.String, true); 
+            var tag1 = new Tag("Title", "DbType", true); 
             tag1.Value = "Chronicals Of Riddick";
             // we should be able to modify tags, so when pulling back the value it should be changed
 
@@ -28,15 +28,15 @@ namespace Zoodevio.DataModel
         [Test]
         public void Tag_GetNameTag_Accept()
         {
-            var tag1 = new Tag("Title", DbType.String, true);
+            var tag1 = new Tag("Title", "DbType", true);
             Assert.True(tag1.Name == "Title");
         }
 
         [Test]
         public void Tag_GetDatabaseType_Accept()
         {
-            var tag1 = new Tag("Filetype", DbType.String, false);
-            Assert.True(tag1.DatabaseType == DbType.String);
+            var tag1 = new Tag("Filetype", "DbType", false);
+            Assert.True(tag1.DataType == "DbType");
         }
     }
 }
