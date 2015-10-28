@@ -11,11 +11,5 @@
         {
             this._manager = _manager;
         }
-
-        // for fixing errors only
-        public SearchManager()
-        {
-            
-        }
     }
 }

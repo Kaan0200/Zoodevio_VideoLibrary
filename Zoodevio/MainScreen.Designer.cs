@@ -37,9 +37,15 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setLibraryRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitterContainer = new System.Windows.Forms.SplitContainer();
-            this.metadataViewControl2 = new Zoodevio.MetadataViewControl();
+            this.libraryPanelControl = new Zoodevio.LibraryPanelControl();
+            this.listViewControl = new Zoodevio.ListViewControl();
+            this.basicSearchControl = new Zoodevio.BasicSearchControl();
+            this.gridViewControl = new Zoodevio.GridViewControl();
+            this.metadataViewControl = new Zoodevio.MetadataViewControl();
+            this.toggleListViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
+            this.mainSplitterContainer.Panel1.SuspendLayout();
             this.mainSplitterContainer.Panel2.SuspendLayout();
             this.mainSplitterContainer.SuspendLayout();
             this.SuspendLayout();
@@ -47,10 +53,10 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 462);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 340);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(883, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -63,37 +69,38 @@
             this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(883, 28);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hideMetadataToolStripMenuItem,
-            this.hideSearchAreaToolStripMenuItem});
+            this.hideSearchAreaToolStripMenuItem,
+            this.toggleListViewToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // hideMetadataToolStripMenuItem
             // 
             this.hideMetadataToolStripMenuItem.Name = "hideMetadataToolStripMenuItem";
-            this.hideMetadataToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.hideMetadataToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.hideMetadataToolStripMenuItem.Text = "Hide Metadata";
             this.hideMetadataToolStripMenuItem.Click += new System.EventHandler(this.hideMetadataToolStripMenuItem_Click);
             // 
             // hideSearchAreaToolStripMenuItem
             // 
             this.hideSearchAreaToolStripMenuItem.Name = "hideSearchAreaToolStripMenuItem";
-            this.hideSearchAreaToolStripMenuItem.Size = new System.Drawing.Size(199, 26);
+            this.hideSearchAreaToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.hideSearchAreaToolStripMenuItem.Text = "Hide Search Area";
             this.hideSearchAreaToolStripMenuItem.Click += new System.EventHandler(this.hideSearchAreaToolStripMenuItem_Click);
             // 
@@ -102,53 +109,107 @@
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setLibraryRootToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // setLibraryRootToolStripMenuItem
             // 
             this.setLibraryRootToolStripMenuItem.Name = "setLibraryRootToolStripMenuItem";
-            this.setLibraryRootToolStripMenuItem.Size = new System.Drawing.Size(190, 26);
+            this.setLibraryRootToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.setLibraryRootToolStripMenuItem.Text = "Set Library Root";
             this.setLibraryRootToolStripMenuItem.Click += new System.EventHandler(this.setLibraryRootToolStripMenuItem_Click);
             // 
             // mainSplitterContainer
             // 
             this.mainSplitterContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainSplitterContainer.Location = new System.Drawing.Point(0, 28);
-            this.mainSplitterContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.mainSplitterContainer.Location = new System.Drawing.Point(0, 24);
+            this.mainSplitterContainer.Margin = new System.Windows.Forms.Padding(2);
             this.mainSplitterContainer.Name = "mainSplitterContainer";
+            // 
+            // mainSplitterContainer.Panel1
+            // 
+            this.mainSplitterContainer.Panel1.Controls.Add(this.libraryPanelControl);
             // 
             // mainSplitterContainer.Panel2
             // 
-            this.mainSplitterContainer.Panel2.Controls.Add(this.metadataViewControl2);
-            this.mainSplitterContainer.Size = new System.Drawing.Size(883, 434);
-            this.mainSplitterContainer.SplitterDistance = 316;
+            this.mainSplitterContainer.Panel2.Controls.Add(this.basicSearchControl);
+            this.mainSplitterContainer.Panel2.Controls.Add(this.metadataViewControl);
+            this.mainSplitterContainer.Panel2.Controls.Add(this.listViewControl);
+            this.mainSplitterContainer.Panel2.Controls.Add(this.gridViewControl);
+            this.mainSplitterContainer.Size = new System.Drawing.Size(784, 316);
+            this.mainSplitterContainer.SplitterDistance = 252;
+            this.mainSplitterContainer.SplitterWidth = 3;
             this.mainSplitterContainer.TabIndex = 2;
             // 
-            // metadataViewControl2
+            // libraryPanelControl
             // 
-            this.metadataViewControl2.Location = new System.Drawing.Point(272, 3);
-            this.metadataViewControl2.Name = "metadataViewControl2";
-            this.metadataViewControl2.Size = new System.Drawing.Size(288, 380);
-            this.metadataViewControl2.TabIndex = 3;
+            this.libraryPanelControl.AutoSize = true;
+            this.libraryPanelControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.libraryPanelControl.Location = new System.Drawing.Point(11, 1);
+            this.libraryPanelControl.Margin = new System.Windows.Forms.Padding(2);
+            this.libraryPanelControl.Name = "libraryPanelControl";
+            this.libraryPanelControl.Size = new System.Drawing.Size(235, 311);
+            this.libraryPanelControl.TabIndex = 0;
+            // 
+            // listViewControl
+            // 
+            this.listViewControl.Location = new System.Drawing.Point(2, 4);
+            this.listViewControl.Margin = new System.Windows.Forms.Padding(2);
+            this.listViewControl.Name = "listViewControl";
+            this.listViewControl.Size = new System.Drawing.Size(307, 310);
+            this.listViewControl.TabIndex = 3;
+            // 
+            // basicSearchControl
+            // 
+            this.basicSearchControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.basicSearchControl.Location = new System.Drawing.Point(2, 242);
+            this.basicSearchControl.Margin = new System.Windows.Forms.Padding(2);
+            this.basicSearchControl.Name = "basicSearchControl";
+            this.basicSearchControl.Size = new System.Drawing.Size(237, 70);
+            this.basicSearchControl.TabIndex = 1;
+            // 
+            // gridViewControl
+            // 
+            this.gridViewControl.AutoSize = true;
+            this.gridViewControl.Location = new System.Drawing.Point(2, 6);
+            this.gridViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gridViewControl.Name = "gridViewControl";
+            this.gridViewControl.Size = new System.Drawing.Size(307, 310);
+            this.gridViewControl.TabIndex = 2;
+            // 
+            // metadataViewControl
+            // 
+            this.metadataViewControl.Location = new System.Drawing.Point(311, 4);
+            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.metadataViewControl.Name = "metadataViewControl";
+            this.metadataViewControl.Size = new System.Drawing.Size(216, 310);
+            this.metadataViewControl.TabIndex = 0;
+            // 
+            // toggleListViewToolStripMenuItem
+            // 
+            this.toggleListViewToolStripMenuItem.Name = "toggleListViewToolStripMenuItem";
+            this.toggleListViewToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.toggleListViewToolStripMenuItem.Text = "Toggle List View";
+            this.toggleListViewToolStripMenuItem.Click += new System.EventHandler(this.toggleListViewToolStripMenuItem_Click);
             // 
             // MainScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 484);
+            this.ClientSize = new System.Drawing.Size(784, 362);
             this.Controls.Add(this.mainSplitterContainer);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainScreen";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainScreen_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.mainSplitterContainer.Panel1.ResumeLayout(false);
+            this.mainSplitterContainer.Panel1.PerformLayout();
             this.mainSplitterContainer.Panel2.ResumeLayout(false);
+            this.mainSplitterContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).EndInit();
             this.mainSplitterContainer.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -163,15 +224,16 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer mainSplitterContainer;
-        private LibraryPanelControl libraryPanelControl1;
-        private GridViewControl gridViewControl1;
-        private MetadataViewControl metadataViewControl1;
-        private BasicSearchControl basicSearchControl1;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideMetadataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideSearchAreaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setLibraryRootToolStripMenuItem;
-        private MetadataViewControl metadataViewControl2;
+        private LibraryPanelControl libraryPanelControl;
+        private MetadataViewControl metadataViewControl;
+        private BasicSearchControl basicSearchControl;
+        private ListViewControl listViewControl;
+        private GridViewControl gridViewControl;
+        private System.Windows.Forms.ToolStripMenuItem toggleListViewToolStripMenuItem;
     }
 }
 

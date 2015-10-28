@@ -16,10 +16,5 @@ namespace Zoodevio
         {
             InitializeComponent();
         }
-
-        private void LibraryVisibility_Toggle(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
