@@ -19,11 +19,12 @@ namespace Zoodevio
             DirectoryInfo rootDir = new DirectoryInfo(rootURL);
             if (rootDir.Exists) {
                 // Clear old root and set new root
-                Folder root = SetRootReference(rootDir);
+                Folder rootFolder = SetRootReference(rootDir);
                 
-                if (root != null)
-                {   // Traverse this directory mapping all file/folder locations
-                    PeruseDirectory(rootDir, root);
+                if (rootFolder != null)
+                {   
+                    // Traverse this directory mapping all file/folder locations
+                    PeruseDirectory(rootDir, rootFolder);
                 }
                 else
                 {
@@ -33,7 +34,7 @@ namespace Zoodevio
             }
         }
 
-        // Recursively traverses a file structure mapping video file and folder locations
+        // Recursively traverses a directory mapping video file and folder locations
         private void PeruseDirectory(DirectoryInfo dir, Folder folder)
         {
             // Get all immediately contained subdirectories
@@ -46,20 +47,98 @@ namespace Zoodevio
                 Folder childFolder = MapDirectoryAndContents(children[i], folder.Id);
 
                 if (childFolder != null)
-                {   // Continue the library traversal within
+                {
+                    // Continue the library traversal within
                     PeruseDirectory(children[i], childFolder);
                 }
             }
+        }
+
+        // Adds a directory in the library structure as a folder object in the database
+        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
+        {
+            // Try to add this directory as a folder in the database
+            Folder folder = new Folder(parentID, dir.Name);
+            Response response = Folders.AddFolder(folder, true);
+
+            // If the folder was added successfully:
+            if (response == Response.Success)
+            {
+                // Add all the contained video files to the database
+                MapContainedVideoFiles(dir, folder.Id);
+
+                // Return the successfully added folder
+                return folder;
+            }
+
+            // Otherwise stop digging in this directory
+            return null;
+        }
+
+        // This adds all video files in a directory to the database
+        private void MapContainedVideoFiles(DirectoryInfo dir, int parentID)
+        {
+            // Get all supported file extensions
+            string[] extensions = GetSupportedFileExtensions();
+
+            // For each supported extension:
+            for (int i = 0; i < extensions.Length; i++)
+            {
+                // Get all contained video files of the same type
+                FileInfo[] videoFiles = dir.GetFiles("*." + extensions[i]);
+
+                // For each video file with the current extension:
+                for (int j = 0; j < videoFiles.Length; j++)
+                {
+                    // Create a database VideoFile object for the file
+                    VideoFile file = new VideoFile(videoFiles[j].FullName, GetDefaultTags());
+
+                    // Try to add the file to the database
+                    Response response = Files.AddFile(file, true);
+
+                    // Report if file addition was unsuccessful
+                    if (response != Response.Success)
+                    {
+                        Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
+                    }
+                }
+            }
+        }
+
+        // Set new library root reference to the given directory
+        private Folder SetRootReference(DirectoryInfo root)
+        {
+            // Make a folder object to use as the new root
+            Folder rootFolder = new Folder(-1, root.FullName);
+                
+            // Replace the current folder structure with the childless new root
+            Response response = Folders.DeleteAllFolders(rootFolder);
+                
+            // If setting the new root was successful:
+            if (response == Response.Success)
+            {
+                // Wipe all files too
+                Files.DeleteAllFiles();
+
+                // Begin building the tree from the root folder
+                return rootFolder;
+            }
+
+            // If this was unsuccessful, the process stops here.
+            return null;
         }
 
         // Get the top level subdirectories in a diven directory if possible
         private DirectoryInfo[] GetImmediateSubDirectories(DirectoryInfo dir)
         {
             try
-            {  // Try to get all top level sub directories in this folder
+            { 
+                // Try to get all top level sub directories in this folder
                 return dir.GetDirectories("*", System.IO.SearchOption.TopDirectoryOnly);
-            } catch (Exception e)
-            {    // Something went wrong with permissions or nonexistent references
+            }
+            catch (Exception e)
+            {   
+                // Something went wrong with permissions or nonexistent references
                 Console.WriteLine("Error getting subdirectories, not sure how to handle yet");
                 Console.WriteLine(e.StackTrace);
                 return new DirectoryInfo[0];
@@ -73,62 +152,11 @@ namespace Zoodevio
             return new string[] { "mp4", "avi" };
         }
 
-        // Set new library root reference to the given directory
-        private Folder SetRootReference(DirectoryInfo root)
+        // This gets the initialized list of default tags a video file has
+        private List<TagEntry> GetDefaultTags()
         {
-            // TODO: Tell the database to remove its reference to any existing library root
-            return MapDirectoryAndContents(root, -1);
-        }
-
-        // Adds a directory in the library structure as a "Folder" object in the database
-        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
-        {
-            // Try to add this directory as a folder in the database
-            Folder folder = new Folder(parentID, dir.Name);
-            Response response = Folders.AddFolder(folder, true);
-            
-            // If the folder was added successfully:
-            if (response == Response.Success)
-            {  
-                // Add all the contained video files to the database
-                MapContainedVideoFiles(dir, folder.Id);
-
-                // Return the successfully added folder
-                return folder;
-            }
-
-            // Otherwise stop digging in this directory
+            //  TODO: Retrieve tags from DB
             return null;
-        }
-
-        // This adds all video files in a directory to the database
-        private void MapContainedVideoFiles(DirectoryInfo subDir, int parentID)
-        {
-            // Get all supported file extensions
-            string[] extensions = GetSupportedFileExtensions();
-
-            // For each supported extension:
-            for (int i = 0; i < extensions.Length; i++)
-            {
-                // Get all contained video files of the same type
-                FileInfo[] videoFiles = subDir.GetFiles("*." + extensions[i]);
-
-                // For each video file with the current extension:
-                for (int j = 0; j < videoFiles.Length; j++)
-                {  
-                    // Create a database VideoFile object for the file
-                    VideoFile file = new VideoFile(videoFiles[j].FullName, new List<TagEntry>());
-                    
-                    // Try to add the file to the database
-                    Response response = Files.AddFile(file, true);
-
-                    // If file addition was unsuccessful:
-                    if (response != Response.Success) 
-                    {
-                        Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
-                    }
-                }
-            }
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
