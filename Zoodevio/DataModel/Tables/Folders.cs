@@ -16,7 +16,10 @@ namespace Zoodevio.DataModel
     public static class Folders
     {
         private static string _table = "folders";
-        private static string _fileLocationsTable = "file_locations"; 
+        private static string _fileLocationsTable = "file_locations";
+
+        // the id of the root folder
+        public const int ROOT_ID = 1; 
 
         // add a single folder to the database
         public static Response AddFolder(Folder folder, Boolean overwrite)
@@ -167,7 +170,7 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFiles() for that reason
         public static Response DeleteAllFolders(Folder newRoot)
         {
-            Database.TruncateTable(_table);
+            Database.TruncateTable(_table, true);
             return AddFolder(newRoot, false); 
         }
 

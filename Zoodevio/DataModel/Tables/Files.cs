@@ -110,7 +110,7 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFolders() 
         public static bool DeleteAllFiles()
         {
-            return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
+            return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
         }
     }
 }

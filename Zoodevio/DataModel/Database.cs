@@ -202,10 +202,13 @@ namespace Zoodevio.DataModel
 
         // truncates a database table
         // WARNING: THIS KILLS THE TABLE (silently)
-        public static bool TruncateTable(string table)
+        // if resetIncrement is true, also restarts the id increment at 0
+        public static bool TruncateTable(string table, bool resetIncrement)
         {
-            _dbConnection.Open(); 
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
+            _dbConnection.Open();
+            string query = "delete from " + table + "; vacuum" + ((resetIncrement) ? "; delete from sqlite_sequence where name='" + table +"'": "");
+            Console.Write(query+"\n");
+            SQLiteCommand com = new SQLiteCommand(query, _dbConnection);
             try
             {
                 com.ExecuteNonQuery();
