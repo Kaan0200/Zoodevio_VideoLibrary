@@ -75,7 +75,15 @@ namespace Zoodevio.DataModel
         public static Folder GetFolder(int id)
         {
             // read a simple id query, then convert to folders, and get the first one in the list
-            return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
+            List<Folder> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            if (matches.Count > 0)
+            {
+                return matches[0];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // get Folder(s) matching a name string
