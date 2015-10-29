@@ -76,7 +76,16 @@ namespace Zoodevio.DataModel
         public static VideoFile GetFile(int id)
         {
             // get matching file from database
-            return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
+            List<VideoFile> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            if (matches.Count > 0)
+            {
+                return matches[0];
+            }
+            else
+            {
+                return null;
+            }
+            //return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
         }
 
         // generate a video file from a row of raw data

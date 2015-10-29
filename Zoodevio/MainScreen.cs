@@ -90,9 +90,13 @@ namespace Zoodevio
                 string rootURL = fbd.SelectedPath;
 
                 // Pass to main screen manager to interact with DB
-               // try { 
+                try { 
                     _mainManager.SetLibraryRoot(rootURL);
-                /*}
+                    MessageBox.Show("Successfully set new library root!",
+                        "Zoodevio Video Library",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.None);
+                }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.StackTrace);
@@ -100,7 +104,8 @@ namespace Zoodevio
                         "Zoodevio Video Library",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
-                } */
+                    throw ex;
+                }
             }
         }
 

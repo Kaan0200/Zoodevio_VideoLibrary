@@ -20,15 +20,20 @@ namespace Zoodevio
         public LibraryPanelControl()
         {
             InitializeComponent();
-            folderTreeview.Nodes.Add(new TreeNode("ZOODEVIOR"));
         }
 
         public void AddFoldersToView(List<Folder> folders )
         {
             // Make a node for every folder with its ID as a key
-            var nodes = folders.ToDictionary(f => f.Id, 
-                f => new ZoodevioNode(f.Name, f.Id));
-
+            //var nodes = folders.ToDictionary(f => f.Id, 
+              //  f => new ZoodevioNode(f.Name, f.Id));
+            /*
+            var nodes = new ZoodevioNode[folders.Count*2];
+            foreach (var folder in folders)
+            {
+                nodes[folder.Id] = new ZoodevioNode(folder.Name, folder.Id);
+            }
+            
             ZoodevioNode root = null;
             foreach (var folder in folders)
             {   
@@ -38,9 +43,13 @@ namespace Zoodevio
                 {
                     root = node;
                 }
-                else
+                else if (nodes[folder.ParentId] != null)
                 {
                     nodes[folder.ParentId].Nodes.Add(node);
+                }
+                else
+                {
+                    folderTreeview.Nodes.Add(node);
                 }
             }
 
@@ -55,6 +64,12 @@ namespace Zoodevio
                     "Zoodevio Video Library",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
+            }
+            */
+            // Add all nodes with no hierarchy
+            foreach (var folder in folders)
+            {
+                folderTreeview.Nodes.Add(new ZoodevioNode(folder.Name, folder.Id));
             }
         }
 

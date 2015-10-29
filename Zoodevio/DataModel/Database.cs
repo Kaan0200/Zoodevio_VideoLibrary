@@ -41,6 +41,10 @@ namespace Zoodevio.DataModel
         // executes a basic select * query from a table
         public static SQLiteDataReader SimpleStarQuery(string table)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
@@ -51,6 +55,10 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static SQLiteDataReader SimpleReadQuery(string table, string column, string value)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
@@ -88,6 +96,10 @@ namespace Zoodevio.DataModel
         // perform a LIKE query on a given database for a given column/input string
         public static SQLiteDataReader ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
@@ -117,6 +129,10 @@ namespace Zoodevio.DataModel
         public static Boolean SimpleInsertQuery(string table, 
             string[] rows, string[] data)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
             string dataStatement = String.Join("', '", data);
@@ -142,6 +158,10 @@ namespace Zoodevio.DataModel
         public static Boolean SimpleUpdateQuery(string table, string identifierField, int identifier,
             string[] rows, string[] data)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             string setCommand = BuildSetCommand(rows, data); 
             SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
@@ -177,6 +197,10 @@ namespace Zoodevio.DataModel
         // returns true if successful, false if failed
         public static bool SimpleDeleteQuery(string table, string identifier, int id)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id, _dbConnection);
             try
@@ -196,6 +220,10 @@ namespace Zoodevio.DataModel
         // WARNING: THIS KILLS THE TABLE (silently)
         public static bool TruncateTable(string table)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open(); 
             SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
             try

@@ -21,8 +21,10 @@ namespace Zoodevio.Managers
         public void DisplaySelectedFolder(ZoodevioNode selection)
         {
             Folder folder = Folders.GetFolder(selection.Id);
-            List<VideoFile> files = folder.Files;
-            _listControl.DisplayFolderInView(files);
+            if (folder != null)
+            {
+                _listControl.DisplayFolderInView(folder.Files);
+            }
         }
     }
 }

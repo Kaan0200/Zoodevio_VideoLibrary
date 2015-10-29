@@ -96,9 +96,19 @@ namespace Zoodevio.DataModel
         // get the folder to which a given file ID belongs
         public static Folder GetContainingFolder(int fileId)
         {
-            var inFile = ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable,"file_id", fileId.ToString()))[0];
+            List<Folder> matches =
+                ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable, "file_id", fileId.ToString()));
+            if (matches.Count > 0)
+            {
+                return GetFolder(matches[0].ParentId);
+            }
+            else
+            {
+                return null;
+            }
+            //var inFile = ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable,"file_id", fileId.ToString()))[0];
 
-            return GetFolder(inFile.ParentId); 
+            //return GetFolder(inFile.ParentId); 
         }
 
         // delete a file from the database by ID
