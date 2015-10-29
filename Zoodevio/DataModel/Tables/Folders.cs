@@ -65,20 +65,21 @@ namespace Zoodevio.DataModel
         }
 
         // get all folders
-        public static List<Folder> GetAllFolders()
+        public static DataTable GetAllFolders()
         {
             // star query the table, get the reader, turn into list of 
-            return ConvertReaderToList(Database.SimpleStarQuery(_table));
+            return Database.SimpleStarQuery(_table);
         } 
 
         // get a Folder by ID 
         public static Folder GetFolder(int id)
         {
             // read a simple id query, then convert to folders, and get the first one in the list
-            List<Folder> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
-            if (matches.Count > 0)
+            DataTable matches = Database.SimpleReadQuery(_table, "id", id.ToString());
+            
+            if (matches.Rows.Count > 0)
             {
-                return matches[0];
+                return new Folder(Convert.ToInt32(matches.Rows[0][0]), Convert.ToInt32(matches.Rows[0][1]), matches.Rows[0][2].ToString(), null);
             }
             else
             {
@@ -88,17 +89,27 @@ namespace Zoodevio.DataModel
 
         // get Folder(s) matching a name string
         // words similarly to GetVideoFiles()
-        public static List<Folder> GetFoldersByName(string name)
+        public static DataTable GetFoldersByName(string name)
         {
-            return ConvertReaderToList(Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both));
+            return Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both);
         }
 
         // get the folder to which a given file ID belongs
         public static Folder GetContainingFolder(int fileId)
         {
-            var inFile = ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable,"file_id", fileId.ToString()))[0];
+            // read a simple id query, then convert to folders, and get the first one in the list
+            DataTable matches = Database.SimpleReadQuery(_fileLocationsTable, "file_id", fileId.ToString());
 
-            return GetFolder(inFile.ParentId); 
+            if (matches.Rows.Count > 0)
+            {
+                return GetFolder(Convert.ToInt32(matches.Rows[0][1]));
+            }
+            else
+            {
+                return null;
+            }
+
+            
         }
 
         // delete a file from the database by ID
@@ -160,12 +171,12 @@ namespace Zoodevio.DataModel
             return AddFolder(newRoot, false); 
         }
 
-        private static List<Folder> ConvertReaderToList(SQLiteDataReader reader)
+        public static List<Folder> FoldersFromDatatable(DataTable dt)
         {
             List<Folder> returnList = new List<Folder>();
-            while (reader.Read())
+            foreach (DataRow row in dt.AsEnumerable())
             {
-                returnList.Add(new Folder( reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), null));
+                new Folder(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), null);
             }
             return returnList;
         }

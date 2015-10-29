@@ -11,6 +11,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Xml;
 using NUnit.Framework;
 
 namespace Zoodevio.DataModel
@@ -39,25 +40,30 @@ namespace Zoodevio.DataModel
             "Data Source=" + DATABASE_FILE + ";Version=3;PRAGMA foreign_keys = 1");
 
         // executes a basic select * query from a table
-        public static SQLiteDataReader SimpleStarQuery(string table)
+        public static DataTable SimpleStarQuery(string table)
         {
+            DataTable dt = new DataTable();
             _dbConnection.Open();
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com = new SQLiteCommand("select * from " + table, _dbConnection);
-            return com.ExecuteReader();
+            dt.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dt;
         }
 
         // executes a basic read query (select * from table where column is value) 
-        public static SQLiteDataReader SimpleReadQuery(string table, string column, string value)
+        public static DataTable SimpleReadQuery(string table, string column, string value)
         {
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
-            return com.ExecuteReader();
-
+            var dataTable = new DataTable();
+            dataTable.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dataTable;
         }
 
         // iterate over a data reader object
@@ -86,13 +92,15 @@ namespace Zoodevio.DataModel
         }
 
         // perform a LIKE query on a given database for a given column/input string
-        public static SQLiteDataReader ReadLikeQuery(string table, string column, string value, LikeLocation loc)
+        public static DataTable ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            DataTable dt = new DataTable();
             _dbConnection.Open();
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
-            _dbConnection.Close(); 
-            return com.ExecuteReader();
+            dt.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dt;
 
         }
 
@@ -210,6 +218,5 @@ namespace Zoodevio.DataModel
                 return false;
             }
         }
-
     }
 }

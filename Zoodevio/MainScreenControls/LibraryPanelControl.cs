@@ -23,8 +23,9 @@ namespace Zoodevio
             folderTreeview.Nodes.Add(new TreeNode("ZOODEVIOR"));
         }
 
-        public void AddFoldersToView(List<Folder> folders )
+        public void AddFoldersToView(DataTable dt)
         {
+            var folders = Folders.FoldersFromDatatable(dt);
             // Make a node for every folder with its ID as a key
             var nodes = folders.ToDictionary(f => f.Id, 
                 f => new ZoodevioNode(f.Name, f.Id));

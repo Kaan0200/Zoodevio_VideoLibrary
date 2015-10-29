@@ -21,18 +21,11 @@ namespace Zoodevio.DataModel
         // they are just for user comprehension
         public static Preference Lookup(int id)
         {
-             return ConvertReaderToPreference(Database.SimpleReadQuery(_table,"id", id.ToString()));
+            //TODO: protect from empty dt returns
+            var dt = Database.SimpleReadQuery(_table,"id", id.ToString());
+            return new Preference(Convert.ToInt32(dt.Rows[0][0]), dt.Rows[0][1].ToString(), dt.Rows[0][2].ToString(), dt.Rows[0][3].ToString());
         }
 
-        private static Preference ConvertReaderToPreference(SQLiteDataReader reader)
-        {
-            Preference returnPref = null;
-            while (reader.Read())
-            {
-                returnPref = new Preference(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
-            }
-            return returnPref;
-        }
 
         // only the data of a preference is ever modified
         // the rest is specified by design doc

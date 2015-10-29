@@ -66,17 +66,18 @@ namespace Zoodevio.DataModel
 
         // get all file object(s) in the database that have a certain path
         // WARNING: adds a null entry if data doesn't exist
-        // probably need to improve that behavior
-        public static List<VideoFile> GetVideoFiles(String path)
+        public static DataTable GetVideoFiles(String path)
         {
-            return ConvertReaderToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
+            //TODO: Protect empty DT returns
+            return Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both);
         }
 
         // get a file object by ID from the database
         public static VideoFile GetFile(int id)
         {
-            // get matching file from database
-            return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
+            //TODO: Protect empty DT returns
+            var dt = Database.SimpleReadQuery(_table, "id", id.ToString());
+            return new VideoFile(Convert.ToInt32(dt.Rows[0][0]), dt.Rows[0][1].ToString(), null, Convert.ToDateTime(dt.Rows[0][2]), Convert.ToDateTime(dt.Rows[0][3]));
         }
 
         // generate a video file from a row of raw data
@@ -91,7 +92,7 @@ namespace Zoodevio.DataModel
             return new VideoFile(
                 id,
                 row.GetString(1),
-                Tags.GetFileTags(id),
+                null, // Tags.GetFileTags(id),
                 Convert.ToDateTime(row.GetDateTime(2)),
                 Convert.ToDateTime(row.GetDateTime(3)));
         }
@@ -111,17 +112,5 @@ namespace Zoodevio.DataModel
         {
             return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
         }
-
-        private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
-        {
-            List<VideoFile> returnList = new List<VideoFile>();
-            while (reader.Read())
-            {
-                returnList.Add(new VideoFile(reader.GetInt32(0), reader.GetString(1), null, reader.GetDateTime(2),
-                    reader.GetDateTime(3)));
-            }
-            return returnList;
-        }
-
     }
 }

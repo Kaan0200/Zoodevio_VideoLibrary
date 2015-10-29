@@ -22,15 +22,15 @@ namespace Zoodevio.DataModel
         private const int CHUNK_SIZE = 2*1024; 
 
         // get tags associated with a given file id 
-        public static List<TagEntry> GetFileTags(int fileId)
+        public static DataTable GetFileTags(int fileId)
         {
-            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
+            return Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString());
         }
 
         // update the tags associated with a certain file id 
         public static bool[] UpdateFileTags(int fileId, List<TagEntry> tags)
         {
-            List<TagEntry> oldTags = GetFileTags(fileId);
+            DataTable oldTags = GetFileTags(fileId);
             bool[] responses = new bool[tags.Count];
             for(int i = 0; i < tags.Count; i++)
             {
@@ -40,10 +40,11 @@ namespace Zoodevio.DataModel
         }
 
         // update a single tag associated with a file 
-        public static bool UpdateFileTag(int fileId, TagEntry tag, List<TagEntry> oldTags)
+        public static bool UpdateFileTag(int fileId, TagEntry tag, DataTable oldTags)
         {
+            //TODO: uncomment and fix for a datatable
             bool success;
-            string[] rows =
+         /*   string[] rows =
                 {
                     "type_id",
                     "file_id",
@@ -65,14 +66,14 @@ namespace Zoodevio.DataModel
             else
             {
                 success = Database.SimpleInsertQuery(_tagsTable, rows, data); 
-            }
-            return success; 
+            } */
+            return false; 
         }
 
         // get all tags of a certain type 
-        public static List<TagEntry> GetTagsOfType(int typeId)
+        public static DataTable GetTagsOfType(int typeId)
         {
-            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
+            return Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString());
         } 
 
         // Note: TagEntry modifiers don't modify the database directly. They return a VideoFile which can then be written.
@@ -219,22 +220,5 @@ namespace Zoodevio.DataModel
                 return false; 
             }
         }*/
-
-        private static List<TagEntry> ConvertReaderToList(SQLiteDataReader reader)
-        {
-            var returnList = new List<TagEntry>();
-            while (reader.Read())
-            {
-                returnList.Add(new TagEntry(
-                    reader.GetInt32(0),
-                    reader.GetInt32(1),
-                    reader.GetInt32(2),
-                    null
-                    //TODO: fix this to use SQLiteDataReader and not IDataRow
-                    //Database.GetBytes(reader, 3)
-                    ));
-            }
-            return returnList;
-        }
     }
 }
