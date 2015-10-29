@@ -23,6 +23,7 @@ namespace Zoodevio.DataModel
             // add a folder to the database, or overwrites an existing folder
             // locate the video file if it exists
             Folder databaseFolder = GetFolder(folder.Id);
+            Console.Write(databaseFolder);
             string[] rows =
             {
                 "name",
@@ -66,7 +67,11 @@ namespace Zoodevio.DataModel
         public static Folder GetFolder(int id)
         {
             List<IDataRecord> data = Database.SimpleReadQuery(_table, "id", id.ToString());
-            return FolderFromRecord(data[0]); 
+            if (data.Count == 0)
+            {
+                return null;
+            }
+            return FolderFromRecord(data[0]);
         }
 
         // get Folder(s) matching a name string

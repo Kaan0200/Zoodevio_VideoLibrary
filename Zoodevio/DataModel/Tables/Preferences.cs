@@ -22,6 +22,10 @@ namespace Zoodevio.DataModel
         {
             List<IDataRecord> data = Database.SimpleReadQuery(_table,
                 "id", id.ToString());
+            if (data.Count == 0)
+            {
+                return null; 
+            }
             IDataRecord row = data[0];
             return new Preference(
                 row.GetInt32(0),

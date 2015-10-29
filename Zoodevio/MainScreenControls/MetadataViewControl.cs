@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zoodevio.DataModel.Objects;
+using Zoodevio.Managers;
 
 namespace Zoodevio
 {
     public partial class MetadataViewControl : UserControl
     {
+        public MetadataManager Manager;
+
         public MetadataViewControl()
         {
             InitializeComponent();

@@ -158,7 +158,11 @@ namespace Zoodevio.DataModel
         public static Tag GetTagType(int id)
         {
             List<IDataRecord> data = Database.SimpleReadQuery(_typesTable, "id", id.ToString());
-            return TagTypeFromRecord(data[0]); 
+            if (data.Count == 0)
+            {
+                return null;
+            }
+            return TagTypeFromRecord(data[0]);
         }
 
         private static Tag TagTypeFromRecord(IDataRecord row)

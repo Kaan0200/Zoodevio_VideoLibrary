@@ -13,6 +13,13 @@ namespace Zoodevio
 
         private MainScreenManager _mainManager;
 
+        // application children control accessors
+        public BasicSearchControl BasicSearchControl { get { return basicSearchControl; } }
+        public GridViewControl GridViewControl { get { return gridViewControl; } }
+        public LibraryPanelControl LibraryPanelControl { get { return libraryPanelControl; } }
+        public ListViewControl ListViewControl { get { return listViewControl; } }
+        public MetadataViewControl MetadataViewControl { get { return metadataViewControl; } }
+
         public MainScreen()
         {
             InitializeComponent();
@@ -77,18 +84,33 @@ namespace Zoodevio
             DialogResult result = fbd.ShowDialog();
 
             // If the folder browser dialog was a success:
-            if (result == System.Windows.Forms.DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 // Get the selected path for the root
                 string rootURL = fbd.SelectedPath;
 
                 // Pass to main screen manager to interact with DB
-                _mainManager.SetLibraryRoot(rootURL);
+               // try { 
+                    _mainManager.SetLibraryRoot(rootURL);
+                /*}
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.StackTrace);
+                    MessageBox.Show("Failed to set new library root.",
+                        "Zoodevio Video Library",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                } */
             }
         }
 
         #endregion
 
         #endregion
+
+        private void metadataViewControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

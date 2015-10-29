@@ -83,7 +83,11 @@ namespace Zoodevio.DataModel
             // get matching file from database
             // may be worthwhile to add error handling on this - constraint: data should always be length 1
             List<IDataRecord> data = Database.SimpleReadQuery(_table, "id", id.ToString());
-            return VideoFileFromRecord(data[0]); 
+            if (data.Count == 0)
+            {
+                return null;
+            }
+            return VideoFileFromRecord(data[0]);
         }
 
         // generate a video file from a row of raw data

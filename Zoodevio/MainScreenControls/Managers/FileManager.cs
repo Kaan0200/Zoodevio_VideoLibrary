@@ -2,11 +2,15 @@
 {
     public class FileManager
     {
-        private MainScreenManager _manager;
+        private MainScreenManager _parentManager;
+        private GridViewControl _gridControl;
+        private ListViewControl _listControl;
 
-        public FileManager(MainScreenManager manager)
+        public FileManager(MainScreenManager manager, GridViewControl gridViewControl, ListViewControl listViewControl)
         {
-            this._manager = manager;
+            _parentManager = manager;
+            _gridControl = gridViewControl;
+            _listControl = listViewControl;
         }
     }
 }

@@ -2,11 +2,13 @@
 {
     public class MetadataManager
     {
-        private MainScreenManager _manager;
+        private MainScreenManager _parentManager;
+        private MetadataViewControl _control;
 
-        public MetadataManager(MainScreenManager _manager)
+        public MetadataManager(MainScreenManager _manager, MetadataViewControl metadataViewControl)
         {
-            this._manager = _manager;
+            _parentManager = _manager;
+            _control = metadataViewControl;
         }
     }
 }

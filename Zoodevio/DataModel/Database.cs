@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Net;
+using System.Reflection;
 
 namespace Zoodevio.DataModel
 {
@@ -23,10 +25,13 @@ namespace Zoodevio.DataModel
             Both
         }
 
+        // the directory where Zoodevio is executing
+        private static readonly string PROJECT_DIRECTORY = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         // the database filename
         // never changed while Zoodevio is executing
         // in the future, perhaps could be read from an ini or registry key? 
-        private const string DATABASE_FILE = "database.sqlite";
+        private static readonly string DATABASE_FILE = PROJECT_DIRECTORY + "\\..\\..\\database.sqlite";
 
         // the SQLite connection. all database access is done through this class
         // so this connection is private.
@@ -41,7 +46,6 @@ namespace Zoodevio.DataModel
             // build the query
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
-            _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
         }
@@ -99,6 +103,7 @@ namespace Zoodevio.DataModel
         }
 
         // convert reader records into a data record list for easy iteration
+        // assumes _dbconnection is open
         private static List<IDataRecord> ConvertReaderRows(SQLiteDataReader reader)
         {
             // iterate over the reader and get each row
@@ -108,6 +113,7 @@ namespace Zoodevio.DataModel
             {
                 data.Add(record);
             }
+            _dbConnection.Close();
             return data;
         }
 
@@ -118,16 +124,20 @@ namespace Zoodevio.DataModel
         {
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
-            string dataStatement = String.Join("', '", data); 
-            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rows+") values ('"+data+")");
+            string dataStatement = String.Join("', '", data);
+            string query = "insert into " + table + " (" + rowStatement + ") values ('" + dataStatement + "')";
+            Console.Write(query);
+            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rowStatement+") values ('"+dataStatement+"')",_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
                 _dbConnection.Close(); 
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                _dbConnection.Close();
+                Console.Write(e.ToString());
                 return false;
             }
         }
@@ -139,7 +149,7 @@ namespace Zoodevio.DataModel
         {
             _dbConnection.Open();
             string setCommand = BuildSetCommand(rows, data); 
-            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier);
+            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -148,6 +158,7 @@ namespace Zoodevio.DataModel
             }
             catch
             {
+                _dbConnection.Close();
                 return false;
             }
         }
@@ -172,14 +183,16 @@ namespace Zoodevio.DataModel
         public static bool SimpleDeleteQuery(string table, string identifier, int id)
         {
             _dbConnection.Open();
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id);
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id, _dbConnection);
             try
             {
                 com.ExecuteNonQuery();
+                _dbConnection.Close();
                 return true;
             }
             catch
             {
+                _dbConnection.Close();
                 return false; 
             }
         }
@@ -189,14 +202,16 @@ namespace Zoodevio.DataModel
         public static bool TruncateTable(string table)
         {
             _dbConnection.Open(); 
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum");
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
             try
             {
                 com.ExecuteNonQuery();
+                _dbConnection.Close();
                 return true;
             }
             catch
             {
+                _dbConnection.Close();
                 return false;
             }
         }

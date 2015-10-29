@@ -13,7 +13,7 @@ namespace Zoodevio
 {
     public partial class BasicSearchControl : UserControl
     {
-        private SearchManager _manager;
+        public SearchManager Manager;
 
         public BasicSearchControl()
         {

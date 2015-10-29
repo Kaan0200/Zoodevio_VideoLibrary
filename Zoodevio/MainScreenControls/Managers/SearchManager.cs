@@ -5,11 +5,13 @@
 
     public class SearchManager
     {
-        private MainScreenManager _manager;
+        private MainScreenManager _parentManager;
+        private BasicSearchControl _control;
 
-        public SearchManager(MainScreenManager _manager)
+        public SearchManager(MainScreenManager _manager, BasicSearchControl basicSearchControl)
         {
-            this._manager = _manager;
+            _parentManager = _manager;
+            _control = basicSearchControl;
         }
     }
 }
