@@ -107,5 +107,10 @@ namespace Zoodevio
         #endregion
 
         #endregion
+
+        private void metadataViewControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

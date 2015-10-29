@@ -34,15 +34,15 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideSearchAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleListViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setLibraryRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitterContainer = new System.Windows.Forms.SplitContainer();
             this.libraryPanelControl = new Zoodevio.LibraryPanelControl();
-            this.listViewControl = new Zoodevio.ListViewControl();
             this.basicSearchControl = new Zoodevio.BasicSearchControl();
-            this.gridViewControl = new Zoodevio.GridViewControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
-            this.toggleListViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listViewControl = new Zoodevio.ListViewControl();
+            this.gridViewControl = new Zoodevio.GridViewControl();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -104,6 +104,13 @@
             this.hideSearchAreaToolStripMenuItem.Text = "Hide Search Area";
             this.hideSearchAreaToolStripMenuItem.Click += new System.EventHandler(this.hideSearchAreaToolStripMenuItem_Click);
             // 
+            // toggleListViewToolStripMenuItem
+            // 
+            this.toggleListViewToolStripMenuItem.Name = "toggleListViewToolStripMenuItem";
+            this.toggleListViewToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.toggleListViewToolStripMenuItem.Text = "Toggle List View";
+            this.toggleListViewToolStripMenuItem.Click += new System.EventHandler(this.toggleListViewToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -151,14 +158,6 @@
             this.libraryPanelControl.Size = new System.Drawing.Size(235, 311);
             this.libraryPanelControl.TabIndex = 0;
             // 
-            // listViewControl
-            // 
-            this.listViewControl.Location = new System.Drawing.Point(2, 4);
-            this.listViewControl.Margin = new System.Windows.Forms.Padding(2);
-            this.listViewControl.Name = "listViewControl";
-            this.listViewControl.Size = new System.Drawing.Size(307, 310);
-            this.listViewControl.TabIndex = 3;
-            // 
             // basicSearchControl
             // 
             this.basicSearchControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -168,15 +167,6 @@
             this.basicSearchControl.Size = new System.Drawing.Size(237, 70);
             this.basicSearchControl.TabIndex = 1;
             // 
-            // gridViewControl
-            // 
-            this.gridViewControl.AutoSize = true;
-            this.gridViewControl.Location = new System.Drawing.Point(2, 6);
-            this.gridViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.gridViewControl.Name = "gridViewControl";
-            this.gridViewControl.Size = new System.Drawing.Size(307, 310);
-            this.gridViewControl.TabIndex = 2;
-            // 
             // metadataViewControl
             // 
             this.metadataViewControl.Location = new System.Drawing.Point(311, 4);
@@ -184,13 +174,24 @@
             this.metadataViewControl.Name = "metadataViewControl";
             this.metadataViewControl.Size = new System.Drawing.Size(216, 310);
             this.metadataViewControl.TabIndex = 0;
+            this.metadataViewControl.Load += new System.EventHandler(this.metadataViewControl_Load);
             // 
-            // toggleListViewToolStripMenuItem
+            // listViewControl
             // 
-            this.toggleListViewToolStripMenuItem.Name = "toggleListViewToolStripMenuItem";
-            this.toggleListViewToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.toggleListViewToolStripMenuItem.Text = "Toggle List View";
-            this.toggleListViewToolStripMenuItem.Click += new System.EventHandler(this.toggleListViewToolStripMenuItem_Click);
+            this.listViewControl.Location = new System.Drawing.Point(2, 4);
+            this.listViewControl.Margin = new System.Windows.Forms.Padding(2);
+            this.listViewControl.Name = "listViewControl";
+            this.listViewControl.Size = new System.Drawing.Size(307, 310);
+            this.listViewControl.TabIndex = 3;
+            // 
+            // gridViewControl
+            // 
+            this.gridViewControl.AutoSize = true;
+            this.gridViewControl.Location = new System.Drawing.Point(2, 6);
+            this.gridViewControl.Margin = new System.Windows.Forms.Padding(2);
+            this.gridViewControl.Name = "gridViewControl";
+            this.gridViewControl.Size = new System.Drawing.Size(307, 310);
+            this.gridViewControl.TabIndex = 2;
             // 
             // MainScreen
             // 
@@ -202,7 +203,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainScreen";
-            this.Text = "Form1";
+            this.Text = "Zoodevio :: Library";
             this.Load += new System.EventHandler(this.MainScreen_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

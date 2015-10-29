@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Net;
 using System.Reflection;
 
 namespace Zoodevio.DataModel
@@ -40,7 +41,6 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static List<IDataRecord> SimpleReadQuery(string table, string column, string value)
         {
-            Console.Write(PROJECT_DIRECTORY + "; " + DATABASE_FILE);
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
@@ -124,17 +124,20 @@ namespace Zoodevio.DataModel
         {
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
-            string dataStatement = String.Join("', '", data); 
-            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rows+") values ('"+data+")");
+            string dataStatement = String.Join("', '", data);
+            string query = "insert into " + table + " (" + rowStatement + ") values ('" + dataStatement + "')";
+            Console.Write(query);
+            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rowStatement+") values ('"+dataStatement+"')",_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
                 _dbConnection.Close(); 
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 _dbConnection.Close();
+                Console.Write(e.ToString());
                 return false;
             }
         }
@@ -146,7 +149,7 @@ namespace Zoodevio.DataModel
         {
             _dbConnection.Open();
             string setCommand = BuildSetCommand(rows, data); 
-            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier);
+            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -180,7 +183,7 @@ namespace Zoodevio.DataModel
         public static bool SimpleDeleteQuery(string table, string identifier, int id)
         {
             _dbConnection.Open();
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id);
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id, _dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -199,7 +202,7 @@ namespace Zoodevio.DataModel
         public static bool TruncateTable(string table)
         {
             _dbConnection.Open(); 
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum");
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
             try
             {
                 com.ExecuteNonQuery();

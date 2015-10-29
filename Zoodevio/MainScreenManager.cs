@@ -142,7 +142,7 @@ namespace Zoodevio
                 
             // Replace the current folder structure with the childless new root
             Response response = Folders.DeleteAllFolders(rootFolder);
-                
+            Console.Write(response);
             // If setting the new root was successful:
             if (response == Response.Success)
             {
