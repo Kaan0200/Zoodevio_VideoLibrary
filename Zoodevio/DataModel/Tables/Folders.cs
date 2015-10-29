@@ -174,9 +174,9 @@ namespace Zoodevio.DataModel
         public static List<Folder> FoldersFromDatatable(DataTable dt)
         {
             List<Folder> returnList = new List<Folder>();
-            foreach (DataRow row in dt.AsEnumerable())
+            foreach (DataRow row in dt.Rows)
             {
-                new Folder(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), null);
+               returnList.Add(new Folder(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), null));
             }
             return returnList;
         }
