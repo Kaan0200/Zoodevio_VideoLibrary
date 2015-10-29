@@ -9,5 +9,14 @@ namespace Zoodevio.DataModel.Tests
     class Database_Test
     {
 
+        [Test]
+        public void Database_SimpleInsertQuary_Accept()
+        {
+            var rows = new String[] {"id", "path", "date_added", "date_edited"};
+            var data = new String[] {"1", "path", "now", "now"};
+            Assert.True(Database.SimpleInsertQuery("files", rows, data));
+        }
+
+
     }
 }

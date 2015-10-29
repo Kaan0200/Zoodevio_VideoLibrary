@@ -72,6 +72,7 @@
     <Compile Include="DataModel\Tests\ObjectsTests\Tag_Test.cs" />
     <Compile Include="DataModel\Tests\ObjectsTests\VideoFile_Test.cs" />
     <Compile Include="DataModel\Tests\TablesTests\Files_Test.cs" />
+    <Compile Include="DataModel\Tests\TablesTests\Tags_Test.cs" />
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +143,7 @@
     <EmbeddedResource Include="MainScreenControls\LibraryPanelControl.resx">
       <DependentUpon>LibraryPanelControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="test-database.sqlite" />
     <None Include="database.sqlite" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

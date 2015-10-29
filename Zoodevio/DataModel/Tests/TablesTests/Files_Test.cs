@@ -8,6 +8,10 @@ namespace Zoodevio.DataModel.Tests.TablesTests
     [TestFixture]
     class Files_Test
     {
-
+        [Test]
+        public void Files_GetFile_Accept()
+        {
+            
+        }
     }
 }
