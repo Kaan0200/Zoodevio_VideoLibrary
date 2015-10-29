@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
 
 namespace Zoodevio.DataModel
 {
@@ -23,10 +24,13 @@ namespace Zoodevio.DataModel
             Both
         }
 
+        // the directory where Zoodevio is executing
+        private static readonly string PROJECT_DIRECTORY = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         // the database filename
         // never changed while Zoodevio is executing
         // in the future, perhaps could be read from an ini or registry key? 
-        private const string DATABASE_FILE = "database.sqlite";
+        private static readonly string DATABASE_FILE = PROJECT_DIRECTORY + "\\..\\..\\database.sqlite";
 
         // the SQLite connection. all database access is done through this class
         // so this connection is private.
@@ -36,12 +40,12 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static List<IDataRecord> SimpleReadQuery(string table, string column, string value)
         {
+            Console.Write(PROJECT_DIRECTORY + "; " + DATABASE_FILE);
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
-            _dbConnection.Close(); 
             return ConvertReaderRows(com.ExecuteReader());
 
         }
@@ -99,6 +103,7 @@ namespace Zoodevio.DataModel
         }
 
         // convert reader records into a data record list for easy iteration
+        // assumes _dbconnection is open
         private static List<IDataRecord> ConvertReaderRows(SQLiteDataReader reader)
         {
             // iterate over the reader and get each row
@@ -108,6 +113,7 @@ namespace Zoodevio.DataModel
             {
                 data.Add(record);
             }
+            _dbConnection.Close();
             return data;
         }
 
@@ -128,6 +134,7 @@ namespace Zoodevio.DataModel
             }
             catch
             {
+                _dbConnection.Close();
                 return false;
             }
         }
@@ -148,6 +155,7 @@ namespace Zoodevio.DataModel
             }
             catch
             {
+                _dbConnection.Close();
                 return false;
             }
         }
@@ -176,10 +184,12 @@ namespace Zoodevio.DataModel
             try
             {
                 com.ExecuteNonQuery();
+                _dbConnection.Close();
                 return true;
             }
             catch
             {
+                _dbConnection.Close();
                 return false; 
             }
         }
@@ -193,10 +203,12 @@ namespace Zoodevio.DataModel
             try
             {
                 com.ExecuteNonQuery();
+                _dbConnection.Close();
                 return true;
             }
             catch
             {
+                _dbConnection.Close();
                 return false;
             }
         }
