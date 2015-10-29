@@ -20,19 +20,61 @@ namespace Zoodevio
         public LibraryPanelControl()
         {
             InitializeComponent();
+            folderTreeview.Nodes.Add(new TreeNode("ZOODEVIOR"));
         }
 
-        public void AddFolders(List<Folder> folders )
+        public void AddFoldersToView(List<Folder> folders )
         {
-            var nodes = folders.ToDictionary(f => f.Id, f => new TreeNode(f.Name));
+            // Make a node for every folder with its ID as a key
+            var nodes = folders.ToDictionary(f => f.Id, 
+                f => new ZoodevioNode(f.Name, f.Id));
+
+            ZoodevioNode root = null;
             foreach (var folder in folders)
-            {
-                nodes[folder.ParentId].Nodes.Add(nodes[folder.Id]);
+            {   
+                // Save the root or add this folder to its parent's kids
+                ZoodevioNode node = nodes[folder.Id];
+                if (folder.ParentId == -1)
+                {
+                    root = node;
+                }
+                else
+                {
+                    nodes[folder.ParentId].Nodes.Add(node);
+                }
             }
-            foreach (var node in nodes)
-            {
-                folderTreeview.Nodes.Add(node.Value);
+
+            // If we found a root (basically always true)
+            if (root != null)
+            {   // Add it and all of its children with it
+                folderTreeview.Nodes.Add(root);
             }
+            else
+            {   // Otherwise show an error message.
+                MessageBox.Show("Library refresh operation failed.",
+                    "Zoodevio Video Library",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void folderTreeview_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // Get the selected node
+            var node = (ZoodevioNode)folderTreeview.SelectedNode;
+
+            // Send it to the list view
+            Manager.SelectFolderInTreeView(node);
+        }
+    }
+
+    public class ZoodevioNode : TreeNode
+    {
+        public int Id { get; }
+
+        public ZoodevioNode(String text, int id) : base(text)
+        {
+            this.Id = id;
         }
     }
 }

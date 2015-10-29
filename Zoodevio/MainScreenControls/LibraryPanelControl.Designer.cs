@@ -35,10 +35,11 @@
             // folderTreeview
             // 
             this.folderTreeview.Location = new System.Drawing.Point(2, 3);
-            this.folderTreeview.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.folderTreeview.Margin = new System.Windows.Forms.Padding(2);
             this.folderTreeview.Name = "folderTreeview";
             this.folderTreeview.Size = new System.Drawing.Size(210, 306);
             this.folderTreeview.TabIndex = 1;
+            this.folderTreeview.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.folderTreeview_MouseDoubleClick);
             // 
             // vScrollBar1
             // 
@@ -55,7 +56,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.folderTreeview);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LibraryPanelControl";
             this.Size = new System.Drawing.Size(235, 311);
             this.ResumeLayout(false);

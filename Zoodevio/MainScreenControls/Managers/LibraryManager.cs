@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
 
@@ -18,8 +19,13 @@ namespace Zoodevio.Managers
 
         public void RefreshLibraryFromDatabase()
         {
-          List<Folder> folders  = Folders.GetAllFolders();
-          _control.AddFolders(folders);
+          var folders  = Folders.GetAllFolders();
+          _control.AddFoldersToView(folders);
+        }
+
+        public void SelectFolderInTreeView(ZoodevioNode node)
+        {
+            _parentManager.FileManager.DisplaySelectedFolder(node);
         }
     }
 }
