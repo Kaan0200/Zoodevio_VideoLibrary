@@ -19,11 +19,12 @@ namespace Zoodevio
         public ListViewControl()
         {
             InitializeComponent();
+            dataGridView1.RowHeadersVisible = false;
         }
 
         public void DisplayFolderInView(List<VideoFile> files)
-        {
-            
+        {   // Add files from data source
+            dataGridView1.DataSource = files;
         }
     }
 }
