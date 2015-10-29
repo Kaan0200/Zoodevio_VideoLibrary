@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
 
 namespace Zoodevio
@@ -18,6 +19,11 @@ namespace Zoodevio
         public ListViewControl()
         {
             InitializeComponent();
+        }
+
+        public void DisplayFolderInView(List<VideoFile> files)
+        {
+            
         }
     }
 }

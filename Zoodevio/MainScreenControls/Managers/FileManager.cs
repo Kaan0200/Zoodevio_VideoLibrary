@@ -1,4 +1,9 @@
-﻿namespace Zoodevio.Managers
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using Zoodevio.DataModel;
+using Zoodevio.DataModel.Objects;
+
+namespace Zoodevio.Managers
 {
     public class FileManager
     {
@@ -11,6 +16,13 @@
             _parentManager = manager;
             _gridControl = gridViewControl;
             _listControl = listViewControl;
+        }
+
+        public void DisplaySelectedFolder(ZoodevioNode selection)
+        {
+            Folder folder = Folders.GetFolder(selection.Id);
+            List<VideoFile> files = folder.Files;
+            _listControl.DisplayFolderInView(files);
         }
     }
 }
