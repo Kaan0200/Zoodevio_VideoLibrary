@@ -24,10 +24,12 @@ namespace Zoodevio
 
         public void AddFolders(List<Folder> folders )
         {
+            List<TreeNode> nodes = new List<TreeNode>();
             foreach (Folder f in folders)
             {
-                folderTreeview.Nodes.Add(new TreeNode(f.Name));
+                nodes.Add(new TreeNode(f.Name));
             }
+
         }
     }
 }
