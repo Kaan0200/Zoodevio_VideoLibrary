@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using Zoodevio.DataModel.Objects;
 
@@ -23,18 +24,7 @@ namespace Zoodevio.DataModel
         // get tags associated with a given file id 
         public static List<TagEntry> GetFileTags(int fileId)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString());
-            List<TagEntry> tags = new List<TagEntry>(); 
-            foreach (IDataRecord row in data)
-            {
-                tags.Add(new TagEntry( 
-                    row.GetInt32(0),
-                    row.GetInt32(1), 
-                    row.GetInt32(2), 
-                    Database.GetBytes(row, 3)
-                    ));
-            }
-            return tags;
+            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
         }
 
         // update the tags associated with a certain file id 
@@ -82,18 +72,7 @@ namespace Zoodevio.DataModel
         // get all tags of a certain type 
         public static List<TagEntry> GetTagsOfType(int typeId)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString());
-            List<TagEntry> tags = new List<TagEntry>();
-            foreach (IDataRecord row in data)
-            {
-                tags.Add(new TagEntry(
-                row.GetInt32(0),
-                row.GetInt32(1),
-                row.GetInt32(2),
-                Database.GetBytes(row, 3)
-                ));
-            }
-            return tags;
+            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
         } 
 
         // Note: TagEntry modifiers don't modify the database directly. They return a VideoFile which can then be written.
@@ -155,13 +134,11 @@ namespace Zoodevio.DataModel
         }
 
         // get a tag type entry from the database
-        public static Tag GetTagType(int id)
+        //TODO: rewrite this with proper handling of query return
+       /* public static Tag GetTagType(int id)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_typesTable, "id", id.ToString());
-            if (data.Count == 0)
-            {
-                return null;
-            }
+            var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
+
             return TagTypeFromRecord(data[0]);
         }
 
@@ -179,7 +156,7 @@ namespace Zoodevio.DataModel
                 row.GetBoolean(4),
                 row.GetString(5),
                 row.GetBoolean(6));
-        }
+        } 
 
         // add or modify a tag type within the database 
         public static Response AddCustomTag(Tag type, bool overwrite)
@@ -226,7 +203,7 @@ namespace Zoodevio.DataModel
             {
                 throw new ArgumentException("Unmodifiable tag passed!");
             }
-        }
+        } 
 
         // delete a custom tag type from the database
         public static bool DeleteCustomTag(int id)
@@ -241,7 +218,23 @@ namespace Zoodevio.DataModel
             {
                 return false; 
             }
-        }
+        }*/
 
+        private static List<TagEntry> ConvertReaderToList(SQLiteDataReader reader)
+        {
+            var returnList = new List<TagEntry>();
+            while (reader.Read())
+            {
+                returnList.Add(new TagEntry(
+                    reader.GetInt32(0),
+                    reader.GetInt32(1),
+                    reader.GetInt32(2),
+                    null
+                    //TODO: fix this to use SQLiteDataReader and not IDataRow
+                    //Database.GetBytes(reader, 3)
+                    ));
+            }
+            return returnList;
+        }
     }
 }

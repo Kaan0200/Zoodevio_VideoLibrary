@@ -43,6 +43,8 @@
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
             this.listViewControl = new Zoodevio.ListViewControl();
             this.gridViewControl = new Zoodevio.GridViewControl();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceFolderHiarchyRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -66,7 +68,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.debugToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
@@ -174,7 +177,6 @@
             this.metadataViewControl.Name = "metadataViewControl";
             this.metadataViewControl.Size = new System.Drawing.Size(216, 310);
             this.metadataViewControl.TabIndex = 0;
-            this.metadataViewControl.Load += new System.EventHandler(this.metadataViewControl_Load);
             // 
             // listViewControl
             // 
@@ -192,6 +194,21 @@
             this.gridViewControl.Name = "gridViewControl";
             this.gridViewControl.Size = new System.Drawing.Size(307, 310);
             this.gridViewControl.TabIndex = 2;
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.forceFolderHiarchyRefreshToolStripMenuItem});
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.debugToolStripMenuItem.Text = "Debug";
+            // 
+            // forceFolderHiarchyRefreshToolStripMenuItem
+            // 
+            this.forceFolderHiarchyRefreshToolStripMenuItem.Name = "forceFolderHiarchyRefreshToolStripMenuItem";
+            this.forceFolderHiarchyRefreshToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.forceFolderHiarchyRefreshToolStripMenuItem.Text = "Force Folder Hiarchy Refresh";
+            this.forceFolderHiarchyRefreshToolStripMenuItem.Click += new System.EventHandler(this.forceFolderHiarchyRefreshToolStripMenuItem_Click);
             // 
             // MainScreen
             // 
@@ -235,6 +252,8 @@
         private ListViewControl listViewControl;
         private GridViewControl gridViewControl;
         private System.Windows.Forms.ToolStripMenuItem toggleListViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forceFolderHiarchyRefreshToolStripMenuItem;
     }
 }
 

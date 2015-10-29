@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -20,19 +21,17 @@ namespace Zoodevio.DataModel
         // they are just for user comprehension
         public static Preference Lookup(int id)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_table,
-                "id", id.ToString());
-            if (data.Count == 0)
+             return ConvertReaderToPreference(Database.SimpleReadQuery(_table,"id", id.ToString()));
+        }
+
+        private static Preference ConvertReaderToPreference(SQLiteDataReader reader)
+        {
+            Preference returnPref = null;
+            while (reader.Read())
             {
-                return null; 
+                returnPref = new Preference(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
             }
-            IDataRecord row = data[0];
-            return new Preference(
-                row.GetInt32(0),
-                row.GetString(1),
-                row.GetString(2),
-                row.GetString(3)
-                );
+            return returnPref;
         }
 
         // only the data of a preference is ever modified

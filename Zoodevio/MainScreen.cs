@@ -108,9 +108,9 @@ namespace Zoodevio
 
         #endregion
 
-        private void metadataViewControl_Load(object sender, EventArgs e)
+        private void forceFolderHiarchyRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            _mainManager.LibraryManager.RefreshLibraryFromDatabase();
         }
     }
 }

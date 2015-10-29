@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -63,38 +64,33 @@ namespace Zoodevio.DataModel
             return Response;
         }
 
+        // get all folders
+        public static List<Folder> GetAllFolders()
+        {
+            // star query the table, get the reader, turn into list of 
+            return ConvertReaderToList(Database.SimpleStarQuery(_table));
+        } 
+
         // get a Folder by ID 
         public static Folder GetFolder(int id)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_table, "id", id.ToString());
-            if (data.Count == 0)
-            {
-                return null;
-            }
-            return FolderFromRecord(data[0]);
+            // read a simple id query, then convert to folders, and get the first one in the list
+            return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
         }
 
         // get Folder(s) matching a name string
         // words similarly to GetVideoFiles()
         public static List<Folder> GetFoldersByName(string name)
         {
-            List<IDataRecord> data = Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both);
-            List<Folder> folders = new List<Folder>();
-            foreach (IDataRecord record in data)
-            {
-                folders.Add(FolderFromRecord(record));
-            }
-            return folders;
+            return ConvertReaderToList(Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both));
         }
 
         // get the folder to which a given file ID belongs
         public static Folder GetContainingFolder(int fileId)
         {
-            List<IDataRecord> data = Database.SimpleReadQuery(_fileLocationsTable,
-                "file_id", fileId.ToString());
-            IDataRecord row = data[0]; // should only be one match anyway
-            int folderId = row.GetInt32(1);
-            return GetFolder(folderId); 
+            var inFile = ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable,"file_id", fileId.ToString()))[0];
+
+            return GetFolder(inFile.ParentId); 
         }
 
         // delete a file from the database by ID
@@ -112,20 +108,22 @@ namespace Zoodevio.DataModel
             {
                 return null;
             }
-            int id = row.GetInt32(0);
+
+            var id = row.GetValue(0);
+            //int id = row.GetInt32(0);
             return new Folder(
-                id,
+                (int)id,
                 row.GetInt32(1),
                 row.GetString(2),
-                GetVideoFilesInFolder(id));
+                GetVideoFilesInFolder((int)id));
         }
 
         // get all video files associted with a given folder
         // the opposite of GetContainingFolder()
         public static List<VideoFile> GetVideoFilesInFolder(int folderId)
-        {
+        { /* TODO: Rewrite this method to get it working
             // get a list of file ids matching this folder as parent
-            List<IDataRecord> data = Database.SimpleReadQuery(_fileLocationsTable,
+            SQ = Database.SimpleReadQuery(_fileLocationsTable,
                 "folder_id", folderId.ToString());
             int[] fileIds = new int[data.Count];
             for(int i = 0; i < data.Count; i++)
@@ -138,7 +136,8 @@ namespace Zoodevio.DataModel
             {
                 files.Add(Files.GetFile(id));
             }
-            return files;
+            return files; */
+            return null;
         } 
 
 
@@ -153,7 +152,14 @@ namespace Zoodevio.DataModel
             return AddFolder(newRoot, false); 
         }
 
-        // TODO: folder tree implementation
-
+        private static List<Folder> ConvertReaderToList(SQLiteDataReader reader)
+        {
+            List<Folder> returnList = new List<Folder>();
+            while (reader.Read())
+            {
+                returnList.Add(new Folder( reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), null));
+            }
+            return returnList;
+        }
     }
 }
