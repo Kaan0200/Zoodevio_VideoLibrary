@@ -11,12 +11,12 @@ using System.Data.SQLite;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using NUnit.Framework;
 
 namespace Zoodevio.DataModel
 {
     public static class Database
     {
-
         // location codes for LIKE queries
         public enum LikeLocation
         {
@@ -38,15 +38,25 @@ namespace Zoodevio.DataModel
         private static SQLiteConnection _dbConnection = new SQLiteConnection(
             "Data Source=" + DATABASE_FILE + ";Version=3;PRAGMA foreign_keys = 1");
 
+        // executes a basic select * query from a table
+        public static SQLiteDataReader SimpleStarQuery(string table)
+        {
+            _dbConnection.Open();
+            List<IDataRecord> data = new List<IDataRecord>();
+            // build the query
+            SQLiteCommand com = new SQLiteCommand("select * from " + table, _dbConnection);
+            return com.ExecuteReader();
+        }
+
         // executes a basic read query (select * from table where column is value) 
-        public static List<IDataRecord> SimpleReadQuery(string table, string column, string value)
+        public static SQLiteDataReader SimpleReadQuery(string table, string column, string value)
         {
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
-            return ConvertReaderRows(com.ExecuteReader());
+            return com.ExecuteReader();
 
         }
 
@@ -76,13 +86,13 @@ namespace Zoodevio.DataModel
         }
 
         // perform a LIKE query on a given database for a given column/input string
-        public static List<IDataRecord> ReadLikeQuery(string table, string column, string value, LikeLocation loc)
+        public static SQLiteDataReader ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
             _dbConnection.Open();
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
             _dbConnection.Close(); 
-            return ConvertReaderRows(com.ExecuteReader());
+            return com.ExecuteReader();
 
         }
 
@@ -100,21 +110,6 @@ namespace Zoodevio.DataModel
                 default:
                     throw new ArgumentException("invalid LikeLocation provided!");
             }
-        }
-
-        // convert reader records into a data record list for easy iteration
-        // assumes _dbconnection is open
-        private static List<IDataRecord> ConvertReaderRows(SQLiteDataReader reader)
-        {
-            // iterate over the reader and get each row
-            // might be a better way than this but I don't know enough C# mojo 
-            List<IDataRecord> data = new List<IDataRecord>();
-            foreach (IDataRecord record in GetFromReader(reader))
-            {
-                data.Add(record);
-            }
-            _dbConnection.Close();
-            return data;
         }
 
         // insert a new record into the database; return success or failure

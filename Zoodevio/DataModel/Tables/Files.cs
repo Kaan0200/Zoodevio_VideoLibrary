@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -68,26 +69,14 @@ namespace Zoodevio.DataModel
         // probably need to improve that behavior
         public static List<VideoFile> GetVideoFiles(String path)
         {
-            List<IDataRecord> data = Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both);
-            List<VideoFile> files = new List<VideoFile>();
-            foreach (IDataRecord record in data)
-            {
-                files.Add(VideoFileFromRecord(record));
-            }
-            return files;
+            return ConvertReaderToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
         }
 
         // get a file object by ID from the database
         public static VideoFile GetFile(int id)
         {
             // get matching file from database
-            // may be worthwhile to add error handling on this - constraint: data should always be length 1
-            List<IDataRecord> data = Database.SimpleReadQuery(_table, "id", id.ToString());
-            if (data.Count == 0)
-            {
-                return null;
-            }
-            return VideoFileFromRecord(data[0]);
+            return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
         }
 
         // generate a video file from a row of raw data
@@ -121,6 +110,17 @@ namespace Zoodevio.DataModel
         public static bool DeleteAllFiles()
         {
             return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
+        }
+
+        private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
+        {
+            List<VideoFile> returnList = new List<VideoFile>();
+            while (reader.Read())
+            {
+                returnList.Add(new VideoFile(reader.GetInt32(0), reader.GetString(1), null, reader.GetDateTime(2),
+                    reader.GetDateTime(3)));
+            }
+            return returnList;
         }
 
     }

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.DataModel;
+using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
 
 namespace Zoodevio
@@ -20,5 +22,12 @@ namespace Zoodevio
             InitializeComponent();
         }
 
+        public void AddFolders(List<Folder> folders )
+        {
+            foreach (Folder f in folders)
+            {
+                folderTreeview.Nodes.Add(new TreeNode(f.Name));
+            }
+        }
     }
 }
