@@ -159,7 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="System.Data.SQLite.dll" />
-    <Content Include="Transitions.dll" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
