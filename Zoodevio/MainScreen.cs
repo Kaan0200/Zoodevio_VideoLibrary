@@ -13,6 +13,13 @@ namespace Zoodevio
 
         private MainScreenManager _mainManager;
 
+        // application children control accessors
+        public BasicSearchControl BasicSearchControl { get { return basicSearchControl; } }
+        public GridViewControl GridViewControl { get { return gridViewControl; } }
+        public LibraryPanelControl LibraryPanelControl { get { return libraryPanelControl; } }
+        public ListViewControl ListViewControl { get { return listViewControl; } }
+        public MetadataViewControl MetadataViewControl { get { return metadataViewControl; } }
+
         public MainScreen()
         {
             InitializeComponent();

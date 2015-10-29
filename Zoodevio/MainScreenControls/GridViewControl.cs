@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.Managers;
 
 namespace Zoodevio
 {
     public partial class GridViewControl : UserControl
     {
+        public FileManager Manager;
+
         public GridViewControl()
         {
             InitializeComponent();

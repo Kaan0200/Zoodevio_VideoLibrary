@@ -54,6 +54,24 @@ namespace Zoodevio.DataModel
         }
 
         [Test]
+        public void Tag_ModifyValueTag_Accept()
+        {
+            var tag1 = new Tag("Title", "DbType", true);
+            tag1.Value = "value";
+
+            Assert.True(tag1.Value == "value");
+        }
+
+        [Test]
+        public void Tag_NotModifyValueTag_Accept()
+        {
+            var tag1 = new Tag("Title", "DbType", false);
+            tag1.Value = "value";
+
+            Assert.True(tag1.Value == null);
+        }
+
+        [Test]
         public void Tag_ModifyCanSearchTag_Accept()
         {
             var tag1 = new Tag(0, "Title", true, true, true, "DbType", true);

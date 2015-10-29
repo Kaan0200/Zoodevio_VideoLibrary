@@ -26,11 +26,16 @@ namespace Zoodevio
         {
             Control = control;
             // control is set, create the other managers
-            FileManager = new FileManager(this);
-            LibraryManager = new LibraryManager(this);
-            MetadataManager = new MetadataManager(this);
-            SearchManager = new SearchManager(this);
+            FileManager = new FileManager(this, Control.GridViewControl, Control.ListViewControl);
+            LibraryManager = new LibraryManager(this, Control.LibraryPanelControl);
+            MetadataManager = new MetadataManager(this, Control.MetadataViewControl);
+            SearchManager = new SearchManager(this, Control.BasicSearchControl);
             // set them to their respective controls
+            Control.BasicSearchControl.Manager = SearchManager;
+            Control.GridViewControl.Manager = FileManager;
+            Control.ListViewControl.Manager = FileManager;
+            Control.LibraryPanelControl.Manager = LibraryManager;
+            Control.MetadataViewControl.Manager = MetadataManager;
         }
 
         // Sets the directory at the given URL as the Zoodevio library root

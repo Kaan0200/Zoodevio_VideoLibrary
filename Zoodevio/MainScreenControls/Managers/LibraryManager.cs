@@ -2,11 +2,13 @@
 {
     public class LibraryManager
     {
-        private MainScreenManager _manager;
+        private MainScreenManager _parentManager;
+        private LibraryPanelControl _control;
 
-        public LibraryManager(MainScreenManager _manager)
+        public LibraryManager(MainScreenManager _manager, LibraryPanelControl libraryPanelControl)
         {
-            this._manager = _manager;
+            _parentManager = _manager;
+            _control = libraryPanelControl;
         }
     }
 }
