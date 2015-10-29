@@ -26,22 +26,34 @@ namespace Zoodevio
         public void AddFoldersToView(DataTable dt)
         {
             var folders = Folders.FoldersFromDatatable(dt);
+
+            
             // Make a node for every folder with its ID as a key
-            var nodes = folders.ToDictionary(f => f.Id, 
-                f => new ZoodevioNode(f.Name, f.Id));
+        //    var nodes = folders.ToDictionary(f => f.Id, 
+         //       f => new ZoodevioNode(f.Name, f.Id));
+            var nodes = new List<ZoodevioNode>();
+            foreach (Folder f in folders)
+            {
+                nodes.Add(new ZoodevioNode(f.Name, f.Id, f.ParentId));
+            }
 
             ZoodevioNode root = null;
-            foreach (var folder in folders)
+            foreach (var n in nodes)
             {   
                 // Save the root or add this folder to its parent's kids
-                ZoodevioNode node = nodes[folder.Id];
-                if (folder.ParentId == -1)
+
+                if (n.ParentId == 0)
                 {
-                    root = node;
+                    root = n;
                 }
                 else
                 {
-                    nodes[folder.ParentId].Nodes.Add(node);
+                   // nodes[folder.ParentId].Nodes.Add(node);
+                   var childNodes = nodes.Find(node => node.ParentId == n.Id);
+                    if (childNodes != null)
+                    {
+                        n.Nodes.Add(childNodes);
+                    }
                 }
             }
 
@@ -72,8 +84,9 @@ namespace Zoodevio
     public class ZoodevioNode : TreeNode
     {
         public int Id { get; }
+        public int ParentId { get; }
 
-        public ZoodevioNode(String text, int id) : base(text)
+        public ZoodevioNode(String text, int id, int parentId) : base(text)
         {
             this.Id = id;
         }

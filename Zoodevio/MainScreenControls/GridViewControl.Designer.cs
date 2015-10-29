@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
+            this.gridView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // label1
@@ -40,13 +41,22 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "PLACE HOLDER";
             // 
+            // gridView
+            // 
+            this.gridView.Location = new System.Drawing.Point(3, 3);
+            this.gridView.Name = "gridView";
+            this.gridView.Size = new System.Drawing.Size(313, 367);
+            this.gridView.TabIndex = 1;
+            this.gridView.UseCompatibleStateImageBehavior = false;
+            // 
             // GridViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.gridView);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GridViewControl";
             this.Size = new System.Drawing.Size(320, 373);
             this.ResumeLayout(false);
@@ -57,5 +67,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView gridView;
     }
 }
