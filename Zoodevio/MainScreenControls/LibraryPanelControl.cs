@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,55 +23,29 @@ namespace Zoodevio
         {
             InitializeComponent();
         }
-
-        public void AddFoldersToView(List<Folder> folders )
+        
+        /* Adds all the folders contained in the list to the heirachy in
+        their correct order and structure */
+        public void AddFoldersToView(List<Folder> folders)
         {
-            // Make a node for every folder with its ID as a key
-            //var nodes = folders.ToDictionary(f => f.Id, 
-              //  f => new ZoodevioNode(f.Name, f.Id));
-            /*
-            var nodes = new ZoodevioNode[folders.Count*2];
-            foreach (var folder in folders)
-            {
-                nodes[folder.Id] = new ZoodevioNode(folder.Name, folder.Id);
-            }
-            
-            ZoodevioNode root = null;
-            foreach (var folder in folders)
-            {   
-                // Save the root or add this folder to its parent's kids
-                ZoodevioNode node = nodes[folder.Id];
-                if (folder.ParentId == -1)
-                {
-                    root = node;
-                }
-                else if (nodes[folder.ParentId] != null)
-                {
-                    nodes[folder.ParentId].Nodes.Add(node);
-                }
-                else
-                {
-                    folderTreeview.Nodes.Add(node);
-                }
-            }
+            // set the parent
+            Folder parent = folders.Find(f => f.ParentId == -1);
+            folders.Remove(parent);
+            var parentNode = new ZoodevioNode(parent.Name, parent.Id, parent);
+            folderTreeview.Nodes.Add(parentNode);
 
-            // If we found a root (basically always true)
-            if (root != null)
-            {   // Add it and all of its children with it
-                folderTreeview.Nodes.Add(root);
-            }
-            else
-            {   // Otherwise show an error message.
-                MessageBox.Show("Library refresh operation failed.",
-                    "Zoodevio Video Library",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
-            */
-            // Add all nodes with no hierarchy
-            foreach (var folder in folders)
+            AddChildrenFoldersToNode(parentNode, ref folders);
+        }
+
+        private void AddChildrenFoldersToNode(ZoodevioNode parent, ref List<Folder> folders)
+        {
+            var children = folders.FindAll(f => f.ParentId == parent.ZoodevioFolder.Id);
+            folders.RemoveAll(f => children.Contains(f));
+            children.ForEach(f => parent.Nodes.Add(new ZoodevioNode(f.Name, f.Id, f)));
+
+            foreach (ZoodevioNode zNode in parent.Nodes)
             {
-                folderTreeview.Nodes.Add(new ZoodevioNode(folder.Name, folder.Id));
+                AddChildrenFoldersToNode(zNode,ref folders);
             }
         }
 
@@ -86,9 +62,11 @@ namespace Zoodevio
     public class ZoodevioNode : TreeNode
     {
         public int Id { get; }
+        public Folder ZoodevioFolder { get; }
 
-        public ZoodevioNode(String text, int id) : base(text)
+        public ZoodevioNode(String text, int id, Folder info) : base(text)
         {
+            ZoodevioFolder = info;
             this.Id = id;
         }
     }
