@@ -28,21 +28,24 @@ namespace Zoodevio
         their correct order and structure */
         public void AddFoldersToView(List<Folder> folders)
         {
-            // set the parent
+            // find the parent first,
             Folder parent = folders.Find(f => f.ParentId == -1);
-            folders.Remove(parent);
+            folders.Remove(parent); // remove it from the list
             var parentNode = new ZoodevioNode(parent.Name, parent.Id, parent);
             folderTreeview.Nodes.Add(parentNode);
-
-            AddChildrenFoldersToNode(parentNode, ref folders);
+            // start building the tree
+            AddChildrenFoldersToNode(parentNode, ref folders); 
         }
 
         private void AddChildrenFoldersToNode(ZoodevioNode parent, ref List<Folder> folders)
         {
+            // find all the children with this parent
             var children = folders.FindAll(f => f.ParentId == parent.ZoodevioFolder.Id);
+            // remove all the children from the list of folders
             folders.RemoveAll(f => children.Contains(f));
+            // for each child, create a new node and put it in the parent
             children.ForEach(f => parent.Nodes.Add(new ZoodevioNode(f.Name, f.Id, f)));
-
+            // for each new node create create the children
             foreach (ZoodevioNode zNode in parent.Nodes)
             {
                 AddChildrenFoldersToNode(zNode,ref folders);
