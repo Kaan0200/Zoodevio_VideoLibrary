@@ -18,9 +18,9 @@ namespace Zoodevio.Managers
             _listControl = listViewControl;
         }
 
-        public void DisplaySelectedFolder(ZoodevioNode selection)
+        public void DisplaySelectedFolderContents(TreeNode selection)
         {
-            Folder folder = Folders.GetFolder(selection.Id);
+            Folder folder = Files.GetFilesByFolderName(selection.Name);
             if (folder != null)
             {
                 _listControl.DisplayFolderInView(folder.Files);

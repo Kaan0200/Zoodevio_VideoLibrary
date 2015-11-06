@@ -19,6 +19,8 @@ namespace Zoodevio
     {
         public LibraryManager Manager;
 
+        private TreeNode _lastSelectedNode;
+
         public LibraryPanelControl()
         {
             InitializeComponent();
@@ -48,7 +50,7 @@ namespace Zoodevio
             // for each new node create create the children
             foreach (ZoodevioNode zNode in parent.Nodes)
             {
-                AddChildrenFoldersToNode(zNode,ref folders);
+                AddChildrenFoldersToNode(zNode, ref folders);
             }
         }
 
@@ -58,7 +60,23 @@ namespace Zoodevio
             var node = (ZoodevioNode)folderTreeview.SelectedNode;
 
             // Send it to the list view
-            Manager.SelectFolderInTreeView(node);
+            Manager.ChangedSelectedFolderNode(node);
+        }
+
+        private void folderTreeviewNode_Select(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // sometimes there are bad selects, resulting in null node selection
+            if (folderTreeview.SelectedNode != null)
+            {
+                // only fire off method call if the selected node changed
+                if (_lastSelectedNode != folderTreeview.SelectedNode)
+                {
+                    // update
+                    _lastSelectedNode = folderTreeview.SelectedNode;
+                    // clean call
+                    Manager.ChangedSelectedFolderNode(folderTreeview.SelectedNode);
+                }
+            }
         }
     }
 

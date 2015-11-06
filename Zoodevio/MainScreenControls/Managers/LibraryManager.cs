@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
@@ -23,9 +25,9 @@ namespace Zoodevio.Managers
           _control.AddFoldersToView(folders);
         }
 
-        public void SelectFolderInTreeView(ZoodevioNode node)
+        public void ChangedSelectedFolderNode(TreeNode selectedNode)
         {
-            _parentManager.FileManager.DisplaySelectedFolder(node);
+            _parentManager.FileManager.DisplaySelectedFolderContents(selectedNode);
         }
     }
 }

@@ -121,6 +121,14 @@ namespace Zoodevio.DataModel
             return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
         }
 
+        // get all the Video Files from a folder by name
+        public static List<VideoFile> GetFilesByFolderName(string name)
+        {
+            List<VideoFile> returnList = new List<VideoFile>();
+            //TODO: Do this
+            return returnList;
+        }
+
         private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
         {
             List<VideoFile> returnList = new List<VideoFile>();
@@ -131,6 +139,5 @@ namespace Zoodevio.DataModel
             }
             return returnList;
         }
-
     }
 }

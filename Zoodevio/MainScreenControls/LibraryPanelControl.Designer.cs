@@ -40,6 +40,7 @@
             this.folderTreeview.Size = new System.Drawing.Size(210, 306);
             this.folderTreeview.TabIndex = 1;
             this.folderTreeview.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.folderTreeview_MouseDoubleClick);
+            this.folderTreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.folderTreeviewNode_Select);
             // 
             // vScrollBar1
             // 
