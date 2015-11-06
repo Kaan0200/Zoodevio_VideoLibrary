@@ -31,7 +31,7 @@ namespace Zoodevio.DataModel
             string[] data =
             {
                 file.Path,
-                (file.DateAdded != null) ? file.DateAdded.ToString() : DateTime.Now.ToString(),
+                (file.DateAdded.Equals(DateTime.MinValue)) ? DateTime.Now.ToString() : file.DateAdded.ToString(),
                 DateTime.Now.ToString(),
             };
             if (databaseFile == null)

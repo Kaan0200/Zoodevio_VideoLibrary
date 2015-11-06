@@ -226,9 +226,12 @@ namespace Zoodevio.DataModel
             }
             _dbConnection.Open(); 
             SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
+            // reset autoincrementing
+            SQLiteCommand com2 = new SQLiteCommand("delete from sqlite_sequence where name = '" + table + "'");
             try
             {
                 com.ExecuteNonQuery();
+                com2.ExecuteNonQuery();
                 _dbConnection.Close();
                 return true;
             }
