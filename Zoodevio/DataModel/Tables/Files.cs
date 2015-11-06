@@ -124,8 +124,9 @@ namespace Zoodevio.DataModel
         // get all the Video Files from a folder by name
         public static List<VideoFile> GetFilesByFolderName(string name)
         {
+            // get the path of that file
             List<VideoFile> returnList = new List<VideoFile>();
-            //TODO: Do this
+            
             return returnList;
         }
 

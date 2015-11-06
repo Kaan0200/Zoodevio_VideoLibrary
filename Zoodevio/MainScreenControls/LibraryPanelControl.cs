@@ -33,31 +33,39 @@ namespace Zoodevio
             // find the parent first,
             Folder parent = folders.Find(f => f.ParentId == -1);
             folders.Remove(parent); // remove it from the list
-            var parentNode = new ZoodevioNode(parent.Name, parent.Id, parent);
+            var parentNode = new TreeNode
+            {
+                Name = parent.Name,
+                Tag = parent.Id
+            };
             folderTreeview.Nodes.Add(parentNode);
             // start building the tree
             AddChildrenFoldersToNode(parentNode, ref folders); 
         }
 
-        private void AddChildrenFoldersToNode(ZoodevioNode parent, ref List<Folder> folders)
+        private void AddChildrenFoldersToNode(TreeNode parent, ref List<Folder> folders)
         {
-            // find all the children with this parent
-            var children = folders.FindAll(f => f.ParentId == parent.ZoodevioFolder.Id);
+            // find all the children folders, with this node's tag value as the parent
+            var children = folders.FindAll(f => f.ParentId == Convert.ToInt32(parent.Tag));
             // remove all the children from the list of folders
             folders.RemoveAll(f => children.Contains(f));
             // for each child, create a new node and put it in the parent
-            children.ForEach(f => parent.Nodes.Add(new ZoodevioNode(f.Name, f.Id, f)));
-            // for each new node create create the children
-            foreach (ZoodevioNode zNode in parent.Nodes)
+            children.ForEach(f => parent.Nodes.Add(new TreeNode()
             {
-                AddChildrenFoldersToNode(zNode, ref folders);
+                Name = f.Name,
+                Tag = f.Id
+            }));
+            // for each new node create create the children
+            foreach (TreeNode node in parent.Nodes)
+            {
+                AddChildrenFoldersToNode(node, ref folders);
             }
         }
 
         private void folderTreeview_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // Get the selected node
-            var node = (ZoodevioNode)folderTreeview.SelectedNode;
+            var node = folderTreeview.SelectedNode;
 
             // Send it to the list view
             Manager.ChangedSelectedFolderNode(node);
@@ -77,18 +85,6 @@ namespace Zoodevio
                     Manager.ChangedSelectedFolderNode(folderTreeview.SelectedNode);
                 }
             }
-        }
-    }
-
-    public class ZoodevioNode : TreeNode
-    {
-        public int Id { get; }
-        public Folder ZoodevioFolder { get; }
-
-        public ZoodevioNode(String text, int id, Folder info) : base(text)
-        {
-            ZoodevioFolder = info;
-            this.Id = id;
         }
     }
 }
