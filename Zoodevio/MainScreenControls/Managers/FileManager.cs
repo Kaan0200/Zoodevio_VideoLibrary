@@ -20,10 +20,11 @@ namespace Zoodevio.Managers
 
         public void DisplaySelectedFolderContents(TreeNode selection)
         {
-            Folder folder = Files.GetFilesByFolderName(selection.Name);
-            if (folder != null)
-            {
-                _listControl.DisplayFolderInView(folder.Files);
+            List<VideoFile> files = Files.GetFilesByFolderName(selection.Name);
+            if (files != null)
+            {   
+               // TODO: Correct to handle input/outputof GetFilesByFolderName
+               // _listControl.DisplayFolderInView(folder.Files);
             }
         }
     }
