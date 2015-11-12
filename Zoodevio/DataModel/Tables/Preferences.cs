@@ -22,8 +22,15 @@ namespace Zoodevio.DataModel
         public static Preference Lookup(int id)
         {
             //TODO: protect from empty dt returns
-            var dt = Database.SimpleReadQuery(_table,"id", id.ToString());
-            return new Preference(Convert.ToInt32(dt.Rows[0][0]), dt.Rows[0][1].ToString(), dt.Rows[0][2].ToString(), dt.Rows[0][3].ToString());
+            var matches = ConvertDataTableToList(Database.SimpleReadQuery(_table,"id", id.ToString()));
+            if (matches.Count > 0)
+            {
+                return matches[0];
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
@@ -38,5 +45,21 @@ namespace Zoodevio.DataModel
                 rows, dbData); 
         }
 
+        private static List<Preference> ConvertDataTableToList(DataTable table)
+        {
+            List<Preference> returnList = new List<Preference>();
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i];
+                returnList.Add(new Preference(
+                    Convert.ToInt32(row["id"]),
+                    row["name"].ToString(),
+                    row["data_type"].ToString(),
+                    row["data"].ToString()
+                    ));
+            }
+            return returnList;
+        }
     }
 }

@@ -94,7 +94,7 @@ namespace Zoodevio
             if (response == Response.Success)
             {
                 // Add all the contained video files to the database
-                MapContainedVideoFiles(dir, folder.Id);
+                folder.Files = MapContainedVideoFiles(dir, folder.Id);
 
                 // Return the successfully added folder
                 return folder;
@@ -104,9 +104,12 @@ namespace Zoodevio
             return null;
         }
 
-        // This adds all video files in a directory to the database
-        private void MapContainedVideoFiles(DirectoryInfo dir, int parentID)
+        // This adds all video files in a directory to the database and returns them in a list
+        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo dir, int parentID)
         {
+            // Get the list to store successful additions
+            List<VideoFile> files = new List<VideoFile>();
+
             // Get all supported file extensions
             string[] extensions = GetSupportedFileExtensions();
 
@@ -128,10 +131,13 @@ namespace Zoodevio
                     // Report if file addition was unsuccessful
                     if (response != Response.Success)
                     {
+                        files.Add(file);
                         Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
                     }
                 }
             }
+            Console.WriteLine(files.Count + " video files found");
+            return files;
         }
 
         // Set new library root reference to the given directory
@@ -178,7 +184,7 @@ namespace Zoodevio
         private string[] GetSupportedFileExtensions()
         {
             // TODO: Get an array of supported file extensions in "xxx" format (no '.')
-            return new string[] { "mp4", "avi", "mov", "flv" };
+            return new string[] { "mp4", "avi", "mov", "flv", "mkv" };
         }
 
         // This gets a list of default required tags a video file has

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,78 +19,76 @@ namespace Zoodevio
     {
         public LibraryManager Manager;
 
+        private TreeNode _lastSelectedNode;
+
         public LibraryPanelControl()
         {
             InitializeComponent();
-            folderTreeview.Nodes.Add(new TreeNode("ZOODEVIOR"));
+        }
+        
+        /* Adds all the folders contained in the list to the heirachy in
+        their correct order and structure */
+        public void AddFoldersToView(List<Folder> folders)
+        {
+            // find the parent first,
+            Folder parent = folders.Find(f => f.ParentId == -1);
+            folders.Remove(parent); // remove it from the list
+            var parentNode = new TreeNode {
+                Text = parent.Name,
+                Tag = parent.Id
+            };
+            folderTreeview.Nodes.Add(parentNode);
+            // start building the tree
+            AddChildrenFoldersToNode(parentNode, ref folders); 
         }
 
-        public void AddFoldersToView(DataTable dt)
+        private void AddChildrenFoldersToNode(TreeNode parent, ref List<Folder> folders)
         {
-            var folders = Folders.FoldersFromDatatable(dt);
-
-            
-            // Make a node for every folder with its ID as a key
-        //    var nodes = folders.ToDictionary(f => f.Id, 
-         //       f => new ZoodevioNode(f.Name, f.Id));
-            var nodes = new List<ZoodevioNode>();
-            foreach (Folder f in folders)
+            // find all the children with this parent
+            var children = folders.FindAll(f => f.ParentId == Convert.ToInt32(parent.Tag));
+            // remove all the children from the list of folders
+            folders.RemoveAll(f => children.Contains(f));
+            // for each child, create a new node and put it in the parent
+            children.ForEach(f => parent.Nodes.Add(new TreeNode
             {
-                nodes.Add(new ZoodevioNode(f.Name, f.Id, f.ParentId));
-            }
-
-            ZoodevioNode root = null;
-            foreach (var n in nodes)
-            {   
-                // Save the root or add this folder to its parent's kids
-
-                if (n.ParentId == 0)
-                {
-                    root = n;
-                }
-                else
-                {
-                   // nodes[folder.ParentId].Nodes.Add(node);
-                   var childNodes = nodes.Find(node => node.ParentId == n.Id);
-                    if (childNodes != null)
-                    {
-                        n.Nodes.Add(childNodes);
-                    }
-                }
-            }
-
-            // If we found a root (basically always true)
-            if (root != null)
-            {   // Add it and all of its children with it
-                folderTreeview.Nodes.Add(root);
-            }
-            else
-            {   // Otherwise show an error message.
-                MessageBox.Show("Library refresh operation failed.",
-                    "Zoodevio Video Library",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                Text = f.Name, Tag = f.Id
+            }));
+            // for each new node create create the children
+            foreach (TreeNode node in parent.Nodes)
+            {
+                AddChildrenFoldersToNode(node, ref folders);
             }
         }
 
         private void folderTreeview_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // Get the selected node
-            var node = (ZoodevioNode)folderTreeview.SelectedNode;
+            var node = folderTreeview.SelectedNode;
 
             // Send it to the list view
-            Manager.SelectFolderInTreeView(node);
+            Manager.ChangedSelectedFolderNode(node);
         }
-    }
 
-    public class ZoodevioNode : TreeNode
-    {
-        public int Id { get; }
-        public int ParentId { get; }
-
-        public ZoodevioNode(String text, int id, int parentId) : base(text)
+        private void folderTreeviewNode_Select(object sender, TreeNodeMouseClickEventArgs e)
         {
-            this.Id = id;
+            // sometimes there are bad selects, resulting in null node selection
+            if (folderTreeview.SelectedNode != null)
+            {
+                // only fire off method call if the selected node changed
+                if (_lastSelectedNode != folderTreeview.SelectedNode)
+                {
+                    // update
+                    _lastSelectedNode = folderTreeview.SelectedNode;
+                    // clean call
+                    Manager.ChangedSelectedFolderNode(folderTreeview.SelectedNode);
+                }
+            }
+        }
+
+        // this method clears off the values in the treeview
+        public void Clear()
+        {
+            folderTreeview.Nodes.Clear();
         }
     }
 }

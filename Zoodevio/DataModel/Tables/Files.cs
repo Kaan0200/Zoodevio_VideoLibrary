@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -31,7 +32,7 @@ namespace Zoodevio.DataModel
             string[] data =
             {
                 file.Path,
-                (file.DateAdded != null) ? file.DateAdded.ToString() : DateTime.Now.ToString(),
+                (file.DateAdded.Equals(DateTime.MinValue)) ? DateTime.Now.ToString() : file.DateAdded.ToString(),
                 DateTime.Now.ToString(),
             };
             if (databaseFile == null)
@@ -66,18 +67,24 @@ namespace Zoodevio.DataModel
 
         // get all file object(s) in the database that have a certain path
         // WARNING: adds a null entry if data doesn't exist
-        public static DataTable GetVideoFiles(String path)
+        public static List<VideoFile> GetVideoFiles(String path)
         {
-            //TODO: Protect empty DT returns
-            return Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both);
+            return ConvertDataTableToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
         }
 
         // get a file object by ID from the database
         public static VideoFile GetFile(int id)
         {
-            //TODO: Protect empty DT returns
-            var dt = Database.SimpleReadQuery(_table, "id", id.ToString());
-            return new VideoFile(Convert.ToInt32(dt.Rows[0][0]), dt.Rows[0][1].ToString(), null, Convert.ToDateTime(dt.Rows[0][2]), Convert.ToDateTime(dt.Rows[0][3]));
+            // get matching file from database
+            List<VideoFile> matches = ConvertDataTableToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            if (matches.Count > 0)
+            {
+                return matches[0];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // generate a video file from a row of raw data
@@ -111,6 +118,24 @@ namespace Zoodevio.DataModel
         public static bool DeleteAllFiles()
         {
             return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
+        }
+        
+        private static List<VideoFile> ConvertDataTableToList(DataTable table)
+        {
+            List<VideoFile> returnList = new List<VideoFile>();
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i];
+                returnList.Add(new VideoFile(
+                    Convert.ToInt32(row["id"]),
+                    row["path"].ToString(),
+                    null,
+                    DateTime.Parse(row["date_added"].ToString()),
+                    DateTime.Parse(row["date_edited"].ToString())
+                    ));
+            }
+            return returnList;
         }
     }
 }

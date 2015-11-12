@@ -22,15 +22,15 @@ namespace Zoodevio.DataModel
         private const int CHUNK_SIZE = 2*1024; 
 
         // get tags associated with a given file id 
-        public static DataTable GetFileTags(int fileId)
+        public static List<TagEntry> GetFileTags(int fileId)
         {
-            return Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString());
+            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
         }
 
         // update the tags associated with a certain file id 
         public static bool[] UpdateFileTags(int fileId, List<TagEntry> tags)
         {
-            DataTable oldTags = GetFileTags(fileId);
+            List<TagEntry> oldTags = GetFileTags(fileId);
             bool[] responses = new bool[tags.Count];
             for(int i = 0; i < tags.Count; i++)
             {
@@ -40,9 +40,9 @@ namespace Zoodevio.DataModel
         }
 
         // update a single tag associated with a file 
-        public static bool UpdateFileTag(int fileId, TagEntry tag, DataTable oldTags)
+        public static bool UpdateFileTag(int fileId, TagEntry tag, List<TagEntry> oldTags)
         {
-            //TODO: uncomment and fix for a datatable
+            //TODO: uncomment and fix
             bool success;
          /*   string[] rows =
                 {
@@ -71,9 +71,9 @@ namespace Zoodevio.DataModel
         }
 
         // get all tags of a certain type 
-        public static DataTable GetTagsOfType(int typeId)
+        public static List<TagEntry> GetTagsOfType(int typeId)
         {
-            return Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString());
+            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
         } 
 
         // Note: TagEntry modifiers don't modify the database directly. They return a VideoFile which can then be written.
@@ -136,89 +136,106 @@ namespace Zoodevio.DataModel
 
         // get a tag type entry from the database
         //TODO: rewrite this with proper handling of query return
-       /* public static Tag GetTagType(int id)
-        {
-            var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
+        /* public static Tag GetTagType(int id)
+         {
+             var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
 
-            return TagTypeFromRecord(data[0]);
+             return TagTypeFromRecord(data[0]);
+         }
+
+         private static Tag TagTypeFromRecord(IDataRecord row)
+         {
+             if (row == null)
+             {
+                 return null;
+             }
+             return new Tag(
+                 row.GetInt32(0),
+                 row.GetString(1),
+                 row.GetBoolean(2),
+                 row.GetBoolean(3),
+                 row.GetBoolean(4),
+                 row.GetString(5),
+                 row.GetBoolean(6));
+         } 
+
+         // add or modify a tag type within the database 
+         public static Response AddCustomTag(Tag type, bool overwrite)
+         {
+             Tag dbType = GetTagType(type.Id);
+             string[] rows =
+             {
+                 "id",
+                 "name",
+                 "can_search",
+                 "can_sort",
+                 "required",
+                 "data_type",
+             };
+             string[] data =
+             {
+                 type.Id.ToString(),
+                 type.Name,
+                 type.CanSearch.ToString(),
+                 type.CanSort.ToString(),
+                 type.Required ? "1" : "0",
+                 type.DataType,
+             };
+             if (type.IsModifiable)
+             {
+                 if (dbType == null)
+                 {
+                     bool success = Database.SimpleInsertQuery(_typesTable, rows, data);
+                     return (success) ? Response.Success : Response.FailedDatabase;
+
+                 }
+                 else if (overwrite)
+                 {
+                     // overwrite the old file if overwrite true
+                     bool success = Database.SimpleUpdateQuery(_tagsTable, "id", type.Id, rows, data);
+                     return (success) ? Response.Success : Response.FailedDatabase;
+                 }
+                 else
+                 {
+                     return Response.FailedOverwrite;
+                 }
+             }
+             else
+             {
+                 throw new ArgumentException("Unmodifiable tag passed!");
+             }
+         } 
+
+         // delete a custom tag type from the database
+         public static bool DeleteCustomTag(int id)
+         {
+             // get the tag and make sure it can be modfiied
+             Tag type = GetTagType(id);
+             if (type.IsModifiable)
+             {
+                 return Database.SimpleDeleteQuery(_tagsTable, "id", type.Id);
+             }
+             else
+             {
+                 return false; 
+             }
+         }*/
+
+        private static List<TagEntry> ConvertDataTableToList(DataTable table)
+        {
+            List<TagEntry> returnList = new List<TagEntry>();
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i];
+                returnList.Add(new TagEntry(
+                    Convert.ToInt32(row["id"]),
+                    Convert.ToInt32(row["type_id"]),
+                    Convert.ToInt32(row["file_id"]),
+                    null
+                    ));
+            }
+            return returnList;
         }
-
-        private static Tag TagTypeFromRecord(IDataRecord row)
-        {
-            if (row == null)
-            {
-                return null;
-            }
-            return new Tag(
-                row.GetInt32(0),
-                row.GetString(1),
-                row.GetBoolean(2),
-                row.GetBoolean(3),
-                row.GetBoolean(4),
-                row.GetString(5),
-                row.GetBoolean(6));
-        } 
-
-        // add or modify a tag type within the database 
-        public static Response AddCustomTag(Tag type, bool overwrite)
-        {
-            Tag dbType = GetTagType(type.Id);
-            string[] rows =
-            {
-                "id",
-                "name",
-                "can_search",
-                "can_sort",
-                "required",
-                "data_type",
-            };
-            string[] data =
-            {
-                type.Id.ToString(),
-                type.Name,
-                type.CanSearch.ToString(),
-                type.CanSort.ToString(),
-                type.Required ? "1" : "0",
-                type.DataType,
-            };
-            if (type.IsModifiable)
-            {
-                if (dbType == null)
-                {
-                    bool success = Database.SimpleInsertQuery(_typesTable, rows, data);
-                    return (success) ? Response.Success : Response.FailedDatabase;
-
-                }
-                else if (overwrite)
-                {
-                    // overwrite the old file if overwrite true
-                    bool success = Database.SimpleUpdateQuery(_tagsTable, "id", type.Id, rows, data);
-                    return (success) ? Response.Success : Response.FailedDatabase;
-                }
-                else
-                {
-                    return Response.FailedOverwrite;
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Unmodifiable tag passed!");
-            }
-        } 
-
-        // delete a custom tag type from the database
-        public static bool DeleteCustomTag(int id)
-        {
-            // get the tag and make sure it can be modfiied
-            Tag type = GetTagType(id);
-            if (type.IsModifiable)
-            {
-                return Database.SimpleDeleteQuery(_tagsTable, "id", type.Id);
-            }
-            else
-            {
-                return false; 
-            }
-        }*/
     }
 }

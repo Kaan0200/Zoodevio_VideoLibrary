@@ -32,14 +32,13 @@
             this.gridView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
-            // label1
+            // gridView
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(109, 175);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "PLACE HOLDER";
+            this.gridView.Location = new System.Drawing.Point(4, 4);
+            this.gridView.Name = "gridView";
+            this.gridView.Size = new System.Drawing.Size(312, 302);
+            this.gridView.TabIndex = 0;
+            this.gridView.UseCompatibleStateImageBehavior = false;
             // 
             // gridView
             // 
@@ -58,14 +57,13 @@
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GridViewControl";
-            this.Size = new System.Drawing.Size(320, 373);
+            this.Size = new System.Drawing.Size(320, 310);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
+        
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView gridView;
     }

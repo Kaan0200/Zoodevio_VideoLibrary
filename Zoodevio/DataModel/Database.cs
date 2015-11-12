@@ -43,6 +43,10 @@ namespace Zoodevio.DataModel
         public static DataTable SimpleStarQuery(string table)
         {
             DataTable dt = new DataTable();
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
@@ -55,15 +59,19 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static DataTable SimpleReadQuery(string table, string column, string value)
         {
+            DataTable dt = new DataTable();
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open(); 
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
-                new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
-            var dataTable = new DataTable();
-            dataTable.Load(com.ExecuteReader());
+                new SQLiteCommand("select * from " + table + " where " + column + " = " + value , _dbConnection);
+            dt.Load(com.ExecuteReader());
             _dbConnection.Close();
-            return dataTable;
+            return dt;
         }
 
         // iterate over a data reader object
@@ -95,6 +103,10 @@ namespace Zoodevio.DataModel
         public static DataTable ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
             DataTable dt = new DataTable();
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
@@ -125,6 +137,10 @@ namespace Zoodevio.DataModel
         public static Boolean SimpleInsertQuery(string table, 
             string[] rows, string[] data)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
             string dataStatement = String.Join("', '", data);
@@ -150,6 +166,10 @@ namespace Zoodevio.DataModel
         public static Boolean SimpleUpdateQuery(string table, string identifierField, int identifier,
             string[] rows, string[] data)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             string setCommand = BuildSetCommand(rows, data); 
             SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
@@ -185,6 +205,10 @@ namespace Zoodevio.DataModel
         // returns true if successful, false if failed
         public static bool SimpleDeleteQuery(string table, string identifier, int id)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
             SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id, _dbConnection);
             try
@@ -205,9 +229,13 @@ namespace Zoodevio.DataModel
         // if resetIncrement is true, also restarts the id increment at 0
         public static bool TruncateTable(string table, bool resetIncrement)
         {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
             _dbConnection.Open();
-            string query = "delete from " + table + "; vacuum" + ((resetIncrement) ? "; delete from sqlite_sequence where name='" + table +"'": "");
-            Console.Write(query+"\n");
+            string query = "delete from " + table + "; vacuum" + ((resetIncrement) ? "; delete from sqlite_sequence where name='" + table + "'" : "");
+            Console.Write(query + "\n");
             SQLiteCommand com = new SQLiteCommand(query, _dbConnection);
             try
             {
