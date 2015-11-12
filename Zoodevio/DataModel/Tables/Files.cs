@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -121,21 +122,18 @@ namespace Zoodevio.DataModel
             return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
         }
 
-        // get all the Video Files from a folder by name
-        public static List<VideoFile> GetFilesByFolderName(string name)
-        {
-            List<VideoFile> returnList = new List<VideoFile>();
-            //TODO: Do this
-            return returnList;
-        }
-
         private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
         {
             List<VideoFile> returnList = new List<VideoFile>();
             while (reader.Read())
             {
-                returnList.Add(new VideoFile(reader.GetInt32(0), reader.GetString(1), null, reader.GetDateTime(2),
-                    reader.GetDateTime(3)));
+                returnList.Add(new VideoFile(
+                    Convert.ToInt32(reader["id"]),
+                    reader["path"].ToString(),
+                    null,
+                    DateTime.Parse(reader["date_added"].ToString()),
+                    DateTime.Parse(reader["date_edited"].ToString())
+                    ));
             }
             return returnList;
         }

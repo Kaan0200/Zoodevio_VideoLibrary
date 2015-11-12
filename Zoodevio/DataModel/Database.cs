@@ -63,7 +63,7 @@ namespace Zoodevio.DataModel
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com =
-                new SQLiteCommand("select * from " + table + " where '" + column + "' = '" + value + "'", _dbConnection);
+                new SQLiteCommand("select * from " + table + " where " + column + " = " + value , _dbConnection);
             return com.ExecuteReader();
 
         }

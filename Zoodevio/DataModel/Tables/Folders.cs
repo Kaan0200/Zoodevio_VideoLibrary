@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -139,23 +140,19 @@ namespace Zoodevio.DataModel
         // get all video files associted with a given folder
         // the opposite of GetContainingFolder()
         public static List<VideoFile> GetVideoFilesInFolder(int folderId)
-        { /* TODO: Rewrite this method to get it working
+        {
             // get a list of file ids matching this folder as parent
-            SQ = Database.SimpleReadQuery(_fileLocationsTable,
+            var reader = Database.SimpleReadQuery(_fileLocationsTable,
                 "folder_id", folderId.ToString());
-            int[] fileIds = new int[data.Count];
-            for(int i = 0; i < data.Count; i++)
+
+            var intList = new List<int>();
+            while (reader.Read())
             {
-                fileIds[i] = data[0].GetInt32(0); 
+                intList.Add(reader.GetInt32(0));
             }
+
             // generate videofiles for them
-            List<VideoFile> files = new List<VideoFile>();
-            foreach (int id in fileIds)
-            {
-                files.Add(Files.GetFile(id));
-            }
-            return files; */
-            return null;
+            return intList.Select(id => Files.GetFile(id)).ToList(); 
         } 
 
 
