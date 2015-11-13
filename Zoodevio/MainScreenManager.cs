@@ -84,15 +84,18 @@ namespace Zoodevio
         }
 
         // Adds a directory in the library structure as a folder object in the database
-        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
+        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentId)
         {
             // Try to add this directory as a folder in the database
-            Folder folder = new Folder(parentID, dir.Name);
+            Folder folder = new Folder(parentId, dir.Name);
             Response response = Folders.AddFolder(folder, true);
 
             // If the folder was added successfully:
             if (response == Response.Success)
             {
+                // Get folder with updated info from DB (for id mostly)
+                folder = GetAddedFolder(dir.Name, parentId) ?? folder;
+
                 // Add all the contained video files to the database
                 folder.Files = MapContainedVideoFiles(dir, folder.Id);
 
@@ -105,7 +108,7 @@ namespace Zoodevio
         }
 
         // This adds all video files in a directory to the database and returns them in a list
-        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo dir, int parentID)
+        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo dir, int parentId)
         {
             // Get the list to store successful additions
             List<VideoFile> files = new List<VideoFile>();
@@ -144,7 +147,7 @@ namespace Zoodevio
         private Folder SetRootReference(DirectoryInfo root)
         {
             // Make a folder object to use as the new root
-            Folder rootFolder = new Folder(-1, root.FullName);
+            Folder rootFolder = new Folder(Database.ROOT_PARENT, root.FullName);
                 
             // Replace the current folder structure with the childless new root
             Response response = Folders.DeleteAllFolders(rootFolder);
@@ -156,7 +159,7 @@ namespace Zoodevio
                 Files.DeleteAllFiles();
 
                 // Begin building the tree from the root folder
-                return rootFolder;
+                return GetAddedFolder(root.FullName, Database.ROOT_PARENT);
             }
 
             // If this was unsuccessful, the process stops here.
@@ -193,6 +196,23 @@ namespace Zoodevio
             // TODO: Get default tags from DB
             List<TagEntry> defaultTags = new List<TagEntry>();
             return defaultTags;
+        }
+
+        private static Folder GetAddedFolder(string name, int parentId)
+        {
+            List<Folder> matches = Folders.GetFoldersByName(name);
+            Folder match = matches.Find(f => f.ParentId == parentId);
+            //Console.WriteLine("GETTING ADDED FOLDER: " + match);
+            if (match != null)
+            {
+                Console.WriteLine("GETTING ADDED FOLDER: " + name + " as " + match);
+                return matches[0];
+            }
+            else
+            {
+                Console.WriteLine(name);
+                return null;
+            }
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)

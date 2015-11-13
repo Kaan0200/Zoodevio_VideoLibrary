@@ -26,6 +26,10 @@ namespace Zoodevio.DataModel
             Both
         }
 
+        // the default id and parent id for the root folder
+        public static readonly int ROOT_ID = 1;
+        public static readonly int ROOT_PARENT = 0;
+
         // the directory where Zoodevio is executing
         private static readonly string PROJECT_DIRECTORY = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -109,7 +113,7 @@ namespace Zoodevio.DataModel
             }
             _dbConnection.Open();
             SQLiteCommand com =
-                new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
+                new SQLiteCommand("select * from " + table + " where " + column + " LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
             dt.Load(com.ExecuteReader());
             _dbConnection.Close();
             return dt;
