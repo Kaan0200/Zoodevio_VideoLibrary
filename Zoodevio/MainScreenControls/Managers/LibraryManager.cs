@@ -13,6 +13,9 @@ namespace Zoodevio.Managers
         private MainScreenManager _parentManager;
         private LibraryPanelControl _control;
 
+        // a holder for the selected TreeNode so we can observe changes on this variable
+        private TreeNode _selectedNode;
+
         public LibraryManager(MainScreenManager _manager, LibraryPanelControl libraryPanelControl)
         {
             _parentManager = _manager;
@@ -21,12 +24,14 @@ namespace Zoodevio.Managers
 
         public void RefreshLibraryFromDatabase()
         {
+            _control.Clear();
           var folders  = Folders.GetAllFolders();
           _control.AddFoldersToView(folders);
         }
 
         public void ChangedSelectedFolderNode(TreeNode selectedNode)
         {
+            // this is a clean select, it will only happen on real changes.
             _parentManager.FileManager.DisplaySelectedFolderContents(selectedNode);
         }
     }

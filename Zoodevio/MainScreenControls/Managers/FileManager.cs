@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
@@ -9,21 +10,27 @@ namespace Zoodevio.Managers
     {
         private MainScreenManager _parentManager;
         private GridViewControl _gridControl;
-        private ListViewControl _listControl;
 
-        public FileManager(MainScreenManager manager, GridViewControl gridViewControl, ListViewControl listViewControl)
+        public FileManager(MainScreenManager manager, GridViewControl gridViewControl)
         {
             _parentManager = manager;
             _gridControl = gridViewControl;
-            _listControl = listViewControl;
         }
 
         public void DisplaySelectedFolderContents(TreeNode selection)
         {
-            Folder folder = Files.GetFilesByFolderName(selection.Name);
-            if (folder != null)
+            List<VideoFile> files = Folders.GetVideoFilesInFolder(Convert.ToInt32(selection.Tag));
+            if (files.Count != 0)
             {
-                _listControl.DisplayFolderInView(folder.Files);
+                // if grid control, as in create icons for files
+                if (_gridControl.Visible == true)
+                {
+                    _gridControl.ClearView();
+                    files.ForEach(f => _gridControl.CreateVideoIcon(f));
+
+                } else { // list control, populate data set
+                
+                }
             }
         }
     }

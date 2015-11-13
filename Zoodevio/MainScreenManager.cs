@@ -16,7 +16,6 @@ namespace Zoodevio
     {
         public MainScreen Control;
 
-
         public FileManager FileManager;
         public LibraryManager LibraryManager;
         public MetadataManager MetadataManager;
@@ -26,14 +25,13 @@ namespace Zoodevio
         {
             Control = control;
             // control is set, create the other managers
-            FileManager = new FileManager(this, Control.GridViewControl, Control.ListViewControl);
+            FileManager = new FileManager(this, Control.GridViewControl);
             LibraryManager = new LibraryManager(this, Control.LibraryPanelControl);
             MetadataManager = new MetadataManager(this, Control.MetadataViewControl);
             SearchManager = new SearchManager(this, Control.BasicSearchControl);
             // set them to their respective controls
             Control.BasicSearchControl.Manager = SearchManager;
             Control.GridViewControl.Manager = FileManager;
-            Control.ListViewControl.Manager = FileManager;
             Control.LibraryPanelControl.Manager = LibraryManager;
             Control.MetadataViewControl.Manager = MetadataManager;
         }
@@ -84,15 +82,18 @@ namespace Zoodevio
         }
 
         // Adds a directory in the library structure as a folder object in the database
-        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentID)
+        private Folder MapDirectoryAndContents(DirectoryInfo dir, int parentId)
         {
             // Try to add this directory as a folder in the database
-            Folder folder = new Folder(parentID, dir.Name);
+            Folder folder = new Folder(parentId, dir.Name);
             Response response = Folders.AddFolder(folder, true);
 
             // If the folder was added successfully:
             if (response == Response.Success)
             {
+                // Get folder with updated info from DB (for id mostly)
+                folder = GetAddedFolder(dir.Name, parentId) ?? folder;
+
                 // Add all the contained video files to the database
                 folder.Files = MapContainedVideoFiles(dir, folder.Id);
 
@@ -105,7 +106,7 @@ namespace Zoodevio
         }
 
         // This adds all video files in a directory to the database and returns them in a list
-        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo dir, int parentID)
+        private List<VideoFile> MapContainedVideoFiles(DirectoryInfo dir, int parentId)
         {
             // Get the list to store successful additions
             List<VideoFile> files = new List<VideoFile>();
@@ -126,12 +127,16 @@ namespace Zoodevio
                     VideoFile file = new VideoFile(videoFiles[j].FullName, GetDefaultTags());
 
                     // Try to add the file to the database
-                    Response response = Files.AddFile(file, true);
+                    Response response = Files.AddFile(file, parentId, true);
 
                     // Report if file addition was unsuccessful
-                    if (response != Response.Success)
+                    if (response == Response.Success)
                     {
+                        file = GetAddedVideoFile(file.Path);
+                        Files.AssociateFileLocation(file, parentId);
                         files.Add(file);
+                    }
+                    else {
                         Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
                     }
                 }
@@ -141,10 +146,10 @@ namespace Zoodevio
         }
 
         // Set new library root reference to the given directory
-        private Folder SetRootReference(DirectoryInfo root)
+        private static Folder SetRootReference(DirectoryInfo root)
         {
             // Make a folder object to use as the new root
-            Folder rootFolder = new Folder(-1, root.FullName);
+            Folder rootFolder = new Folder(Database.ROOT_PARENT, root.FullName);
                 
             // Replace the current folder structure with the childless new root
             Response response = Folders.DeleteAllFolders(rootFolder);
@@ -156,7 +161,7 @@ namespace Zoodevio
                 Files.DeleteAllFiles();
 
                 // Begin building the tree from the root folder
-                return rootFolder;
+                return GetAddedFolder(root.FullName, Database.ROOT_PARENT);
             }
 
             // If this was unsuccessful, the process stops here.
@@ -164,7 +169,7 @@ namespace Zoodevio
         }
 
         // Get the top level subdirectories in a diven directory if possible
-        private DirectoryInfo[] GetImmediateSubDirectories(DirectoryInfo dir)
+        private static DirectoryInfo[] GetImmediateSubDirectories(DirectoryInfo dir)
         {
             try
             { 
@@ -181,18 +186,30 @@ namespace Zoodevio
         }
 
         // Gets an array of strings containing all supported file extensions
-        private string[] GetSupportedFileExtensions()
+        private static string[] GetSupportedFileExtensions()
         {
             // TODO: Get an array of supported file extensions in "xxx" format (no '.')
             return new string[] { "mp4", "avi", "mov", "flv", "mkv" };
         }
 
         // This gets a list of default required tags a video file has
-        private List<TagEntry> GetDefaultTags()
+        private static List<TagEntry> GetDefaultTags()
         {
             // TODO: Get default tags from DB
             List<TagEntry> defaultTags = new List<TagEntry>();
             return defaultTags;
+        }
+
+        private static Folder GetAddedFolder(string name, int parentId)
+        {
+            List<Folder> matches = Folders.GetFoldersByName(name);
+            return matches.Find(f => f.ParentId == parentId);
+        }
+
+        private static VideoFile GetAddedVideoFile(string path)
+        {
+            List<VideoFile> matches = Files.GetVideoFiles(path);
+            return matches.Count > 0 ? matches[0] : null;
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using Zoodevio.DataModel.Objects;
 
 namespace Zoodevio.DataModel
@@ -18,7 +19,7 @@ namespace Zoodevio.DataModel
         
         // add a file to the database, or ovewrites an existing file 
         // returns a response code
-        public static Response AddFile(VideoFile file, bool overwrite)
+        public static Response AddFile(VideoFile file, int parentId, bool overwrite)
         {
             // locate the video file if it exists
             VideoFile databaseFile = GetFile(file.Id);
@@ -31,7 +32,7 @@ namespace Zoodevio.DataModel
             string[] data =
             {
                 file.Path,
-                (file.DateAdded != null) ? file.DateAdded.ToString() : DateTime.Now.ToString(),
+                (file.DateAdded.Equals(DateTime.MinValue)) ? DateTime.Now.ToString() : file.DateAdded.ToString(),
                 DateTime.Now.ToString(),
             };
             if (databaseFile == null)
@@ -54,29 +55,48 @@ namespace Zoodevio.DataModel
 
         // add multiple files to the database
         // returns an array of response codes - one per file
-        public static Response[] AddFiles(List<VideoFile> files, bool overwrite)
+        public static Response[] AddFiles(List<VideoFile> files, int[] parentIds, bool overwrite)
         {
             Response[] Response = new Response[files.Count];
             for(int i = 0; i < files.Count; i++)
             {
-                Response[i] = AddFile(files[i], overwrite);
+                Response[i] = AddFile(files[i], parentIds[i], overwrite);
             }
             return Response; 
         }
 
+        public static Response AssociateFileLocation(VideoFile file, int parentId)
+        {
+            // locate the video file if it exists
+            string[] rows =
+            {
+                "file_id",
+                "folder_id"
+            };
+            string[] data =
+            {
+                file.Id.ToString(),
+                parentId.ToString()
+            };
+
+            // insert a new file location
+            bool success = Database.SimpleInsertQuery(_fileLocationsTable, rows, data);
+            
+            return (success) ? Response.Success : Response.FailedDatabase;
+        }
+
         // get all file object(s) in the database that have a certain path
         // WARNING: adds a null entry if data doesn't exist
-        // probably need to improve that behavior
         public static List<VideoFile> GetVideoFiles(String path)
         {
-            return ConvertReaderToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
+            return ConvertDataTableToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
         }
 
         // get a file object by ID from the database
         public static VideoFile GetFile(int id)
         {
             // get matching file from database
-            List<VideoFile> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            List<VideoFile> matches = ConvertDataTableToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
             if (matches.Count > 0)
             {
                 return matches[0];
@@ -85,7 +105,6 @@ namespace Zoodevio.DataModel
             {
                 return null;
             }
-            //return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
         }
 
         // generate a video file from a row of raw data
@@ -100,7 +119,7 @@ namespace Zoodevio.DataModel
             return new VideoFile(
                 id,
                 row.GetString(1),
-                Tags.GetFileTags(id),
+                null, // Tags.GetFileTags(id),
                 Convert.ToDateTime(row.GetDateTime(2)),
                 Convert.ToDateTime(row.GetDateTime(3)));
         }
@@ -118,24 +137,23 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFolders() 
         public static bool DeleteAllFiles()
         {
-            return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
+            return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
         }
-
-        // get all the Video Files from a folder by name
-        public static List<VideoFile> GetFilesByFolderName(string name)
+        
+        private static List<VideoFile> ConvertDataTableToList(DataTable table)
         {
             List<VideoFile> returnList = new List<VideoFile>();
-            //TODO: Do this
-            return returnList;
-        }
 
-        private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
-        {
-            List<VideoFile> returnList = new List<VideoFile>();
-            while (reader.Read())
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                returnList.Add(new VideoFile(reader.GetInt32(0), reader.GetString(1), null, reader.GetDateTime(2),
-                    reader.GetDateTime(3)));
+                DataRow row = table.Rows[i];
+                returnList.Add(new VideoFile(
+                    Convert.ToInt32(row["id"]),
+                    row["path"].ToString(),
+                    null,
+                    DateTime.Parse(row["date_added"].ToString()),
+                    DateTime.Parse(row["date_edited"].ToString())
+                    ));
             }
             return returnList;
         }
