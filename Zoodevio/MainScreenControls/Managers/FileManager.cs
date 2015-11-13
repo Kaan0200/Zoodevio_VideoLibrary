@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
@@ -21,11 +20,10 @@ namespace Zoodevio.Managers
 
         public void DisplaySelectedFolderContents(TreeNode selection)
         {
-            // get the id of the folder from the tag value on the node
-            List<VideoFile> videoFiles = Folders.GetVideoFilesInFolder(Convert.ToInt32(selection.Tag));
-            if (videoFiles.Count > 0)
+            Folder folder = Files.GetFilesByFolderName(selection.Name);
+            if (folder != null)
             {
-                _listControl.DisplayFolderInView(videoFiles);
+                _listControl.DisplayFolderInView(folder.Files);
             }
         }
     }
