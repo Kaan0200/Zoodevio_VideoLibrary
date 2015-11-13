@@ -9,7 +9,6 @@ namespace Zoodevio
         private bool _gridViewToggle; // true is gridview, false is listview
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
-        private bool _isGridViewNotListView = false;
 
         private MainScreenManager _mainManager;
 
@@ -17,16 +16,12 @@ namespace Zoodevio
         public BasicSearchControl BasicSearchControl { get { return basicSearchControl; } }
         public GridViewControl GridViewControl { get { return gridViewControl; } }
         public LibraryPanelControl LibraryPanelControl { get { return libraryPanelControl; } }
-        public ListViewControl ListViewControl { get { return listViewControl; } }
         public MetadataViewControl MetadataViewControl { get { return metadataViewControl; } }
 
         public MainScreen()
         {
             InitializeComponent();
             SetupManagers();
-
-            gridViewControl.Visible = _isGridViewNotListView;
-            gridViewControl.Visible = !_isGridViewNotListView;
         }
 
         // Setups the manager for the MainScreenManager
@@ -61,14 +56,6 @@ namespace Zoodevio
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
             basicSearchControl.Visible = _searchViewToggle;
-        }
-
-        private void toggleListViewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Toggled between List and Grid view :");
-            _isGridViewNotListView = !_isGridViewNotListView;
-            gridViewControl.Visible = _isGridViewNotListView;
-            listViewControl.Visible = !_isGridViewNotListView;
         }
 
         #endregion

@@ -85,12 +85,6 @@
     <Compile Include="MainScreenControls\GridViewControl.Designer.cs">
       <DependentUpon>GridViewControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainScreenControls\ListViewControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MainScreenControls\ListViewControl.Designer.cs">
-      <DependentUpon>ListViewControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +118,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreenControls\GridViewControl.resx">
       <DependentUpon>GridViewControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainScreenControls\ListViewControl.resx">
-      <DependentUpon>ListViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreenControls\MetadataViewControl.resx">
       <DependentUpon>MetadataViewControl.cs</DependentUpon>

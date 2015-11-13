@@ -10,13 +10,11 @@ namespace Zoodevio.Managers
     {
         private MainScreenManager _parentManager;
         private GridViewControl _gridControl;
-        private ListViewControl _listControl;
 
-        public FileManager(MainScreenManager manager, GridViewControl gridViewControl, ListViewControl listViewControl)
+        public FileManager(MainScreenManager manager, GridViewControl gridViewControl)
         {
             _parentManager = manager;
             _gridControl = gridViewControl;
-            _listControl = listViewControl;
         }
 
         public void DisplaySelectedFolderContents(TreeNode selection)
