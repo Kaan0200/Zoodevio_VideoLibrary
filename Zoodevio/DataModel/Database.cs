@@ -11,6 +11,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Xml;
 using NUnit.Framework;
 
 namespace Zoodevio.DataModel
@@ -39,8 +40,9 @@ namespace Zoodevio.DataModel
             "Data Source=" + DATABASE_FILE + ";Version=3;PRAGMA foreign_keys = 1");
 
         // executes a basic select * query from a table
-        public static SQLiteDataReader SimpleStarQuery(string table)
+        public static DataTable SimpleStarQuery(string table)
         {
+            DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
                 _dbConnection.Close();
@@ -49,12 +51,15 @@ namespace Zoodevio.DataModel
             List<IDataRecord> data = new List<IDataRecord>();
             // build the query
             SQLiteCommand com = new SQLiteCommand("select * from " + table, _dbConnection);
-            return com.ExecuteReader();
+            dt.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dt;
         }
 
         // executes a basic read query (select * from table where column is value) 
-        public static SQLiteDataReader SimpleReadQuery(string table, string column, string value)
+        public static DataTable SimpleReadQuery(string table, string column, string value)
         {
+            DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
                 _dbConnection.Close();
@@ -64,8 +69,9 @@ namespace Zoodevio.DataModel
             // build the query
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where " + column + " = " + value , _dbConnection);
-            return com.ExecuteReader();
-
+            dt.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dt;
         }
 
         // iterate over a data reader object
@@ -94,8 +100,9 @@ namespace Zoodevio.DataModel
         }
 
         // perform a LIKE query on a given database for a given column/input string
-        public static SQLiteDataReader ReadLikeQuery(string table, string column, string value, LikeLocation loc)
+        public static DataTable ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
                 _dbConnection.Close();
@@ -103,8 +110,9 @@ namespace Zoodevio.DataModel
             _dbConnection.Open();
             SQLiteCommand com =
                 new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
-            _dbConnection.Close(); 
-            return com.ExecuteReader();
+            dt.Load(com.ExecuteReader());
+            _dbConnection.Close();
+            return dt;
 
         }
 
@@ -218,20 +226,20 @@ namespace Zoodevio.DataModel
 
         // truncates a database table
         // WARNING: THIS KILLS THE TABLE (silently)
-        public static bool TruncateTable(string table)
+        // if resetIncrement is true, also restarts the id increment at 0
+        public static bool TruncateTable(string table, bool resetIncrement)
         {
             if (_dbConnection.State == ConnectionState.Open)
             {
                 _dbConnection.Close();
             }
-            _dbConnection.Open(); 
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + "; vacuum", _dbConnection);
-            // reset autoincrementing
-            SQLiteCommand com2 = new SQLiteCommand("delete from sqlite_sequence where name = '" + table + "'");
+            _dbConnection.Open();
+            string query = "delete from " + table + "; vacuum" + ((resetIncrement) ? "; delete from sqlite_sequence where name='" + table + "'" : "");
+            Console.Write(query + "\n");
+            SQLiteCommand com = new SQLiteCommand(query, _dbConnection);
             try
             {
                 com.ExecuteNonQuery();
-                com2.ExecuteNonQuery();
                 _dbConnection.Close();
                 return true;
             }
@@ -241,6 +249,5 @@ namespace Zoodevio.DataModel
                 return false;
             }
         }
-
     }
 }

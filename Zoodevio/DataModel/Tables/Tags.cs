@@ -24,7 +24,7 @@ namespace Zoodevio.DataModel
         // get tags associated with a given file id 
         public static List<TagEntry> GetFileTags(int fileId)
         {
-            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
+            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
         }
 
         // update the tags associated with a certain file id 
@@ -42,8 +42,9 @@ namespace Zoodevio.DataModel
         // update a single tag associated with a file 
         public static bool UpdateFileTag(int fileId, TagEntry tag, List<TagEntry> oldTags)
         {
+            //TODO: uncomment and fix
             bool success;
-            string[] rows =
+         /*   string[] rows =
                 {
                     "type_id",
                     "file_id",
@@ -65,14 +66,14 @@ namespace Zoodevio.DataModel
             else
             {
                 success = Database.SimpleInsertQuery(_tagsTable, rows, data); 
-            }
-            return success; 
+            } */
+            return false; 
         }
 
         // get all tags of a certain type 
         public static List<TagEntry> GetTagsOfType(int typeId)
         {
-            return ConvertReaderToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
+            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
         } 
 
         // Note: TagEntry modifiers don't modify the database directly. They return a VideoFile which can then be written.
@@ -135,103 +136,103 @@ namespace Zoodevio.DataModel
 
         // get a tag type entry from the database
         //TODO: rewrite this with proper handling of query return
-       /* public static Tag GetTagType(int id)
+        /* public static Tag GetTagType(int id)
+         {
+             var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
+
+             return TagTypeFromRecord(data[0]);
+         }
+
+         private static Tag TagTypeFromRecord(IDataRecord row)
+         {
+             if (row == null)
+             {
+                 return null;
+             }
+             return new Tag(
+                 row.GetInt32(0),
+                 row.GetString(1),
+                 row.GetBoolean(2),
+                 row.GetBoolean(3),
+                 row.GetBoolean(4),
+                 row.GetString(5),
+                 row.GetBoolean(6));
+         } 
+
+         // add or modify a tag type within the database 
+         public static Response AddCustomTag(Tag type, bool overwrite)
+         {
+             Tag dbType = GetTagType(type.Id);
+             string[] rows =
+             {
+                 "id",
+                 "name",
+                 "can_search",
+                 "can_sort",
+                 "required",
+                 "data_type",
+             };
+             string[] data =
+             {
+                 type.Id.ToString(),
+                 type.Name,
+                 type.CanSearch.ToString(),
+                 type.CanSort.ToString(),
+                 type.Required ? "1" : "0",
+                 type.DataType,
+             };
+             if (type.IsModifiable)
+             {
+                 if (dbType == null)
+                 {
+                     bool success = Database.SimpleInsertQuery(_typesTable, rows, data);
+                     return (success) ? Response.Success : Response.FailedDatabase;
+
+                 }
+                 else if (overwrite)
+                 {
+                     // overwrite the old file if overwrite true
+                     bool success = Database.SimpleUpdateQuery(_tagsTable, "id", type.Id, rows, data);
+                     return (success) ? Response.Success : Response.FailedDatabase;
+                 }
+                 else
+                 {
+                     return Response.FailedOverwrite;
+                 }
+             }
+             else
+             {
+                 throw new ArgumentException("Unmodifiable tag passed!");
+             }
+         } 
+
+         // delete a custom tag type from the database
+         public static bool DeleteCustomTag(int id)
+         {
+             // get the tag and make sure it can be modfiied
+             Tag type = GetTagType(id);
+             if (type.IsModifiable)
+             {
+                 return Database.SimpleDeleteQuery(_tagsTable, "id", type.Id);
+             }
+             else
+             {
+                 return false; 
+             }
+         }*/
+
+        private static List<TagEntry> ConvertDataTableToList(DataTable table)
         {
-            var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
+            List<TagEntry> returnList = new List<TagEntry>();
 
-            return TagTypeFromRecord(data[0]);
-        }
-
-        private static Tag TagTypeFromRecord(IDataRecord row)
-        {
-            if (row == null)
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                return null;
-            }
-            return new Tag(
-                row.GetInt32(0),
-                row.GetString(1),
-                row.GetBoolean(2),
-                row.GetBoolean(3),
-                row.GetBoolean(4),
-                row.GetString(5),
-                row.GetBoolean(6));
-        } 
-
-        // add or modify a tag type within the database 
-        public static Response AddCustomTag(Tag type, bool overwrite)
-        {
-            Tag dbType = GetTagType(type.Id);
-            string[] rows =
-            {
-                "id",
-                "name",
-                "can_search",
-                "can_sort",
-                "required",
-                "data_type",
-            };
-            string[] data =
-            {
-                type.Id.ToString(),
-                type.Name,
-                type.CanSearch.ToString(),
-                type.CanSort.ToString(),
-                type.Required ? "1" : "0",
-                type.DataType,
-            };
-            if (type.IsModifiable)
-            {
-                if (dbType == null)
-                {
-                    bool success = Database.SimpleInsertQuery(_typesTable, rows, data);
-                    return (success) ? Response.Success : Response.FailedDatabase;
-
-                }
-                else if (overwrite)
-                {
-                    // overwrite the old file if overwrite true
-                    bool success = Database.SimpleUpdateQuery(_tagsTable, "id", type.Id, rows, data);
-                    return (success) ? Response.Success : Response.FailedDatabase;
-                }
-                else
-                {
-                    return Response.FailedOverwrite;
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Unmodifiable tag passed!");
-            }
-        } 
-
-        // delete a custom tag type from the database
-        public static bool DeleteCustomTag(int id)
-        {
-            // get the tag and make sure it can be modfiied
-            Tag type = GetTagType(id);
-            if (type.IsModifiable)
-            {
-                return Database.SimpleDeleteQuery(_tagsTable, "id", type.Id);
-            }
-            else
-            {
-                return false; 
-            }
-        }*/
-
-        private static List<TagEntry> ConvertReaderToList(SQLiteDataReader reader)
-        {
-            var returnList = new List<TagEntry>();
-            while (reader.Read())
-            {
+                DataRow row = table.Rows[i];
                 returnList.Add(new TagEntry(
-                    reader.GetInt32(0),
-                    reader.GetInt32(1),
-                    reader.GetInt32(2),
+                    Convert.ToInt32(row["id"]),
+                    Convert.ToInt32(row["type_id"]),
+                    Convert.ToInt32(row["file_id"]),
                     null
-                    //TODO: fix this to use SQLiteDataReader and not IDataRow
-                    //Database.GetBytes(reader, 3)
                     ));
             }
             return returnList;

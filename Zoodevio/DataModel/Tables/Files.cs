@@ -67,17 +67,16 @@ namespace Zoodevio.DataModel
 
         // get all file object(s) in the database that have a certain path
         // WARNING: adds a null entry if data doesn't exist
-        // probably need to improve that behavior
         public static List<VideoFile> GetVideoFiles(String path)
         {
-            return ConvertReaderToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
+            return ConvertDataTableToList(Database.ReadLikeQuery(_table, "path", path, Database.LikeLocation.Both));
         }
 
         // get a file object by ID from the database
         public static VideoFile GetFile(int id)
         {
             // get matching file from database
-            List<VideoFile> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            List<VideoFile> matches = ConvertDataTableToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
             if (matches.Count > 0)
             {
                 return matches[0];
@@ -86,7 +85,6 @@ namespace Zoodevio.DataModel
             {
                 return null;
             }
-            //return ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()))[0];
         }
 
         // generate a video file from a row of raw data
@@ -101,7 +99,7 @@ namespace Zoodevio.DataModel
             return new VideoFile(
                 id,
                 row.GetString(1),
-                Tags.GetFileTags(id),
+                null, // Tags.GetFileTags(id),
                 Convert.ToDateTime(row.GetDateTime(2)),
                 Convert.ToDateTime(row.GetDateTime(3)));
         }
@@ -119,20 +117,22 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFolders() 
         public static bool DeleteAllFiles()
         {
-            return Database.TruncateTable(_table) && Database.TruncateTable(_fileLocationsTable);
+            return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
         }
-
-        private static List<VideoFile> ConvertReaderToList(SQLiteDataReader reader)
+        
+        private static List<VideoFile> ConvertDataTableToList(DataTable table)
         {
             List<VideoFile> returnList = new List<VideoFile>();
-            while (reader.Read())
+
+            for (int i = 0; i < table.Rows.Count; i++)
             {
+                DataRow row = table.Rows[i];
                 returnList.Add(new VideoFile(
-                    Convert.ToInt32(reader["id"]),
-                    reader["path"].ToString(),
+                    Convert.ToInt32(row["id"]),
+                    row["path"].ToString(),
                     null,
-                    DateTime.Parse(reader["date_added"].ToString()),
-                    DateTime.Parse(reader["date_edited"].ToString())
+                    DateTime.Parse(row["date_added"].ToString()),
+                    DateTime.Parse(row["date_edited"].ToString())
                     ));
             }
             return returnList;

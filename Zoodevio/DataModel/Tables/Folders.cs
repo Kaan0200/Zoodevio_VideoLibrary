@@ -17,7 +17,10 @@ namespace Zoodevio.DataModel
     public static class Folders
     {
         private static string _table = "folders";
-        private static string _fileLocationsTable = "file_locations"; 
+        private static string _fileLocationsTable = "file_locations";
+
+        // the id of the root folder
+        public const int ROOT_ID = 1; 
 
         // add a single folder to the database
         public static Response AddFolder(Folder folder, Boolean overwrite)
@@ -69,14 +72,15 @@ namespace Zoodevio.DataModel
         public static List<Folder> GetAllFolders()
         {
             // star query the table, get the reader, turn into list of 
-            return ConvertReaderToList(Database.SimpleStarQuery(_table));
+            return ConvertDataTableToList(Database.SimpleStarQuery(_table));
         } 
 
         // get a Folder by ID 
         public static Folder GetFolder(int id)
         {
             // read a simple id query, then convert to folders, and get the first one in the list
-            List<Folder> matches = ConvertReaderToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+            List<Folder> matches = ConvertDataTableToList(Database.SimpleReadQuery(_table, "id", id.ToString()));
+
             if (matches.Count > 0)
             {
                 return matches[0];
@@ -91,14 +95,14 @@ namespace Zoodevio.DataModel
         // words similarly to GetVideoFiles()
         public static List<Folder> GetFoldersByName(string name)
         {
-            return ConvertReaderToList(Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both));
+            return ConvertDataTableToList(Database.ReadLikeQuery(_table, "name", name, Database.LikeLocation.Both));
         }
 
         // get the folder to which a given file ID belongs
         public static Folder GetContainingFolder(int fileId)
         {
             List<Folder> matches =
-                ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable, "file_id", fileId.ToString()));
+                ConvertDataTableToList(Database.SimpleReadQuery(_fileLocationsTable, "file_id", fileId.ToString()));
             if (matches.Count > 0)
             {
                 return GetFolder(matches[0].ParentId);
@@ -107,9 +111,6 @@ namespace Zoodevio.DataModel
             {
                 return null;
             }
-            //var inFile = ConvertReaderToList(Database.SimpleReadQuery(_fileLocationsTable,"file_id", fileId.ToString()))[0];
-
-            //return GetFolder(inFile.ParentId); 
         }
 
         // delete a file from the database by ID
@@ -142,13 +143,13 @@ namespace Zoodevio.DataModel
         public static List<VideoFile> GetVideoFilesInFolder(int folderId)
         {
             // get a list of file ids matching this folder as parent
-            var reader = Database.SimpleReadQuery(_fileLocationsTable,
+            var table = Database.SimpleReadQuery(_fileLocationsTable,
                 "folder_id", folderId.ToString());
 
             var intList = new List<int>();
-            while (reader.Read())
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                intList.Add(reader.GetInt32(0));
+                intList.Add(Convert.ToInt32(table.Rows[i][0]));
             }
 
             // generate videofiles for them
@@ -163,16 +164,26 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFiles() for that reason
         public static Response DeleteAllFolders(Folder newRoot)
         {
-            Database.TruncateTable(_table);
+            Database.TruncateTable(_table, true);
             return AddFolder(newRoot, false); 
         }
 
-        private static List<Folder> ConvertReaderToList(SQLiteDataReader reader)
+        private static List<Folder> ConvertDataTableToList(DataTable table)
         {
             List<Folder> returnList = new List<Folder>();
-            while (reader.Read())
+
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                returnList.Add(new Folder( reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), null));
+                DataRow row = table.Rows[i];
+
+                // Get folder info from row to make folder object
+                int id = Convert.ToInt32(row["id"]);
+                int parentID = Convert.ToInt32(row["parent_id"]);
+                string name = row["name"].ToString();
+                List<VideoFile> files = GetVideoFilesInFolder(id);
+
+                // Add folder instance to return list
+                returnList.Add(new Folder(id, parentID, name, files));
             }
             return returnList;
         }
