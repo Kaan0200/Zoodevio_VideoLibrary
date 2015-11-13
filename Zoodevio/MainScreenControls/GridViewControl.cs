@@ -56,7 +56,13 @@ namespace Zoodevio
         {
             string[] paths = f.Path.Split(Convert.ToChar("\\"));
             string name = paths[paths.Length - 1];
-            gridView.Items.Add(name);
+            var item = new ListViewItem
+            {
+                Name = name,
+                Text = name,
+                BackColor = Color.Azure
+            };
+            gridView.Items.Add(item);
         }
 
         private void changeToIcon_Click(object sender, EventArgs e)
