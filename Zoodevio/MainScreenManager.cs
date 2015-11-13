@@ -129,12 +129,16 @@ namespace Zoodevio
                     VideoFile file = new VideoFile(videoFiles[j].FullName, GetDefaultTags());
 
                     // Try to add the file to the database
-                    Response response = Files.AddFile(file, true);
+                    Response response = Files.AddFile(file, parentId, true);
 
                     // Report if file addition was unsuccessful
-                    if (response != Response.Success)
+                    if (response == Response.Success)
                     {
+                        file = GetAddedVideoFile(file.Path);
+                        Files.AssociateFileLocation(file, parentId);
                         files.Add(file);
+                    }
+                    else {
                         Console.WriteLine("Files table addition failed:\n    " + videoFiles[j].FullName);
                     }
                 }
@@ -144,7 +148,7 @@ namespace Zoodevio
         }
 
         // Set new library root reference to the given directory
-        private Folder SetRootReference(DirectoryInfo root)
+        private static Folder SetRootReference(DirectoryInfo root)
         {
             // Make a folder object to use as the new root
             Folder rootFolder = new Folder(Database.ROOT_PARENT, root.FullName);
@@ -167,7 +171,7 @@ namespace Zoodevio
         }
 
         // Get the top level subdirectories in a diven directory if possible
-        private DirectoryInfo[] GetImmediateSubDirectories(DirectoryInfo dir)
+        private static DirectoryInfo[] GetImmediateSubDirectories(DirectoryInfo dir)
         {
             try
             { 
@@ -184,14 +188,14 @@ namespace Zoodevio
         }
 
         // Gets an array of strings containing all supported file extensions
-        private string[] GetSupportedFileExtensions()
+        private static string[] GetSupportedFileExtensions()
         {
             // TODO: Get an array of supported file extensions in "xxx" format (no '.')
             return new string[] { "mp4", "avi", "mov", "flv", "mkv" };
         }
 
         // This gets a list of default required tags a video file has
-        private List<TagEntry> GetDefaultTags()
+        private static List<TagEntry> GetDefaultTags()
         {
             // TODO: Get default tags from DB
             List<TagEntry> defaultTags = new List<TagEntry>();
@@ -201,18 +205,13 @@ namespace Zoodevio
         private static Folder GetAddedFolder(string name, int parentId)
         {
             List<Folder> matches = Folders.GetFoldersByName(name);
-            Folder match = matches.Find(f => f.ParentId == parentId);
-            //Console.WriteLine("GETTING ADDED FOLDER: " + match);
-            if (match != null)
-            {
-                Console.WriteLine("GETTING ADDED FOLDER: " + name + " as " + match);
-                return matches[0];
-            }
-            else
-            {
-                Console.WriteLine(name);
-                return null;
-            }
+            return matches.Find(f => f.ParentId == parentId);
+        }
+
+        private static VideoFile GetAddedVideoFile(string path)
+        {
+            List<VideoFile> matches = Files.GetVideoFiles(path);
+            return matches.Count > 0 ? matches[0] : null;
         }
 
         public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)

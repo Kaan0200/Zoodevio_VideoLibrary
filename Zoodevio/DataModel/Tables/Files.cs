@@ -19,7 +19,7 @@ namespace Zoodevio.DataModel
         
         // add a file to the database, or ovewrites an existing file 
         // returns a response code
-        public static Response AddFile(VideoFile file, bool overwrite)
+        public static Response AddFile(VideoFile file, int parentId, bool overwrite)
         {
             // locate the video file if it exists
             VideoFile databaseFile = GetFile(file.Id);
@@ -55,14 +55,34 @@ namespace Zoodevio.DataModel
 
         // add multiple files to the database
         // returns an array of response codes - one per file
-        public static Response[] AddFiles(List<VideoFile> files, bool overwrite)
+        public static Response[] AddFiles(List<VideoFile> files, int[] parentIds, bool overwrite)
         {
             Response[] Response = new Response[files.Count];
             for(int i = 0; i < files.Count; i++)
             {
-                Response[i] = AddFile(files[i], overwrite);
+                Response[i] = AddFile(files[i], parentIds[i], overwrite);
             }
             return Response; 
+        }
+
+        public static Response AssociateFileLocation(VideoFile file, int parentId)
+        {
+            // locate the video file if it exists
+            string[] rows =
+            {
+                "file_id",
+                "folder_id"
+            };
+            string[] data =
+            {
+                file.Id.ToString(),
+                parentId.ToString()
+            };
+
+            // insert a new file location
+            bool success = Database.SimpleInsertQuery(_fileLocationsTable, rows, data);
+            
+            return (success) ? Response.Success : Response.FailedDatabase;
         }
 
         // get all file object(s) in the database that have a certain path

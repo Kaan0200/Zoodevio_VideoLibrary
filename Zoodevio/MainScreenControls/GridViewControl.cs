@@ -21,10 +21,16 @@ namespace Zoodevio
             InitializeComponent();
         }
 
+        public void ClearView()
+        {
+            gridView.Items.Clear();
+        }
+
         internal void CreateVideoIcon(VideoFile f)
         {
-
-            gridView.Items.Add(f.Path);
+            string[] paths = f.Path.Split(Convert.ToChar("\\"));
+            string name = paths[paths.Length - 1];
+            gridView.Items.Add(name);
         }
     }
 }

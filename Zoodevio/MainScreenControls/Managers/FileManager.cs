@@ -27,6 +27,7 @@ namespace Zoodevio.Managers
                 // if grid control, as in create icons for files
                 if (_gridControl.Visible == true)
                 {
+                    _gridControl.ClearView();
                     files.ForEach(f => _gridControl.CreateVideoIcon(f));
 
                 } else { // list control, populate data set
