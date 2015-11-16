@@ -63,6 +63,7 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static DataTable SimpleReadQuery(string table, string column, string value)
         {
+            value = value.Replace("'", "''");
             DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
