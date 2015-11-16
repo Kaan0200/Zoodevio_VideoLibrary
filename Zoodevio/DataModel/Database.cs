@@ -106,6 +106,7 @@ namespace Zoodevio.DataModel
         // perform a LIKE query on a given database for a given column/input string
         public static DataTable ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            value = value.Replace("'", "''");
             DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
@@ -147,10 +148,11 @@ namespace Zoodevio.DataModel
             }
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
-            string dataStatement = String.Join("', '", data);
+            string dataStatement = String.Join("', '", SanitizeData(data));
             string query = "insert into " + table + " (" + rowStatement + ") values ('" + dataStatement + "')";
             Console.Write(query);
-            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rowStatement+") values ('"+dataStatement+"')",_dbConnection);
+            // sanitize for apostrophes
+            SQLiteCommand com = new SQLiteCommand(query,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -175,8 +177,10 @@ namespace Zoodevio.DataModel
                 _dbConnection.Close();
             }
             _dbConnection.Open();
-            string setCommand = BuildSetCommand(rows, data); 
-            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
+            string setCommand = BuildSetCommand(rows, SanitizeData(data));
+            // sanitize for apostrophes
+            string query = "update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier;
+            SQLiteCommand com = new SQLiteCommand(query,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -188,6 +192,16 @@ namespace Zoodevio.DataModel
                 _dbConnection.Close();
                 return false;
             }
+        }
+
+        // sanitize data rows
+        private static string[] SanitizeData(string[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = data[i].Replace("'", "''");
+            }
+            return data;
         }
 
         // builds a SET statement with a list of columns to set up 
