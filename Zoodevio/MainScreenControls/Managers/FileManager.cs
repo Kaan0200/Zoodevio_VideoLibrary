@@ -10,13 +10,11 @@ namespace Zoodevio.Managers
     {
         private MainScreenManager _parentManager;
         private GridViewControl _gridControl;
-        private ListViewControl _listControl;
 
-        public FileManager(MainScreenManager manager, GridViewControl gridViewControl, ListViewControl listViewControl)
+        public FileManager(MainScreenManager manager, GridViewControl gridViewControl)
         {
             _parentManager = manager;
             _gridControl = gridViewControl;
-            _listControl = listViewControl;
         }
 
         public void DisplaySelectedFolderContents(TreeNode selection)
@@ -27,6 +25,7 @@ namespace Zoodevio.Managers
                 // if grid control, as in create icons for files
                 if (_gridControl.Visible == true)
                 {
+                    _gridControl.ClearView();
                     files.ForEach(f => _gridControl.CreateVideoIcon(f));
 
                 } else { // list control, populate data set

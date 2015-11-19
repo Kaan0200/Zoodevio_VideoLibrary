@@ -26,6 +26,10 @@ namespace Zoodevio.DataModel
             Both
         }
 
+        // the default id and parent id for the root folder
+        public static readonly int ROOT_ID = 1;
+        public static readonly int ROOT_PARENT = 0;
+
         // the directory where Zoodevio is executing
         private static readonly string PROJECT_DIRECTORY = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -59,6 +63,7 @@ namespace Zoodevio.DataModel
         // executes a basic read query (select * from table where column is value) 
         public static DataTable SimpleReadQuery(string table, string column, string value)
         {
+            value = value.Replace("'", "''");
             DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
@@ -102,6 +107,7 @@ namespace Zoodevio.DataModel
         // perform a LIKE query on a given database for a given column/input string
         public static DataTable ReadLikeQuery(string table, string column, string value, LikeLocation loc)
         {
+            value = value.Replace("'", "''");
             DataTable dt = new DataTable();
             if (_dbConnection.State == ConnectionState.Open)
             {
@@ -109,7 +115,7 @@ namespace Zoodevio.DataModel
             }
             _dbConnection.Open();
             SQLiteCommand com =
-                new SQLiteCommand("select * from " + table + " where '" + column + "' LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
+                new SQLiteCommand("select * from " + table + " where " + column + " LIKE '" + GetWildcardedString(value, loc) + "'", _dbConnection);
             dt.Load(com.ExecuteReader());
             _dbConnection.Close();
             return dt;
@@ -134,7 +140,7 @@ namespace Zoodevio.DataModel
 
         // insert a new record into the database; return success or failure
         // note: data string should be formatted correctly (ints without quotes, etc.)
-        public static Boolean SimpleInsertQuery(string table, 
+        public static bool SimpleInsertQuery(string table, 
             string[] rows, string[] data)
         {
             if (_dbConnection.State == ConnectionState.Open)
@@ -143,10 +149,11 @@ namespace Zoodevio.DataModel
             }
             _dbConnection.Open();
             string rowStatement = String.Join(", ", rows);
-            string dataStatement = String.Join("', '", data);
+            string dataStatement = String.Join("', '", SanitizeData(data));
             string query = "insert into " + table + " (" + rowStatement + ") values ('" + dataStatement + "')";
             Console.Write(query);
-            SQLiteCommand com = new SQLiteCommand("insert into "+table+" ("+rowStatement+") values ('"+dataStatement+"')",_dbConnection);
+            // sanitize for apostrophes
+            SQLiteCommand com = new SQLiteCommand(query,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
@@ -163,7 +170,7 @@ namespace Zoodevio.DataModel
 
         // update a record with new values in the database; return success or failure
         // note: data string should be formatted correctly (ints without quotes, etc.)
-        public static Boolean SimpleUpdateQuery(string table, string identifierField, int identifier,
+        public static bool SimpleUpdateQuery(string table, string identifierField, object identifier,
             string[] rows, string[] data)
         {
             if (_dbConnection.State == ConnectionState.Open)
@@ -171,19 +178,33 @@ namespace Zoodevio.DataModel
                 _dbConnection.Close();
             }
             _dbConnection.Open();
-            string setCommand = BuildSetCommand(rows, data); 
-            SQLiteCommand com = new SQLiteCommand("update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier,_dbConnection);
+            string setCommand = BuildSetCommand(rows, SanitizeData(data));
+            // sanitize for apostrophes
+            string query = "update " + table + " set " + setCommand + " WHERE " + identifierField + " = '" + identifier + "'";
+            Console.WriteLine(query);
+            SQLiteCommand com = new SQLiteCommand(query,_dbConnection);
             try
             {
                 com.ExecuteNonQuery();
                 _dbConnection.Close();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 _dbConnection.Close();
+                Console.WriteLine(e.ToString());
                 return false;
             }
+        }
+
+        // sanitize data rows
+        private static string[] SanitizeData(string[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = data[i].Replace("'", "''");
+            }
+            return data;
         }
 
         // builds a SET statement with a list of columns to set up 
@@ -192,7 +213,7 @@ namespace Zoodevio.DataModel
             string output = "";
             for(int i = 0; i < rows.Length; i++)
             {
-                output += rows[i] + " = " + data[i];
+                output += rows[i] + " = '" + data[i] + "'";
                 if (i < rows.Length - 1)
                 {
                     output += ", "; 
@@ -247,6 +268,32 @@ namespace Zoodevio.DataModel
             {
                 _dbConnection.Close();
                 return false;
+            }
+        }
+
+        // get the ID of the last item inserted into a given table
+        // note: this returns the integer id associated with the last inserted rowid; though theoretically these values are the same
+        // they may be different
+        public static int GetLastInsertID(string table)
+        {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
+            _dbConnection.Open();
+            string query = "select max(id) from "+table;
+            Console.Write(query + "\n");
+            SQLiteCommand com = new SQLiteCommand(query, _dbConnection);
+            try
+            {
+                int id = Convert.ToInt32(com.ExecuteScalar()); 
+                _dbConnection.Close();
+                return id; 
+            }
+            catch
+            {
+                _dbConnection.Close();
+                return -1;
             }
         }
     }

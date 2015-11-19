@@ -9,7 +9,6 @@ namespace Zoodevio
         private bool _gridViewToggle; // true is gridview, false is listview
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
-        private bool _isGridViewNotListView = false;
 
         private MainScreenManager _mainManager;
 
@@ -17,16 +16,12 @@ namespace Zoodevio
         public BasicSearchControl BasicSearchControl { get { return basicSearchControl; } }
         public GridViewControl GridViewControl { get { return gridViewControl; } }
         public LibraryPanelControl LibraryPanelControl { get { return libraryPanelControl; } }
-        public ListViewControl ListViewControl { get { return listViewControl; } }
         public MetadataViewControl MetadataViewControl { get { return metadataViewControl; } }
 
         public MainScreen()
         {
             InitializeComponent();
             SetupManagers();
-
-            gridViewControl.Visible = _isGridViewNotListView;
-            gridViewControl.Visible = !_isGridViewNotListView;
         }
 
         // Setups the manager for the MainScreenManager
@@ -63,14 +58,6 @@ namespace Zoodevio
             basicSearchControl.Visible = _searchViewToggle;
         }
 
-        private void toggleListViewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Toggled between List and Grid view :");
-            _isGridViewNotListView = !_isGridViewNotListView;
-            gridViewControl.Visible = _isGridViewNotListView;
-            listViewControl.Visible = !_isGridViewNotListView;
-        }
-
         #endregion
 
         #region Settings
@@ -90,23 +77,36 @@ namespace Zoodevio
                 string rootURL = fbd.SelectedPath;
 
                 // Pass to main screen manager to interact with DB
-                try { 
-                    _mainManager.SetLibraryRoot(rootURL);
-                    MessageBox.Show("Successfully set new library root!",
-                        "Zoodevio Video Library",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.None);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.StackTrace);
-                    MessageBox.Show("Failed to set new library root.",
-                        "Zoodevio Video Library",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                    throw ex;
-                }
+                /* try { 
+                     _mainManager.SetLibraryRoot(rootURL);
+                     _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+                     MessageBox.Show("Successfully set new library root!",
+                         "Zoodevio Video Library",
+                         MessageBoxButtons.OK,
+                         MessageBoxIcon.None);
+                 }
+                 catch (Exception ex)
+                 {
+                     Console.WriteLine(ex.StackTrace);
+                     MessageBox.Show("Failed to set new library root.",
+                         "Zoodevio Video Library",
+                         MessageBoxButtons.OK,
+                         MessageBoxIcon.Exclamation);
+                     throw ex;
+                 } */
+
+                _mainManager.SetLibraryRoot(rootURL);
+                _mainManager.LibraryManager.RefreshLibraryFromDatabase();
             }
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /** OPEN PREFERENCES DIALOG **/
+            PreferenceScreen prefs = new PreferenceScreen();
+            prefs.StartPosition = FormStartPosition.CenterParent;
+            prefs.ShowDialog(); 
+
         }
 
         #endregion
@@ -116,6 +116,11 @@ namespace Zoodevio
         private void forceFolderHiarchyRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+        }
+
+        private void metadataViewControl_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

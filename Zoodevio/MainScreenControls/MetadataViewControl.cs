@@ -45,5 +45,10 @@ namespace Zoodevio
                 ColorPickerPanel.BackColor = TagColorDialog.Color;
             }
         }
+
+        private void BitrateLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

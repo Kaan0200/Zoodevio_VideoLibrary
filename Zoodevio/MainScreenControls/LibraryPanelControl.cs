@@ -31,7 +31,7 @@ namespace Zoodevio
         public void AddFoldersToView(List<Folder> folders)
         {
             // find the parent first,
-            Folder parent = folders.Find(f => f.ParentId == -1);
+            Folder parent = folders.Find(f => f.ParentId == Database.ROOT_PARENT);
             folders.Remove(parent); // remove it from the list
             var parentNode = new TreeNode {
                 Text = parent.Name,

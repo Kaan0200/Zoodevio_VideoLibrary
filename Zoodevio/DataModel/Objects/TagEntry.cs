@@ -16,16 +16,23 @@ namespace Zoodevio.DataModel.Objects
         // their actual type is looked up later, when it's needed
         public int TypeId;
         public int FileId; // the file the tag belongs to
-        public byte[] Data; // the tag's data, unconverted
+        public string Data; // the tag's data, unconverted
 
-        public TagEntry(int id, int typeID, int fileID, byte[] data)
+
+
+        // for creating a tag as part of a file
+        public TagEntry(int typeId, string data)
         {
-            Id = id;
-            TypeId = typeID;
-            FileId = fileID; 
+            TypeId = typeId;
             Data = data;
         }
-
+        
+        // for getting a tag from the db
+        public TagEntry(int id, int typeId, int fileId, string data) : this(typeId, data)
+        {
+            Id = id;
+            FileId = fileId;
+        }
         // tags which are equal have the same type 
         // this is so that tags can be easily searched for and updated
         // please note: use EqualsWithData for real data equality

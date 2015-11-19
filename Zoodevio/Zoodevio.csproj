@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NReco.VideoConverter">
+      <HintPath>.\NReco.VideoConverter.dll</HintPath>
+    </Reference>
+    <Reference Include="NReco.VideoInfo">
+      <HintPath>.\NReco.VideoInfo.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -85,12 +91,6 @@
     <Compile Include="MainScreenControls\GridViewControl.Designer.cs">
       <DependentUpon>GridViewControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainScreenControls\ListViewControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MainScreenControls\ListViewControl.Designer.cs">
-      <DependentUpon>ListViewControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +108,12 @@
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MainScreenManager.cs" />
+    <Compile Include="PreferenceScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferenceScreen.Designer.cs">
+      <DependentUpon>PreferenceScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainScreenControls\LibraryPanelControl.cs">
@@ -125,11 +131,11 @@
     <EmbeddedResource Include="MainScreenControls\GridViewControl.resx">
       <DependentUpon>GridViewControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainScreenControls\ListViewControl.resx">
-      <DependentUpon>ListViewControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainScreenControls\MetadataViewControl.resx">
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferenceScreen.resx">
+      <DependentUpon>PreferenceScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -162,7 +168,6 @@
   <ItemGroup>
     <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using Zoodevio.DataModel.Objects;
 
@@ -17,14 +18,12 @@ namespace Zoodevio.DataModel
         // the two tables tag information is stored in
         private static string _tagsTable = "tag_contents";
         private static string _typesTable = "tag_types";
-
-        // chunks of data to get when reading 
-        private const int CHUNK_SIZE = 2*1024; 
+        private static string _thumbnailDir = "thumbnails";
 
         // get tags associated with a given file id 
         public static List<TagEntry> GetFileTags(int fileId)
         {
-            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
+            return GetTagList(Database.SimpleReadQuery(_tagsTable, "file_id", fileId.ToString()));
         }
 
         // update the tags associated with a certain file id 
@@ -42,9 +41,8 @@ namespace Zoodevio.DataModel
         // update a single tag associated with a file 
         public static bool UpdateFileTag(int fileId, TagEntry tag, List<TagEntry> oldTags)
         {
-            //TODO: uncomment and fix
             bool success;
-         /*   string[] rows =
+            string[] rows =
                 {
                     "type_id",
                     "file_id",
@@ -66,14 +64,14 @@ namespace Zoodevio.DataModel
             else
             {
                 success = Database.SimpleInsertQuery(_tagsTable, rows, data); 
-            } */
-            return false; 
+            } 
+            return success; 
         }
 
         // get all tags of a certain type 
         public static List<TagEntry> GetTagsOfType(int typeId)
         {
-            return ConvertDataTableToList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
+            return GetTagList(Database.SimpleReadQuery(_tagsTable, "type_id", typeId.ToString()));
         } 
 
         // Note: TagEntry modifiers don't modify the database directly. They return a VideoFile which can then be written.
@@ -136,28 +134,11 @@ namespace Zoodevio.DataModel
 
         // get a tag type entry from the database
         //TODO: rewrite this with proper handling of query return
-        /* public static Tag GetTagType(int id)
+        public static Tag GetTagType(int id)
          {
-             var data = ConvertReaderToList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
-
-             return TagTypeFromRecord(data[0]);
+            List<Tag> data = GetTagTypeList(Database.SimpleReadQuery(_typesTable, "id", id.ToString()));
+            return data[0];
          }
-
-         private static Tag TagTypeFromRecord(IDataRecord row)
-         {
-             if (row == null)
-             {
-                 return null;
-             }
-             return new Tag(
-                 row.GetInt32(0),
-                 row.GetString(1),
-                 row.GetBoolean(2),
-                 row.GetBoolean(3),
-                 row.GetBoolean(4),
-                 row.GetString(5),
-                 row.GetBoolean(6));
-         } 
 
          // add or modify a tag type within the database 
          public static Response AddCustomTag(Tag type, bool overwrite)
@@ -219,9 +200,10 @@ namespace Zoodevio.DataModel
              {
                  return false; 
              }
-         }*/
+         }
 
-        private static List<TagEntry> ConvertDataTableToList(DataTable table)
+        // get a list of TagEntries from a database query result
+        private static List<TagEntry> GetTagList(DataTable table)
         {
             List<TagEntry> returnList = new List<TagEntry>();
 
@@ -237,5 +219,43 @@ namespace Zoodevio.DataModel
             }
             return returnList;
         }
+
+        // get a list of Tags from a database query result
+        private static List<Tag> GetTagTypeList(DataTable table)
+        {
+            List<Tag> returnList = new List<Tag>();
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                DataRow row = table.Rows[i]; 
+                returnList.Add(new Tag(
+                    Convert.ToInt32(row["id"]),
+                    Convert.ToString(row["name"]),
+                    Convert.ToBoolean((row["can_search"])),
+                    Convert.ToBoolean((row["can_sort"])),
+                    Convert.ToBoolean((row["required"])),
+                    Convert.ToString(row["data_type"]),
+                    Convert.ToBoolean(row["is_system_tag"])));
+            }
+            return returnList;
+        } 
+
+        // creates a thumbnail image, then returns a thumbnail TagEntry for a chosen file containing that thumbnail's info 
+        public static TagEntry GenerateThumbnail(FileInfo file)
+        {
+            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
+            string thumbnailLocation = _thumbnailDir + "/" + file.Name + "-" +
+                                       string.Format("{0:yyyyMMddhhmmsstt}", DateTime.Now) + ".jpg"; 
+            // if the thumbnail directory doesn't exist, create it
+            if (!Directory.Exists(_thumbnailDir))
+            {
+                Directory.CreateDirectory(_thumbnailDir); 
+            }
+            ffMpeg.GetVideoThumbnail(file.FullName,thumbnailLocation);
+            return new TagEntry(9, 
+                thumbnailLocation);
+        }
+
+        
+
     }
 }

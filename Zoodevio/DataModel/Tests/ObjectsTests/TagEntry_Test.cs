@@ -35,7 +35,7 @@ namespace Zoodevio.DataModel.Tests
         [Test]
         public void TageEntry_TagIdentical_Accept()
         {
-            var data = new byte[] {0x20, 0x20};
+            var data = "blah blah blah";
             var tagEntry1 = new TagEntry(0, 1, 2, data);
             var tagEntry2 = new TagEntry(0, 1, 2, data);
             var tagEntry3 = new TagEntry(1, 1, 2, data);

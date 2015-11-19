@@ -91,6 +91,11 @@ namespace Zoodevio.DataModel
             }
         }
 
+        public static List<Folder> GetFoldersWithinFolder(int id)
+        {
+            return ConvertDataTableToList(Database.SimpleReadQuery(_table, "parent_id", id.ToString()));
+        }
+
         // get Folder(s) matching a name string
         // words similarly to GetVideoFiles()
         public static List<Folder> GetFoldersByName(string name)
