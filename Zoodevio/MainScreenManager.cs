@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NReco.VideoInfo;
 using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
@@ -124,7 +125,7 @@ namespace Zoodevio
                 for (int j = 0; j < videoFiles.Length; j++)
                 {
                     // Create a database VideoFile object for the file
-                    VideoFile file = new VideoFile(videoFiles[j].FullName, GetDefaultTags());
+                    VideoFile file = new VideoFile(videoFiles[j].FullName, GetDefaultTags(videoFiles[j]));
 
                     // Try to add the file to the database
                     Response response = Files.AddFile(file, parentId, true);
@@ -193,10 +194,29 @@ namespace Zoodevio
         }
 
         // This gets a list of default required tags a video file has
-        private static List<TagEntry> GetDefaultTags()
+        // For now, this means the system tags (ids 1-4), thumbnail (9) and color (8). 
+        private static List<TagEntry> GetDefaultTags(FileInfo file)
         {
-            // TODO: Get default tags from DB
             List<TagEntry> defaultTags = new List<TagEntry>();
+            var ffprobe = new FFProbe();
+            var videoInfo = ffprobe.GetMediaInfo(file.FullName);
+            defaultTags.Add(new TagEntry( // display name
+                1, file.Name
+                ));
+            defaultTags.Add(new TagEntry( // file type/extension
+                2, file.Extension.Replace(".","")));
+            defaultTags.Add(new TagEntry( // file length 
+                3, videoInfo.Duration.TotalMilliseconds.ToString()));
+            defaultTags.Add(new TagEntry( // file bitrate
+                4, videoInfo.GetAttrValue("bit_rate") 
+                ));
+            defaultTags.Add(new TagEntry( // default tag color
+                //TODO: make this a user-controllable setting 
+                8, "000000"));
+            // TODO: add thumbnail support
+            defaultTags.Add(new TagEntry( //
+                9, "not implemented"));
+
             return defaultTags;
         }
 

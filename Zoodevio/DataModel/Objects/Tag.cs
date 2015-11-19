@@ -2,7 +2,6 @@
  * Represents a type of tag in Zoodevio. 
  * Note that tag entries are handled in TagEntry.
  */ 
-using System.Data;
 
 namespace Zoodevio.DataModel.Objects
 {

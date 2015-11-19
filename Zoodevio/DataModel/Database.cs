@@ -140,7 +140,7 @@ namespace Zoodevio.DataModel
 
         // insert a new record into the database; return success or failure
         // note: data string should be formatted correctly (ints without quotes, etc.)
-        public static Boolean SimpleInsertQuery(string table, 
+        public static bool SimpleInsertQuery(string table, 
             string[] rows, string[] data)
         {
             if (_dbConnection.State == ConnectionState.Open)
@@ -170,7 +170,7 @@ namespace Zoodevio.DataModel
 
         // update a record with new values in the database; return success or failure
         // note: data string should be formatted correctly (ints without quotes, etc.)
-        public static Boolean SimpleUpdateQuery(string table, string identifierField, int identifier,
+        public static bool SimpleUpdateQuery(string table, string identifierField, int identifier,
             string[] rows, string[] data)
         {
             if (_dbConnection.State == ConnectionState.Open)
@@ -266,6 +266,32 @@ namespace Zoodevio.DataModel
             {
                 _dbConnection.Close();
                 return false;
+            }
+        }
+
+        // get the ID of the last item inserted into a given table
+        // note: this returns the integer id associated with the last inserted rowid; though theoretically these values are the same
+        // they may be different
+        public static int GetLastInsertID(string table)
+        {
+            if (_dbConnection.State == ConnectionState.Open)
+            {
+                _dbConnection.Close();
+            }
+            _dbConnection.Open();
+            string query = "select max(id) from "+table;
+            Console.Write(query + "\n");
+            SQLiteCommand com = new SQLiteCommand(query, _dbConnection);
+            try
+            {
+                int id = Convert.ToInt32(com.ExecuteScalar()); 
+                _dbConnection.Close();
+                return id; 
+            }
+            catch
+            {
+                _dbConnection.Close();
+                return -1;
             }
         }
     }

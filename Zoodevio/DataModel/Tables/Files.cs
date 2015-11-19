@@ -16,9 +16,10 @@ namespace Zoodevio.DataModel
     {
         private static string _table = "files";
         private static string _fileLocationsTable = "file_locations";
+        private static string _fileTagsTable = "tag_contents";
         
         // add a file to the database, or ovewrites an existing file 
-        // returns a response code
+        // returns a response
         public static Response AddFile(VideoFile file, int parentId, bool overwrite)
         {
             // locate the video file if it exists
@@ -39,13 +40,35 @@ namespace Zoodevio.DataModel
             {
                 // insert a new file if none exists
                 bool success = Database.SimpleInsertQuery(_table, rows, data);
-                return (success) ? Response.Success : Response.FailedDatabase;
+                if (success == false)
+                {
+                    return Response.FailedDatabase;
+                }
+                else
+                {
+                    // get the new file's ID
+                    int id = Database.GetLastInsertID(_table);
+                    Response tagSuccess = AssociateFileTags(file.Tags, id); 
+                    return (tagSuccess.Equals(Response.Success)) ? Response.Success : Response.FailedDatabase;
+
+                }
             }
             else if (overwrite)
             {
                 // overwrite the old file if overwrite true
-                bool success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data); 
-                return (success) ? Response.Success : Response.FailedDatabase;
+                bool success = Database.SimpleUpdateQuery(_table, "id", file.Id, rows, data);
+                if (success == false)
+                {
+                    return Response.FailedDatabase;
+                }
+                else
+                {
+                    // get the new file's ID
+                    int id = Database.GetLastInsertID(_table);
+                    Response tagSuccess = AssociateFileTags(file.Tags, id);
+                    return (tagSuccess.Equals(Response.Success)) ? Response.Success : Response.FailedDatabase;
+
+                }
             }
             else
             {
@@ -65,6 +88,7 @@ namespace Zoodevio.DataModel
             return Response; 
         }
 
+        // associate a file_location relationship with the id of the file's parent folder
         public static Response AssociateFileLocation(VideoFile file, int parentId)
         {
             // locate the video file if it exists
@@ -82,6 +106,39 @@ namespace Zoodevio.DataModel
             // insert a new file location
             bool success = Database.SimpleInsertQuery(_fileLocationsTable, rows, data);
             
+            return (success) ? Response.Success : Response.FailedDatabase;
+        }
+
+        // associate a list of tags with a given file 
+        public static Response AssociateFileTags(List<TagEntry> tags, int fileId)
+        {
+            foreach (TagEntry tag in tags)
+            {
+                Response response = AssociateFileTag(tag, fileId);
+                if (!response.Equals(Response.Success))
+                {
+                    return Response.FailedDatabase;
+                }
+            }
+            return Response.Success;
+        }
+
+        // associate a tag with a file 
+        public static Response AssociateFileTag(TagEntry tag, int fileId)
+        {
+            string[] rows =
+            {
+                "type_id",
+                "file_id",
+                "data"
+            };
+            string[] data =
+            {
+                tag.TypeId.ToString(),
+                fileId.ToString(),
+                tag.Data.ToString()
+            };
+            bool success = Database.SimpleInsertQuery(_fileTagsTable, rows, data);
             return (success) ? Response.Success : Response.FailedDatabase;
         }
 
@@ -107,23 +164,6 @@ namespace Zoodevio.DataModel
             }
         }
 
-        // generate a video file from a row of raw data
-        // or null if no data exists
-        private static VideoFile VideoFileFromRecord(IDataRecord row)
-        {
-            if (row == null)
-            {
-                return null;
-            }
-            int id = row.GetInt32(0); 
-            return new VideoFile(
-                id,
-                row.GetString(1),
-                null, // Tags.GetFileTags(id),
-                Convert.ToDateTime(row.GetDateTime(2)),
-                Convert.ToDateTime(row.GetDateTime(3)));
-        }
-
         // delete a file from the database by ID 
         public static bool DeleteFile(VideoFile file)
         {
@@ -140,6 +180,7 @@ namespace Zoodevio.DataModel
             return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
         }
         
+        // converts a given DataTable object to a list of video files 
         private static List<VideoFile> ConvertDataTableToList(DataTable table)
         {
             List<VideoFile> returnList = new List<VideoFile>();
