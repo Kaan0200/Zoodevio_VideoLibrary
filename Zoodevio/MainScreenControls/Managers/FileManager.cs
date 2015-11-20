@@ -19,19 +19,23 @@ namespace Zoodevio.Managers
 
         public void DisplaySelectedFolderContents(TreeNode selection)
         {
-            List<VideoFile> files = Folders.GetVideoFilesInFolder(Convert.ToInt32(selection.Tag));
-            if (files.Count != 0)
+            if (selection == null) return;
+            var files = Folders.GetVideoFilesInFolder(Convert.ToInt32(selection.Tag));
+            if (files.Count == 0) return;
+            // if grid control, as in create icons for files
+            if (_gridControl.Visible == true)
             {
-                // if grid control, as in create icons for files
-                if (_gridControl.Visible == true)
-                {
-                    _gridControl.ClearView();
-                    files.ForEach(f => _gridControl.CreateVideoIcon(f));
+                _gridControl.ClearView();
+                files.ForEach(f => _gridControl.CreateVideoIcon(f));
 
-                } else { // list control, populate data set
+            } else { // list control, populate data set
                 
-                }
             }
+        }
+
+        public void DisplayVideoFileMetadata(VideoFile file)
+        {
+            _parentManager.MetadataManager.DisplayVideoFileMetadata(file);
         }
     }
 }

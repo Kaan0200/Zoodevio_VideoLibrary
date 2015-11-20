@@ -1,4 +1,8 @@
-﻿namespace Zoodevio.Managers
+﻿using System;
+using Zoodevio.DataModel;
+using Zoodevio.DataModel.Objects;
+
+namespace Zoodevio.Managers
 {
     public class MetadataManager
     {
@@ -9,6 +13,17 @@
         {
             _parentManager = _manager;
             _control = metadataViewControl;
+        }
+
+        public void DisplayVideoFileMetadata(VideoFile file)
+        {
+
+            foreach (var tag in file.Tags)
+            {
+                var type = Tags.GetTagType(tag.TypeId);
+                Console.WriteLine("Tag: " + tag.Data);
+
+            }
         }
     }
 }

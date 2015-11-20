@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
 
@@ -60,6 +61,7 @@ namespace Zoodevio
             {
                 Name = name,
                 Text = name,
+                Tag = f.Path,
                 BackColor = Color.Azure
             };
             gridView.Items.Add(item);
@@ -81,6 +83,21 @@ namespace Zoodevio
             listViewButton.Enabled = false;
             // switch the view type
             gridView.View = View.Details;
+        }
+
+        private void gridView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get selected video, display metadata contents
+            // TODO: Trigger on double click to avoid too many queries if too slow
+            if (gridView.SelectedItems.Count <= 0) return;
+            // Get selected item
+            var item = gridView.SelectedItems[0];
+            // Pass the file along to be displayed
+            var path = (string)item.Tag;
+            var files = Files.GetVideoFiles(path);
+            if (files.Count == 0) return;
+            var file = files[0];
+            Manager.DisplayVideoFileMetadata(file);
         }
     }
 }
