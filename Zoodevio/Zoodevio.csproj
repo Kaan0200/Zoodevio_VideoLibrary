@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomTagsScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomTagsScreen.Designer.cs">
+      <DependentUpon>CustomTagsScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Database.cs" />
     <Compile Include="DataModel\Tests\Database_Test.cs" />
     <Compile Include="DataModel\Tests\ObjectsTests\Folder_Test.cs" />
@@ -108,6 +114,12 @@
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MainScreenManager.cs" />
+    <Compile Include="PreferenceScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferenceScreen.Designer.cs">
+      <DependentUpon>PreferenceScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainScreenControls\LibraryPanelControl.cs">
@@ -116,6 +128,9 @@
     <Compile Include="MainScreenControls\LibraryPanelControl.Designer.cs">
       <DependentUpon>LibraryPanelControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CustomTagsScreen.resx">
+      <DependentUpon>CustomTagsScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainScreen.resx">
       <DependentUpon>MainScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -127,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreenControls\MetadataViewControl.resx">
       <DependentUpon>MetadataViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferenceScreen.resx">
+      <DependentUpon>PreferenceScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

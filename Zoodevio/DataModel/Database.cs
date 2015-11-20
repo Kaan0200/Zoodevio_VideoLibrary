@@ -170,7 +170,7 @@ namespace Zoodevio.DataModel
 
         // update a record with new values in the database; return success or failure
         // note: data string should be formatted correctly (ints without quotes, etc.)
-        public static bool SimpleUpdateQuery(string table, string identifierField, int identifier,
+        public static bool SimpleUpdateQuery(string table, string identifierField, object identifier,
             string[] rows, string[] data)
         {
             if (_dbConnection.State == ConnectionState.Open)
@@ -180,7 +180,8 @@ namespace Zoodevio.DataModel
             _dbConnection.Open();
             string setCommand = BuildSetCommand(rows, SanitizeData(data));
             // sanitize for apostrophes
-            string query = "update " + table + " set " + setCommand + " WHERE " + identifierField + " = " + identifier;
+            string query = "update " + table + " set " + setCommand + " WHERE " + identifierField + " = '" + identifier + "'";
+            Console.WriteLine(query);
             SQLiteCommand com = new SQLiteCommand(query,_dbConnection);
             try
             {
@@ -188,9 +189,10 @@ namespace Zoodevio.DataModel
                 _dbConnection.Close();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 _dbConnection.Close();
+                Console.WriteLine(e.ToString());
                 return false;
             }
         }
@@ -211,7 +213,7 @@ namespace Zoodevio.DataModel
             string output = "";
             for(int i = 0; i < rows.Length; i++)
             {
-                output += rows[i] + " = " + data[i];
+                output += rows[i] + " = '" + data[i] + "'";
                 if (i < rows.Length - 1)
                 {
                     output += ", "; 

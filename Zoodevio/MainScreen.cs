@@ -22,6 +22,7 @@ namespace Zoodevio
         {
             InitializeComponent();
             SetupManagers();
+            _mainManager.LibraryManager.RefreshLibraryFromDatabase();
         }
 
         // Setups the manager for the MainScreenManager
@@ -33,6 +34,11 @@ namespace Zoodevio
         #region Screen Lifecycle
 
         private void MainScreen_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void metadataViewControl_Load(object sender, EventArgs e)
         {
 
         }
@@ -100,18 +106,32 @@ namespace Zoodevio
             }
         }
 
-        #endregion
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /** OPEN PREFERENCES DIALOG **/
+            PreferenceScreen prefs = new PreferenceScreen();
+            prefs.StartPosition = FormStartPosition.CenterParent;
+            prefs.ShowDialog(); 
+
+        }
 
         #endregion
+
+        #region Debug
 
         private void forceFolderHiarchyRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _mainManager.LibraryManager.RefreshLibraryFromDatabase();
         }
 
-        private void metadataViewControl_Load(object sender, EventArgs e)
+        #endregion
+        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            CustomTagsScreen tags = new CustomTagsScreen();
+            tags.StartPosition = FormStartPosition.CenterParent;
+            tags.ShowDialog();
         }
+        #endregion
+
     }
 }
