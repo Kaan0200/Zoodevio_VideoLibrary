@@ -17,13 +17,7 @@ namespace Zoodevio.Managers
 
         public void DisplayVideoFileMetadata(VideoFile file)
         {
-
-            foreach (var tag in file.Tags)
-            {
-                var type = Tags.GetTagType(tag.TypeId);
-                Console.WriteLine("Tag: " + tag.Data);
-
-            }
+            _control.PopulateFields(file);
         }
     }
 }
