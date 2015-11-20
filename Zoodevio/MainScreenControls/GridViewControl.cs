@@ -87,6 +87,8 @@ namespace Zoodevio
 
         private void gridView_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Manager.OpenMetaData();
+
             // Get selected video, display metadata contents
             // TODO: Trigger on double click to avoid too many queries if too slow
             if (gridView.SelectedItems.Count <= 0) return;

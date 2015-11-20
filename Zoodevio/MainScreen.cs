@@ -138,5 +138,11 @@ namespace Zoodevio
 
         #endregion
 
+        public void OpenMetadataPanel()
+        {
+            _metadataViewToggle = true;
+            metadataViewControl.Visible = true;
+            tableLayoutPanel2.ColumnStyles[1].Width = _metadataViewToggle ? 41 : 0;
+        }
     }
 }

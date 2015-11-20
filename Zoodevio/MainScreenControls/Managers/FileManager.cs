@@ -37,5 +37,10 @@ namespace Zoodevio.Managers
         {
             _parentManager.MetadataManager.DisplayVideoFileMetadata(file);
         }
+
+        public void OpenMetaData()
+        {
+            _parentManager.OpenMetaData();
+        }
     }
 }

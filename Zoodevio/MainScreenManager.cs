@@ -225,9 +225,9 @@ namespace Zoodevio
             return matches.Count > 0 ? matches[0] : null;
         }
 
-        public void SetManagers(FileManager fileManager, LibraryManager libraryManager, MetadataManager metadataManager, SearchManager searchManager)
+        public void OpenMetaData()
         {
-            //throw new NotImplementedException();
+            Control.OpenMetadataPanel();
         }
     }
 }
