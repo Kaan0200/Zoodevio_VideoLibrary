@@ -18,6 +18,8 @@ namespace Zoodevio
     {
         public MetadataManager Manager;
 
+        private const int 
+
         public MetadataViewControl()
         {
             InitializeComponent();
@@ -25,9 +27,9 @@ namespace Zoodevio
 
         public void PopulateFields(VideoFile inputFile)
         {
+            Manager.CurrentFile = inputFile;
             foreach (var t in inputFile.Tags)
             {
-                // TODO: lookup tag in database, populate fields accordingly 
                 if (t.Data == null) return;
                 var type = Tags.GetTagType(t.TypeId);
                 switch (type.Name)
@@ -72,11 +74,41 @@ namespace Zoodevio
 
         private void SaveMetadataButton_Click(object sender, EventArgs e)
         {
+            var file = Manager.CurrentFile;
+
             var newTitle = TitleTextBox.Text;
             var newGenre = GenreTextBox.Text;
             var newURL = URLTextBox.Text;
             var newDesc = DescriptionTextBox.Text;
             var newColor = ColorPickerPanel.BackColor;
+
+            foreach (var tag in file.Tags)
+            {
+                var type = Tags.GetTagType(tag.TypeId);
+                string data = null;
+                switch (type.Name)
+                {
+                    case "display_name":
+                        data = newTitle;
+                        break;
+                    case "genre":
+                        data = newGenre;
+                        break;
+                    case "url":
+                        data = newURL;
+                        break;
+                    case "description":
+                        data = newDesc;
+                        break;
+                    case "color":
+                        //data = newColor.ToString();
+                        break;
+                }
+                if (data == null) return;
+                // Save new tag and update the DB
+                var newTag = new TagEntry(tag.TypeId, data);
+                Tags.UpdateFileTag(file.Id, newTag, file.Tags);
+            }
         }
 
         private void ColorPanel_Click(object sender, EventArgs e)

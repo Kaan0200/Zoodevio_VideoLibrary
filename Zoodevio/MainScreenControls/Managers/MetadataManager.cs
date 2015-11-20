@@ -6,6 +6,7 @@ namespace Zoodevio.Managers
 {
     public class MetadataManager
     {
+        public VideoFile CurrentFile { get; set; }
         private MainScreenManager _parentManager;
         private MetadataViewControl _control;
 
