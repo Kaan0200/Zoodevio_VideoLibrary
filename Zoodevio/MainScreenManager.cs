@@ -214,10 +214,8 @@ namespace Zoodevio
             defaultTags.Add(new TagEntry( // default tag color
                 //TODO: make this a user-controllable setting 
                 8, "000000"));
-            // TODO: add thumbnail support
-            defaultTags.Add(new TagEntry( //
-                9, "not implemented"));
-
+            // generate and save thumbnail 
+            defaultTags.Add(Tags.GenerateThumbnail(file));
             return defaultTags;
         }
 

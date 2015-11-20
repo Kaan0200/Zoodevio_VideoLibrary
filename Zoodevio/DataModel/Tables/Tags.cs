@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using Zoodevio.DataModel.Objects;
 
@@ -17,6 +18,7 @@ namespace Zoodevio.DataModel
         // the two tables tag information is stored in
         private static string _tagsTable = "tag_contents";
         private static string _typesTable = "tag_types";
+        private static string _thumbnailDir = "thumbnails";
 
         // get tags associated with a given file id 
         public static List<TagEntry> GetFileTags(int fileId)
@@ -237,6 +239,23 @@ namespace Zoodevio.DataModel
             return returnList;
         } 
 
+        // creates a thumbnail image, then returns a thumbnail TagEntry for a chosen file containing that thumbnail's info 
+        public static TagEntry GenerateThumbnail(FileInfo file)
+        {
+            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
+            string thumbnailLocation = _thumbnailDir + "/" + file.Name + "-" +
+                                       string.Format("{0:yyyyMMddhhmmsstt}", DateTime.Now) + ".jpg"; 
+            // if the thumbnail directory doesn't exist, create it
+            if (!Directory.Exists(_thumbnailDir))
+            {
+                Directory.CreateDirectory(_thumbnailDir); 
+            }
+            ffMpeg.GetVideoThumbnail(file.FullName,thumbnailLocation);
+            return new TagEntry(9, 
+                thumbnailLocation);
+        }
+
+        
 
     }
 }
