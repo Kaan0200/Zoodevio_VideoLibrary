@@ -86,7 +86,7 @@ namespace Zoodevio
                 string rootURL = fbd.SelectedPath;
 
                 // Pass to main screen manager to interact with DB
-                /* try { 
+                 try { 
                      _mainManager.SetLibraryRoot(rootURL);
                      _mainManager.LibraryManager.RefreshLibraryFromDatabase();
                      MessageBox.Show("Successfully set new library root!",
@@ -102,10 +102,10 @@ namespace Zoodevio
                          MessageBoxButtons.OK,
                          MessageBoxIcon.Exclamation);
                      throw ex;
-                 } */
+                 }
 
-                _mainManager.SetLibraryRoot(rootURL);
-                _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+               // _mainManager.SetLibraryRoot(rootURL);
+               // _mainManager.LibraryManager.RefreshLibraryFromDatabase();
             }
         }
 
