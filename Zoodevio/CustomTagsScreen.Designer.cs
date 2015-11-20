@@ -29,16 +29,14 @@
         private void InitializeComponent()
         {
             this.tagGridView = new System.Windows.Forms.DataGridView();
-            this.saveCustomTagsButton = new System.Windows.Forms.Button();
-            this.discardChangesButton = new System.Windows.Forms.Button();
             this.TagID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TagName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CanSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CanSort = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.tagGridView.AutoGenerateColumns = false;
-            this.tagGridView.AllowUserToAddRows = true;
-            this.tagGridView.AllowUserToDeleteRows = true;
+            this.saveCustomTagsButton = new System.Windows.Forms.Button();
+            this.discardChangesButton = new System.Windows.Forms.Button();
+            this.createTagButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tagGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,25 +54,6 @@
             this.tagGridView.Size = new System.Drawing.Size(513, 347);
             this.tagGridView.TabIndex = 0;
             this.tagGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tagGridView_CellContentClick);
-            // 
-            // saveCustomTagsButton
-            // 
-            this.saveCustomTagsButton.Location = new System.Drawing.Point(142, 366);
-            this.saveCustomTagsButton.Name = "saveCustomTagsButton";
-            this.saveCustomTagsButton.Size = new System.Drawing.Size(118, 23);
-            this.saveCustomTagsButton.TabIndex = 1;
-            this.saveCustomTagsButton.Text = "Save Custom Tags";
-            this.saveCustomTagsButton.UseVisualStyleBackColor = true;
-            // 
-            // discardChangesButton
-            // 
-            this.discardChangesButton.Location = new System.Drawing.Point(267, 366);
-            this.discardChangesButton.Name = "discardChangesButton";
-            this.discardChangesButton.Size = new System.Drawing.Size(102, 23);
-            this.discardChangesButton.TabIndex = 2;
-            this.discardChangesButton.Text = "Discard Changes";
-            this.discardChangesButton.UseVisualStyleBackColor = true;
-            this.discardChangesButton.Click += new System.EventHandler(this.discardChangesButton_Click);
             // 
             // TagID
             // 
@@ -109,11 +88,41 @@
             "string"});
             this.DataType.Name = "DataType";
             // 
+            // saveCustomTagsButton
+            // 
+            this.saveCustomTagsButton.Location = new System.Drawing.Point(142, 366);
+            this.saveCustomTagsButton.Name = "saveCustomTagsButton";
+            this.saveCustomTagsButton.Size = new System.Drawing.Size(118, 23);
+            this.saveCustomTagsButton.TabIndex = 1;
+            this.saveCustomTagsButton.Text = "Save Custom Tags";
+            this.saveCustomTagsButton.UseVisualStyleBackColor = true;
+            // 
+            // discardChangesButton
+            // 
+            this.discardChangesButton.Location = new System.Drawing.Point(267, 366);
+            this.discardChangesButton.Name = "discardChangesButton";
+            this.discardChangesButton.Size = new System.Drawing.Size(102, 23);
+            this.discardChangesButton.TabIndex = 2;
+            this.discardChangesButton.Text = "Discard Changes";
+            this.discardChangesButton.UseVisualStyleBackColor = true;
+            this.discardChangesButton.Click += new System.EventHandler(this.discardChangesButton_Click);
+            // 
+            // createTagButton
+            // 
+            this.createTagButton.Location = new System.Drawing.Point(12, 367);
+            this.createTagButton.Name = "createTagButton";
+            this.createTagButton.Size = new System.Drawing.Size(75, 23);
+            this.createTagButton.TabIndex = 3;
+            this.createTagButton.Text = "Create Tag";
+            this.createTagButton.UseVisualStyleBackColor = true;
+            this.createTagButton.Click += new System.EventHandler(this.addTag_Click);
+            // 
             // CustomTagsScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 402);
+            this.Controls.Add(this.createTagButton);
             this.Controls.Add(this.discardChangesButton);
             this.Controls.Add(this.saveCustomTagsButton);
             this.Controls.Add(this.tagGridView);
@@ -135,5 +144,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn CanSearch;
         private System.Windows.Forms.DataGridViewCheckBoxColumn CanSort;
         private System.Windows.Forms.DataGridViewComboBoxColumn DataType;
+        private System.Windows.Forms.Button createTagButton;
     }
 }

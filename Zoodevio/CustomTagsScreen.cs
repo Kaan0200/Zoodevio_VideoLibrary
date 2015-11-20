@@ -14,6 +14,9 @@ namespace Zoodevio
 {
     public partial class CustomTagsScreen : Form
     {
+        // the source so it can be accessed when adding a new Tag
+        private BindingSource _source;
+
         public CustomTagsScreen()
         {
             InitializeComponent();
@@ -22,10 +25,10 @@ namespace Zoodevio
         // get custom tags from the DB and display them
         private void CustomTagsScreen_Load(object sender, EventArgs e)
         {
-            List<Tag> tags = Tags.GetAllTagTypes(false);
-            BindingSource source = new BindingSource();
-            source.DataSource = tags;
-            this.tagGridView.DataSource = source; 
+            List<Tag> tagTableSource = Tags.GetAllTagTypes(false);
+            _source = new BindingSource();
+            _source.DataSource = tagTableSource;
+            this.tagGridView.DataSource = _source; 
             this.tagGridView.Columns["TagID"].DataPropertyName = "Id";
             this.tagGridView.Columns["TagName"].DataPropertyName = "Name";
             this.tagGridView.Columns["CanSearch"].DataPropertyName = "CanSearch";
@@ -41,6 +44,11 @@ namespace Zoodevio
         private void tagGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void addTag_Click(object sender, EventArgs e)
+        {
+            _source.Add(new Tag("CreatedTag", "string", true));
         }
     }
 }
