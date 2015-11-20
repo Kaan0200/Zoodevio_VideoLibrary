@@ -35,10 +35,10 @@ namespace Zoodevio
                 Text = "ext",
                 Width = 50
             };
-            var lengthColumn = new ColumnHeader("Length")
+            var lengthColumn = new ColumnHeader("FrameRate")
             {
-                Text = "Length",
-                Width = 100
+                Text = "Framerate",
+                Width = 60
             };
             gridView.Columns.Add(fileNameColumn);
             gridView.Columns.Add(extensionColumn);
@@ -62,7 +62,12 @@ namespace Zoodevio
                 Name = name,
                 Text = name,
                 Tag = f.Path,
-                BackColor = Color.Azure
+                BackColor = Color.Azure,
+                SubItems =
+                { //TODO: get time working, it doesn't want to parse
+                    f.Tags.Find(t => (Tags.GetTagType(t.TypeId).Name == "file_type")).Data,
+                    f.Tags.Find(t => (Tags.GetTagType(t.TypeId).Name == "framerate")).Data
+                }
             };
             gridView.Items.Add(item);
         }
