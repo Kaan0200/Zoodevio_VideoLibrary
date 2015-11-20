@@ -31,8 +31,16 @@ namespace Zoodevio
                 (preferences.First(item => item.Name.Equals("default_to_grid_view")).Data) == "1";
             string customVideoPlayer =
                 preferences.First(item => item.Name.Equals("custom_video_player")).Data;
-            string defaultColorTag =
-                preferences.First(item => item.Name.Equals("default_color_tag")).Data;
+
+            string defaultColorTag = "white";
+            try
+            {
+                defaultColorTag = preferences.First(item => item.Name.Equals("default_color_tag")).Data;
+            }
+            catch (Exception)
+            {
+                //TODO: fix this bug
+            }
 
             if (!useDefaultPlayer)
             {

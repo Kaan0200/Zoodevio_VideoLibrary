@@ -50,10 +50,12 @@ namespace Zoodevio
             // disable the icon view since we are already there
             iconViewButton.Enabled = false;
         }
-
+        
+        // Clear all controls
         public void ClearView()
         {
             gridView.Items.Clear();
+            fullList.Clear();
         }
 
         internal void CreateVideoIcon(VideoFile f)
@@ -113,7 +115,7 @@ namespace Zoodevio
 
         public void SimpleFilter(string searchString)
         {
-
+            // no items
             gridView.Items.Clear();
 
             fullList.ForEach(item =>

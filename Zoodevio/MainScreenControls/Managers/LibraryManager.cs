@@ -33,6 +33,7 @@ namespace Zoodevio.Managers
         {
             // this is a clean select, it will only happen on real changes.
             _parentManager.FileManager.DisplaySelectedFolderContents(selectedNode);
+            // reset the filter text box
             _parentManager.SearchManager.ResetFilterBox();
         }
     }
