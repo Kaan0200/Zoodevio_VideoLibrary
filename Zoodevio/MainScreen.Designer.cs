@@ -43,6 +43,7 @@
             this.basicSearchControl = new Zoodevio.BasicSearchControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
             this.gridViewControl = new Zoodevio.GridViewControl();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -107,7 +108,8 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setLibraryRootToolStripMenuItem});
+            this.setLibraryRootToolStripMenuItem,
+            this.preferencesToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -178,7 +180,7 @@
             // metadataViewControl
             // 
             this.metadataViewControl.Location = new System.Drawing.Point(311, 4);
-            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2);
             this.metadataViewControl.Name = "metadataViewControl";
             this.metadataViewControl.Size = new System.Drawing.Size(216, 310);
             this.metadataViewControl.TabIndex = 0;
@@ -192,6 +194,13 @@
             this.gridViewControl.Name = "gridViewControl";
             this.gridViewControl.Size = new System.Drawing.Size(319, 373);
             this.gridViewControl.TabIndex = 2;
+            // 
+            // preferencesToolStripMenuItem
+            // 
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences...";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // MainScreen
             // 
@@ -235,6 +244,7 @@
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceFolderHiarchyRefreshToolStripMenuItem;
         private LibraryPanelControl libraryPanelControl;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
     }
 }
 

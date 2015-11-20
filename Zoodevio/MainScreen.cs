@@ -100,6 +100,15 @@ namespace Zoodevio
             }
         }
 
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /** OPEN PREFERENCES DIALOG **/
+            PreferenceScreen prefs = new PreferenceScreen();
+            prefs.StartPosition = FormStartPosition.CenterParent;
+            prefs.ShowDialog(); 
+
+        }
+
         #endregion
 
         #endregion
