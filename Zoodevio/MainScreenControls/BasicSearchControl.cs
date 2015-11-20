@@ -19,5 +19,23 @@ namespace Zoodevio
         {
             InitializeComponent();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            var entryString = textBox1.Text;
+            if (!String.IsNullOrEmpty(entryString))
+            {
+                Manager.SimpleSearch(textBox1.Text);
+            }
+            else
+            {
+                Manager.EmptySearch();
+            }
+        }
+
+        public void ResetFilterBox()
+        {
+            textBox1.Text = null;
+        }
     }
 }

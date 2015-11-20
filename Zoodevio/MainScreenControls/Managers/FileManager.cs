@@ -51,5 +51,15 @@ namespace Zoodevio.Managers
         {
             _parentManager.OpenMetaData();
         }
+
+        public void SimpleFilter(string searchString)
+        {
+            _gridControl.SimpleFilter(searchString);
+        }
+
+        public void EmptyFilter()
+        {
+            _gridControl.EmptyFilter();
+        }
     }
 }

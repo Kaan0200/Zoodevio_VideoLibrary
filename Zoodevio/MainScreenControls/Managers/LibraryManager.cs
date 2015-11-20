@@ -25,14 +25,15 @@ namespace Zoodevio.Managers
         public void RefreshLibraryFromDatabase()
         {
             _control.Clear();
-          var folders  = Folders.GetAllFolders();
-          _control.AddFoldersToView(folders);
+            var folders  = Folders.GetAllFolders();
+            _control.AddFoldersToView(folders);
         }
 
         public void ChangedSelectedFolderNode(TreeNode selectedNode)
         {
             // this is a clean select, it will only happen on real changes.
             _parentManager.FileManager.DisplaySelectedFolderContents(selectedNode);
+            _parentManager.SearchManager.ResetFilterBox();
         }
     }
 }

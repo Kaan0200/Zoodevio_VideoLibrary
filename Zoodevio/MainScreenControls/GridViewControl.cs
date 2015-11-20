@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ namespace Zoodevio
 {
     public partial class GridViewControl : UserControl
     {
+        private List<ListViewItem> fullList = new List<ListViewItem>();
+
         public FileManager Manager;
 
         public GridViewControl()
@@ -69,6 +72,7 @@ namespace Zoodevio
                     f.Tags.Find(t => (Tags.GetTagType(t.TypeId).Name == "framerate")).Data
                 }
             };
+            fullList.Add(item);
             gridView.Items.Add(item);
         }
 
@@ -105,6 +109,26 @@ namespace Zoodevio
             if (files.Count == 0) return;
             var file = files[0];
             Manager.DisplayVideoFileMetadata(file);
+        }
+
+        public void SimpleFilter(string searchString)
+        {
+
+            gridView.Items.Clear();
+
+            fullList.ForEach(item =>
+            {
+                if (item.Name.Contains(searchString))
+                {
+                    gridView.Items.Add(item);
+                }
+            });
+        }
+
+        public void EmptyFilter()
+        {
+            gridView.Items.Clear();
+            gridView.Items.AddRange(fullList.ToArray());
         }
     }
 }

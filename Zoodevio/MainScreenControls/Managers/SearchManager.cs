@@ -13,5 +13,20 @@
             _parentManager = _manager;
             _control = basicSearchControl;
         }
+
+        public void SimpleSearch(string searchString)
+        {
+            _parentManager.FileManager.SimpleFilter(searchString);
+        }
+
+        public void EmptySearch()
+        {
+            _parentManager.FileManager.EmptyFilter();
+        }
+
+        public void ResetFilterBox()
+        {
+            _control.ResetFilterBox();
+        }
     }
 }
