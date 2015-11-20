@@ -32,8 +32,7 @@ namespace Zoodevio.DataModel
                 return null;
             }
         }
-
-
+        
         // only the data of a preference is ever modified
         // the rest is specified by design doc
         public static bool Modify(int id, string data)
@@ -43,6 +42,16 @@ namespace Zoodevio.DataModel
             dbData[0] = data;
             return Database.SimpleUpdateQuery(_table, "id", id,
                 rows, dbData); 
+        }
+
+        // as above, but using preference name instead
+        public static bool Modify(string name, string data)
+        {
+            string[] rows = {"data"};
+            string[] dbData = new string[1];
+            dbData[0] = data;
+            return Database.SimpleUpdateQuery(_table, "name", name,
+                rows, dbData);
         }
 
         // get all preferences from the database

@@ -34,7 +34,7 @@
             this.defaultColorLabel = new System.Windows.Forms.Label();
             this.customPlayerField = new System.Windows.Forms.TextBox();
             this.customPlayerBrowseButton = new System.Windows.Forms.Button();
-            this.safePrefsButton = new System.Windows.Forms.Button();
+            this.savePrefsButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -47,6 +47,7 @@
             this.customPlayerCheckbox.TabIndex = 0;
             this.customPlayerCheckbox.Text = "Use Custom Media Player:";
             this.customPlayerCheckbox.UseVisualStyleBackColor = true;
+            this.customPlayerCheckbox.Click += new System.EventHandler(this.customPlayerCheckbox_Click);
             // 
             // gridViewCheckBox
             // 
@@ -85,21 +86,23 @@
             // customPlayerBrowseButton
             // 
             this.customPlayerBrowseButton.Enabled = false;
-            this.customPlayerBrowseButton.Location = new System.Drawing.Point(293, 8);
+            this.customPlayerBrowseButton.Location = new System.Drawing.Point(293, 9);
             this.customPlayerBrowseButton.Name = "customPlayerBrowseButton";
             this.customPlayerBrowseButton.Size = new System.Drawing.Size(75, 23);
             this.customPlayerBrowseButton.TabIndex = 5;
             this.customPlayerBrowseButton.Text = "Browse...";
             this.customPlayerBrowseButton.UseVisualStyleBackColor = true;
+            this.customPlayerBrowseButton.Click += new System.EventHandler(this.customPlayerBrowseButton_Click);
             // 
-            // safePrefsButton
+            // savePrefsButton
             // 
-            this.safePrefsButton.Location = new System.Drawing.Point(170, 54);
-            this.safePrefsButton.Name = "safePrefsButton";
-            this.safePrefsButton.Size = new System.Drawing.Size(117, 23);
-            this.safePrefsButton.TabIndex = 6;
-            this.safePrefsButton.Text = "Save Preferences";
-            this.safePrefsButton.UseVisualStyleBackColor = true;
+            this.savePrefsButton.Location = new System.Drawing.Point(170, 54);
+            this.savePrefsButton.Name = "savePrefsButton";
+            this.savePrefsButton.Size = new System.Drawing.Size(117, 23);
+            this.savePrefsButton.TabIndex = 6;
+            this.savePrefsButton.Text = "Save Preferences";
+            this.savePrefsButton.UseVisualStyleBackColor = true;
+            this.savePrefsButton.Click += new System.EventHandler(this.savePrefsButton_Click);
             // 
             // cancelButton
             // 
@@ -109,6 +112,7 @@
             this.cancelButton.TabIndex = 7;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // PreferenceScreen
             // 
@@ -116,7 +120,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(383, 92);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.safePrefsButton);
+            this.Controls.Add(this.savePrefsButton);
             this.Controls.Add(this.customPlayerBrowseButton);
             this.Controls.Add(this.customPlayerField);
             this.Controls.Add(this.defaultColorLabel);
@@ -139,7 +143,7 @@
         private System.Windows.Forms.Label defaultColorLabel;
         private System.Windows.Forms.TextBox customPlayerField;
         private System.Windows.Forms.Button customPlayerBrowseButton;
-        private System.Windows.Forms.Button safePrefsButton;
+        private System.Windows.Forms.Button savePrefsButton;
         private System.Windows.Forms.Button cancelButton;
     }
 }
