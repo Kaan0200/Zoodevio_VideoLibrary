@@ -25,6 +25,7 @@ namespace Zoodevio
 
         public void PopulateFields(VideoFile inputFile)
         {
+            ClearFields();
             Manager.CurrentFile = inputFile;
             foreach (var t in inputFile.Tags)
             {
@@ -39,11 +40,18 @@ namespace Zoodevio
                         FiletypeValueLabel.Text = t.Data;
                         break;
                     case "length":
-                        var length = Convert.ToInt32(t.Data);
-                        length /= 1000;
-                        var minutes = length / 60;
-                        var seconds = length % 60;
-                        LengthValueLabel.Text = minutes + " min " + seconds + " sec";
+                        try
+                        {
+                            var length = Convert.ToInt32(t.Data);
+                            length /= 1000;
+                            var minutes = length / 60;
+                            var seconds = length % 60;
+                            LengthValueLabel.Text = minutes + " min " + seconds + " sec";
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("movie length grab failed"); 
+                        }
                         break;
                     case "framerate":
                         BitrateValueLabel.Text = t.Data + " fps";
@@ -120,6 +128,18 @@ namespace Zoodevio
         private void BitrateLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ClearFields()
+        {
+            BitrateValueLabel.Text = "";
+            DescriptionTextBox.Text = "";
+            FiletypeValueLabel.Text = "";
+            GenreTextBox.Text = "";
+            LengthValueLabel.Text = "";
+            TitleTextBox.Text = "";
+            URLTextBox.Text = "";
+            pictureBox1.Image = null;
         }
     }
 }
