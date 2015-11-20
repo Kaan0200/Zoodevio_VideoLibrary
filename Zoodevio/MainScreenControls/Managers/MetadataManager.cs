@@ -20,5 +20,10 @@ namespace Zoodevio.Managers
         {
             _control.PopulateFields(file);
         }
+
+        public void Update(int fileId)
+        {
+            DisplayVideoFileMetadata(Files.GetFile(fileId));
+        }
     }
 }

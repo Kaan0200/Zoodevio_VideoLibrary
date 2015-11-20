@@ -206,8 +206,11 @@ namespace Zoodevio
             defaultTags.Add(new TagEntry( // file framerate 
                 4, videoInfo.Streams[0].FrameRate.ToString()
              ));
+
+            var prefColor = Preferences.Lookup(4);
+            var strColor = (prefColor != null) ? prefColor.Data : "000000";
             defaultTags.Add(new TagEntry( // default tag color
-                8, Preferences.Lookup(4).Data));
+                8, strColor));
             // generate and save thumbnail 
             defaultTags.Add(Tags.GenerateThumbnail(file));
             return defaultTags;

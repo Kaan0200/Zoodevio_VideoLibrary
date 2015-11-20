@@ -112,8 +112,9 @@ namespace Zoodevio
                 }
                 if (data == null) return;
                 // Save new tag and update the DB
-                var newTag = new TagEntry(tag.TypeId, data);
-                Tags.UpdateFileTag(file.Id, newTag, file.Tags);
+                //var newTag = new TagEntry(tag.TypeId, data);
+                //Tags.UpdateFileTag(file.Id, newTag, file.Tags);
+                //Manager.Update(file.Id);
             }
         }
 
