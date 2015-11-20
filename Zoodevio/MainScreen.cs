@@ -62,6 +62,7 @@ namespace Zoodevio
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
             basicSearchControl.Visible = _searchViewToggle;
+            tableLayoutPanel1.RowStyles[1].Height = _searchViewToggle ? 25 : 0;
         }
 
         #endregion

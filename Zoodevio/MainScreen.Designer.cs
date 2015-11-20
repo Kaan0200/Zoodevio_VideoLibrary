@@ -44,12 +44,14 @@
             this.basicSearchControl = new Zoodevio.BasicSearchControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
             this.gridViewControl = new Zoodevio.GridViewControl();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.customTagsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
             this.mainSplitterContainer.Panel2.SuspendLayout();
             this.mainSplitterContainer.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -154,17 +156,33 @@
             // 
             // mainSplitterContainer.Panel1
             // 
-            this.mainSplitterContainer.Panel1.Controls.Add(this.libraryPanelControl);
+            this.mainSplitterContainer.Panel1.Controls.Add(this.tableLayoutPanel1);
             // 
             // mainSplitterContainer.Panel2
             // 
-            this.mainSplitterContainer.Panel2.Controls.Add(this.basicSearchControl);
             this.mainSplitterContainer.Panel2.Controls.Add(this.metadataViewControl);
             this.mainSplitterContainer.Panel2.Controls.Add(this.gridViewControl);
             this.mainSplitterContainer.Size = new System.Drawing.Size(784, 316);
             this.mainSplitterContainer.SplitterDistance = 252;
             this.mainSplitterContainer.SplitterWidth = 3;
             this.mainSplitterContainer.TabIndex = 2;
+            //
+            // tableLayoutPanel1
+            //
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(
+                new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.basicSearchControl, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.libraryPanelControl, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(
+                System.Windows.Forms.SizeType.Percent, 75f));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(
+                System.Windows.Forms.SizeType.Percent, 25f));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(249, 313);
+            this.tableLayoutPanel1.TabIndex = 1;
             // 
             // libraryPanelControl
             // 
@@ -180,7 +198,7 @@
             // basicSearchControl
             // 
             this.basicSearchControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.basicSearchControl.Location = new System.Drawing.Point(2, 242);
+            this.basicSearchControl.Location = new System.Drawing.Point(2, 236);
             this.basicSearchControl.Margin = new System.Windows.Forms.Padding(2);
             this.basicSearchControl.Name = "basicSearchControl";
             this.basicSearchControl.Size = new System.Drawing.Size(237, 70);
@@ -226,11 +244,12 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.mainSplitterContainer.Panel1.ResumeLayout(false);
-            this.mainSplitterContainer.Panel1.PerformLayout();
             this.mainSplitterContainer.Panel2.ResumeLayout(false);
             this.mainSplitterContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).EndInit();
             this.mainSplitterContainer.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,6 +271,7 @@
         private GridViewControl gridViewControl;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceFolderHiarchyRefreshToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private LibraryPanelControl libraryPanelControl;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem customTagsToolStripMenuItem;
