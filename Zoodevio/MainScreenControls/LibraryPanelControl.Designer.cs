@@ -37,11 +37,11 @@
             // folderTreeview
             // 
             this.folderTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.folderTreeview.Location = new System.Drawing.Point(2, 20);
+            this.folderTreeview.Location = new System.Drawing.Point(2, 19);
             this.folderTreeview.Margin = new System.Windows.Forms.Padding(2);
             this.folderTreeview.MinimumSize = new System.Drawing.Size(150, 4);
             this.folderTreeview.Name = "folderTreeview";
-            this.folderTreeview.Size = new System.Drawing.Size(241, 89);
+            this.folderTreeview.Size = new System.Drawing.Size(241, 90);
             this.folderTreeview.TabIndex = 1;
             this.folderTreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.folderTreeviewNode_Select);
             this.folderTreeview.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.folderTreeview_MouseDoubleClick);
@@ -66,8 +66,8 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.07143F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.92857F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(245, 111);
             this.tableLayoutPanel1.TabIndex = 3;
             // 

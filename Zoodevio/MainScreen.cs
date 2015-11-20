@@ -6,7 +6,6 @@ namespace Zoodevio
 {
     public partial class MainScreen : Form
     {
-        private bool _gridViewToggle; // true is gridview, false is listview
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
 
@@ -23,6 +22,8 @@ namespace Zoodevio
             InitializeComponent();
             SetupManagers();
             _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+
+            hideMetadataToolStripMenuItem_Click(null, null);
         }
 
         // Setups the manager for the MainScreenManager
@@ -55,6 +56,7 @@ namespace Zoodevio
             Console.WriteLine("Toggled Metadata : " + !_metadataViewToggle);
             _metadataViewToggle = !_metadataViewToggle;
             metadataViewControl.Visible = _metadataViewToggle;
+            tableLayoutPanel2.ColumnStyles[1].Width = _metadataViewToggle ? 41 : 0;
         }
 
         private void hideSearchAreaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -62,6 +64,7 @@ namespace Zoodevio
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
             basicSearchControl.Visible = _searchViewToggle;
+            tableLayoutPanel1.RowStyles[1].Height = _searchViewToggle ? 25 : 0;
         }
 
         #endregion
@@ -115,6 +118,13 @@ namespace Zoodevio
 
         }
 
+        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CustomTagsScreen tags = new CustomTagsScreen();
+            tags.StartPosition = FormStartPosition.CenterParent;
+            tags.ShowDialog();
+        }
+
         #endregion
 
         #region Debug
@@ -125,13 +135,14 @@ namespace Zoodevio
         }
 
         #endregion
-        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CustomTagsScreen tags = new CustomTagsScreen();
-            tags.StartPosition = FormStartPosition.CenterParent;
-            tags.ShowDialog();
-        }
+
         #endregion
 
+        public void OpenMetadataPanel()
+        {
+            _metadataViewToggle = true;
+            metadataViewControl.Visible = true;
+            tableLayoutPanel2.ColumnStyles[1].Width = _metadataViewToggle ? 41 : 0;
+        }
     }
 }

@@ -16,23 +16,21 @@ namespace Zoodevio.DataModel
     {
         private static string _table = "preferences"; 
     
-        // lookup is only by ID because preference
-        // names are not necessarily unique/canonical
-        // they are just for user comprehension
+        //look up by id - also can lookup by DB (not display) name
         public static Preference Lookup(int id)
         {
             //TODO: protect from empty dt returns
             var matches = ConvertDataTableToList(Database.SimpleReadQuery(_table,"id", id.ToString()));
-            if (matches.Count > 0)
-            {
-                return matches[0];
-            }
-            else
-            {
-                return null;
-            }
+            return matches.Count > 0 ? matches[0] : null;
         }
-        
+
+        // lookup by name 
+        public static Preference Lookup(string name)
+        {
+            var matches = ConvertDataTableToList(Database.SimpleReadQuery(_table, "name", name));
+            return matches.Count > 0 ? matches[0] : null;
+        }
+
         // only the data of a preference is ever modified
         // the rest is specified by design doc
         public static bool Modify(int id, string data)
