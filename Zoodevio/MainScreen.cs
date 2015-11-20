@@ -115,6 +115,13 @@ namespace Zoodevio
 
         }
 
+        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CustomTagsScreen tags = new CustomTagsScreen();
+            tags.StartPosition = FormStartPosition.CenterParent;
+            tags.ShowDialog();
+        }
+
         #endregion
 
         #region Debug
@@ -125,12 +132,7 @@ namespace Zoodevio
         }
 
         #endregion
-        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CustomTagsScreen tags = new CustomTagsScreen();
-            tags.StartPosition = FormStartPosition.CenterParent;
-            tags.ShowDialog();
-        }
+
         #endregion
 
     }
