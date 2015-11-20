@@ -131,6 +131,7 @@ namespace Zoodevio
             tags.StartPosition = FormStartPosition.CenterParent;
             tags.ShowDialog();
         }
-    }
+        #endregion
+
     }
 }
