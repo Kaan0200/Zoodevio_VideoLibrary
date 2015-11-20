@@ -6,7 +6,6 @@ namespace Zoodevio
 {
     public partial class MainScreen : Form
     {
-        private bool _gridViewToggle; // true is gridview, false is listview
         private bool _searchViewToggle = true;
         private bool _metadataViewToggle = true;
 
@@ -23,6 +22,8 @@ namespace Zoodevio
             InitializeComponent();
             SetupManagers();
             _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+
+            hideMetadataToolStripMenuItem_Click(null, null);
         }
 
         // Setups the manager for the MainScreenManager
@@ -55,6 +56,7 @@ namespace Zoodevio
             Console.WriteLine("Toggled Metadata : " + !_metadataViewToggle);
             _metadataViewToggle = !_metadataViewToggle;
             metadataViewControl.Visible = _metadataViewToggle;
+            tableLayoutPanel2.ColumnStyles[1].Width = _metadataViewToggle ? 135 : 0;
         }
 
         private void hideSearchAreaToolStripMenuItem_Click(object sender, EventArgs e)
