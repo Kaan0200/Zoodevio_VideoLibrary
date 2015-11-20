@@ -53,7 +53,6 @@
             this.tagGridView.Name = "tagGridView";
             this.tagGridView.Size = new System.Drawing.Size(513, 347);
             this.tagGridView.TabIndex = 0;
-            this.tagGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tagGridView_CellContentClick);
             // 
             // TagID
             // 
@@ -96,6 +95,7 @@
             this.saveCustomTagsButton.TabIndex = 1;
             this.saveCustomTagsButton.Text = "Save Custom Tags";
             this.saveCustomTagsButton.UseVisualStyleBackColor = true;
+            this.saveCustomTagsButton.Click += new System.EventHandler(this.saveCustomTagsButton_Click);
             // 
             // discardChangesButton
             // 

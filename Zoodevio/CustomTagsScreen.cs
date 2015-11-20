@@ -41,14 +41,14 @@ namespace Zoodevio
             this.Close(); 
         }
 
-        private void tagGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void addTag_Click(object sender, EventArgs e)
         {
             _source.Add(new Tag("CreatedTag", "string", true));
+        }
+
+        private void saveCustomTagsButton_Click(object sender, EventArgs e)
+        {
+           
         }
     }
 }
