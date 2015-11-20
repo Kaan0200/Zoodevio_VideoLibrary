@@ -36,6 +36,9 @@
             this.CanSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CanSort = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.tagGridView.AutoGenerateColumns = false;
+            this.tagGridView.AllowUserToAddRows = true;
+            this.tagGridView.AllowUserToDeleteRows = true;
             ((System.ComponentModel.ISupportInitialize)(this.tagGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,6 +55,7 @@
             this.tagGridView.Name = "tagGridView";
             this.tagGridView.Size = new System.Drawing.Size(513, 347);
             this.tagGridView.TabIndex = 0;
+            this.tagGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tagGridView_CellContentClick);
             // 
             // saveCustomTagsButton
             // 
@@ -83,7 +87,6 @@
             // 
             this.TagName.HeaderText = "Tag Name";
             this.TagName.Name = "TagName";
-            this.TagName.ReadOnly = true;
             this.TagName.Width = 170;
             // 
             // CanSearch
@@ -116,6 +119,7 @@
             this.Controls.Add(this.tagGridView);
             this.Name = "CustomTagsScreen";
             this.Text = "Zoodevio Custom Tags";
+            this.Load += new System.EventHandler(this.CustomTagsScreen_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tagGridView)).EndInit();
             this.ResumeLayout(false);
 

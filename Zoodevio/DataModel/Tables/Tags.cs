@@ -140,9 +140,16 @@ namespace Zoodevio.DataModel
             return data[0];
          }
 
-         // add or modify a tag type within the database 
-         public static Response AddCustomTag(Tag type, bool overwrite)
-         {
+        // get a list of all the tag types in the DB 
+        // specify whether to include system tags - that is, non-custom
+        public static List<Tag> GetAllTagTypes(bool includeSystemTags)
+        {
+            return GetTagTypeList(includeSystemTags ? Database.SimpleStarQuery(_typesTable) : Database.SimpleReadQuery(_typesTable, "is_system_tag", "0"));
+        }
+
+        // add or modify a tag type within the database 
+        public static Response AddCustomTag(Tag type, bool overwrite)
+        {
              Tag dbType = GetTagType(type.Id);
              string[] rows =
              {
