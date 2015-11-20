@@ -18,8 +18,6 @@ namespace Zoodevio
     {
         public MetadataManager Manager;
 
-        private const int 
-
         public MetadataViewControl()
         {
             InitializeComponent();
