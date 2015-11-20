@@ -62,6 +62,7 @@ namespace Zoodevio
             Console.WriteLine("Toggled Search Area : " + !_searchViewToggle);
             _searchViewToggle = !_searchViewToggle;
             basicSearchControl.Visible = _searchViewToggle;
+            tableLayoutPanel1.RowStyles[1].Height = _searchViewToggle ? 25 : 0;
         }
 
         #endregion
@@ -115,6 +116,13 @@ namespace Zoodevio
 
         }
 
+        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CustomTagsScreen tags = new CustomTagsScreen();
+            tags.StartPosition = FormStartPosition.CenterParent;
+            tags.ShowDialog();
+        }
+
         #endregion
 
         #region Debug
@@ -125,12 +133,7 @@ namespace Zoodevio
         }
 
         #endregion
-        private void customTagsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CustomTagsScreen tags = new CustomTagsScreen();
-            tags.StartPosition = FormStartPosition.CenterParent;
-            tags.ShowDialog();
-        }
+
         #endregion
 
     }

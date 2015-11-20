@@ -221,7 +221,7 @@ namespace Zoodevio.DataModel
                     Convert.ToInt32(row["id"]),
                     Convert.ToInt32(row["type_id"]),
                     Convert.ToInt32(row["file_id"]),
-                    null
+                    System.Text.Encoding.Default.GetString((byte[])row["data"])
                     ));
             }
             return returnList;

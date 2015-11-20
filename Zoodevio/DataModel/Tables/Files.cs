@@ -185,18 +185,17 @@ namespace Zoodevio.DataModel
         // converts a given DataTable object to a list of video files 
         private static List<VideoFile> ConvertDataTableToList(DataTable table)
         {
-            List<VideoFile> returnList = new List<VideoFile>();
+            var returnList = new List<VideoFile>();
 
-            for (int i = 0; i < table.Rows.Count; i++)
+            for (var i = 0; i < table.Rows.Count; i++)
             {
-                DataRow row = table.Rows[i];
-                returnList.Add(new VideoFile(
-                    Convert.ToInt32(row["id"]),
-                    row["path"].ToString(),
-                    null,
-                    DateTime.Parse(row["date_added"].ToString()),
-                    DateTime.Parse(row["date_edited"].ToString())
-                    ));
+                var row = table.Rows[i];
+                var id = Convert.ToInt32(row["id"]);
+                var path = row["path"].ToString();
+                var tags = Tags.GetFileTags(id);
+                var dateAdded = DateTime.Parse(row["date_added"].ToString());
+                var dateEdited = DateTime.Parse(row["date_edited"].ToString());
+                returnList.Add(new VideoFile(id, path, tags, dateAdded, dateEdited));
             }
             return returnList;
         }

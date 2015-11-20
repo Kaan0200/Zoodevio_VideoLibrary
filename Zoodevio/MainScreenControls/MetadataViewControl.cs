@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Zoodevio.DataModel;
 using Zoodevio.DataModel.Objects;
 using Zoodevio.Managers;
 
@@ -23,9 +25,48 @@ namespace Zoodevio
 
         public void PopulateFields(VideoFile inputFile)
         {
-            foreach (TagEntry t in inputFile.Tags)
+            foreach (var t in inputFile.Tags)
             {
                 // TODO: lookup tag in database, populate fields accordingly 
+                if (t.Data == null) return;
+                var type = Tags.GetTagType(t.TypeId);
+                switch (type.Name)
+                {
+                    case "display_name":
+                        TitleTextBox.Text = t.Data;
+                        break;
+                    case "file_type":
+                        FiletypeValueLabel.Text = t.Data;
+                        break;
+                    case "length":
+                        var length = Convert.ToInt32(t.Data);
+                        length /= 1000;
+                        var minutes = length / 60;
+                        var seconds = length % 60;
+                        LengthValueLabel.Text = minutes + " min " + seconds + " sec";
+                        break;
+                    case "framerate":
+                        BitrateValueLabel.Text = t.Data + " fps";
+                        break;
+                    case "genre":
+                        GenreTextBox.Text = t.Data;
+                        break;
+                    case "url":
+                        URLTextBox.Text = t.Data;
+                        break;
+                    case "description":
+                        DescriptionTextBox.Text = t.Data;
+                        break;
+                    case "color":
+                        ColorPickerPanel.BackColor = ColorTranslator.FromHtml("#" + t.Data);
+                        break;
+                    case "thumbnail":
+                        pictureBox1.ImageLocation = t.Data;
+                        break;
+                    default:
+                        Console.WriteLine("Unexpected Tag: " + t.Data);
+                        break;
+                }
             }
         }
 

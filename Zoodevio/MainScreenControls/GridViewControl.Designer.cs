@@ -48,6 +48,7 @@
             this.gridView.Size = new System.Drawing.Size(313, 341);
             this.gridView.TabIndex = 1;
             this.gridView.UseCompatibleStateImageBehavior = false;
+            this.gridView.SelectedIndexChanged += new System.EventHandler(this.gridView_SelectedIndexChanged);
             // 
             // iconViewButton
             // 
