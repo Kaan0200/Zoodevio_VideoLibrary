@@ -38,6 +38,11 @@ namespace Zoodevio
 
         }
 
+        private void metadataViewControl_Load(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region Context Menu
@@ -112,16 +117,15 @@ namespace Zoodevio
 
         #endregion
 
-        #endregion
+        #region Debug
 
         private void forceFolderHiarchyRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _mainManager.LibraryManager.RefreshLibraryFromDatabase();
         }
 
-        private void metadataViewControl_Load(object sender, EventArgs e)
-        {
+        #endregion
 
-        }
+        #endregion
     }
 }
