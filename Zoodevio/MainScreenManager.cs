@@ -207,8 +207,7 @@ namespace Zoodevio
                 4, videoInfo.Streams[0].FrameRate.ToString()
              ));
             defaultTags.Add(new TagEntry( // default tag color
-                //TODO: make this a user-controllable setting 
-                8, "000000"));
+                8, Preferences.Lookup("default_color_tag").Data));
             // generate and save thumbnail 
             defaultTags.Add(Tags.GenerateThumbnail(file));
             return defaultTags;
