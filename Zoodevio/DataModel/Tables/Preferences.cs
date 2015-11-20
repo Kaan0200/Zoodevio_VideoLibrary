@@ -45,6 +45,12 @@ namespace Zoodevio.DataModel
                 rows, dbData); 
         }
 
+        // get all preferences from the database
+        public static List<Preference> GetAllPreferences()
+        {
+            return ConvertDataTableToList(Database.SimpleStarQuery(_table)); 
+        }
+
         private static List<Preference> ConvertDataTableToList(DataTable table)
         {
             List<Preference> returnList = new List<Preference>();

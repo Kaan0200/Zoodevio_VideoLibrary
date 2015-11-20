@@ -41,18 +41,17 @@
             // customPlayerCheckbox
             // 
             this.customPlayerCheckbox.AutoSize = true;
-            this.customPlayerCheckbox.Location = new System.Drawing.Point(13, 23);
+            this.customPlayerCheckbox.Location = new System.Drawing.Point(12, 12);
             this.customPlayerCheckbox.Name = "customPlayerCheckbox";
             this.customPlayerCheckbox.Size = new System.Drawing.Size(150, 17);
             this.customPlayerCheckbox.TabIndex = 0;
             this.customPlayerCheckbox.Text = "Use Custom Media Player:";
             this.customPlayerCheckbox.UseVisualStyleBackColor = true;
-            this.customPlayerCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // gridViewCheckBox
             // 
             this.gridViewCheckBox.AutoSize = true;
-            this.gridViewCheckBox.Location = new System.Drawing.Point(13, 48);
+            this.gridViewCheckBox.Location = new System.Drawing.Point(12, 35);
             this.gridViewCheckBox.Name = "gridViewCheckBox";
             this.gridViewCheckBox.Size = new System.Drawing.Size(107, 17);
             this.gridViewCheckBox.TabIndex = 1;
@@ -61,16 +60,15 @@
             // 
             // defaultColorField
             // 
-            this.defaultColorField.Location = new System.Drawing.Point(106, 71);
+            this.defaultColorField.Location = new System.Drawing.Point(108, 56);
             this.defaultColorField.Name = "defaultColorField";
             this.defaultColorField.Size = new System.Drawing.Size(54, 20);
             this.defaultColorField.TabIndex = 2;
-            this.defaultColorField.Text = "000000";
             // 
             // defaultColorLabel
             // 
             this.defaultColorLabel.AutoSize = true;
-            this.defaultColorLabel.Location = new System.Drawing.Point(10, 74);
+            this.defaultColorLabel.Location = new System.Drawing.Point(9, 59);
             this.defaultColorLabel.Name = "defaultColorLabel";
             this.defaultColorLabel.Size = new System.Drawing.Size(93, 13);
             this.defaultColorLabel.TabIndex = 3;
@@ -78,14 +76,16 @@
             // 
             // customPlayerField
             // 
-            this.customPlayerField.Location = new System.Drawing.Point(164, 21);
+            this.customPlayerField.Enabled = false;
+            this.customPlayerField.Location = new System.Drawing.Point(163, 11);
             this.customPlayerField.Name = "customPlayerField";
-            this.customPlayerField.Size = new System.Drawing.Size(100, 20);
+            this.customPlayerField.Size = new System.Drawing.Size(124, 20);
             this.customPlayerField.TabIndex = 4;
             // 
             // customPlayerBrowseButton
             // 
-            this.customPlayerBrowseButton.Location = new System.Drawing.Point(271, 19);
+            this.customPlayerBrowseButton.Enabled = false;
+            this.customPlayerBrowseButton.Location = new System.Drawing.Point(293, 8);
             this.customPlayerBrowseButton.Name = "customPlayerBrowseButton";
             this.customPlayerBrowseButton.Size = new System.Drawing.Size(75, 23);
             this.customPlayerBrowseButton.TabIndex = 5;
@@ -94,7 +94,7 @@
             // 
             // safePrefsButton
             // 
-            this.safePrefsButton.Location = new System.Drawing.Point(171, 69);
+            this.safePrefsButton.Location = new System.Drawing.Point(170, 54);
             this.safePrefsButton.Name = "safePrefsButton";
             this.safePrefsButton.Size = new System.Drawing.Size(117, 23);
             this.safePrefsButton.TabIndex = 6;
@@ -103,7 +103,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(294, 69);
+            this.cancelButton.Location = new System.Drawing.Point(293, 54);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 7;
@@ -114,7 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(383, 111);
+            this.ClientSize = new System.Drawing.Size(383, 92);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.safePrefsButton);
             this.Controls.Add(this.customPlayerBrowseButton);
