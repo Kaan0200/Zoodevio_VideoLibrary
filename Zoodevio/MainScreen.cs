@@ -22,6 +22,7 @@ namespace Zoodevio
         {
             InitializeComponent();
             SetupManagers();
+            _mainManager.LibraryManager.RefreshLibraryFromDatabase();
         }
 
         // Setups the manager for the MainScreenManager
