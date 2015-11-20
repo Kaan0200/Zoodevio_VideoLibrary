@@ -207,9 +207,10 @@ namespace Zoodevio
                 2, file.Extension.Replace(".","")));
             defaultTags.Add(new TagEntry( // file length 
                 3, videoInfo.Duration.TotalMilliseconds.ToString()));
-            defaultTags.Add(new TagEntry( // file bitrate
-                4, videoInfo.GetAttrValue("bit_rate") 
-                ));
+            // note: file framerate applies to first video stream detected for now
+            defaultTags.Add(new TagEntry( // file framerate 
+                4, videoInfo.Streams[0].FrameRate.ToString()
+             ));
             defaultTags.Add(new TagEntry( // default tag color
                 //TODO: make this a user-controllable setting 
                 8, "000000"));

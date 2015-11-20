@@ -177,7 +177,9 @@ namespace Zoodevio.DataModel
         // should probably only be called along with DeleteAllFolders() 
         public static bool DeleteAllFiles()
         {
-            return Database.TruncateTable(_table, true) && Database.TruncateTable(_fileLocationsTable, true);
+            return Database.TruncateTable(_table, true)
+                && Database.TruncateTable(_fileLocationsTable, true)
+                && Database.TruncateTable(_fileTagsTable, true);
         }
         
         // converts a given DataTable object to a list of video files 
