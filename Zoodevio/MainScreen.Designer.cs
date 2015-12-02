@@ -49,7 +49,6 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gridViewControl = new Zoodevio.GridViewControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -259,7 +258,7 @@
             // metadataViewControl
             // 
             this.metadataViewControl.Location = new System.Drawing.Point(309, 2);
-            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2);
             this.metadataViewControl.Name = "metadataViewControl";
             this.metadataViewControl.Size = new System.Drawing.Size(215, 310);
             this.metadataViewControl.TabIndex = 0;
@@ -270,7 +269,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 372);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.mainSplitterContainer);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -316,7 +314,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripMenuItem addFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFolderToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
     }
 }
 
