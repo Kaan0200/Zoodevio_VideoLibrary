@@ -118,6 +118,30 @@ namespace Zoodevio
             }
         }
 
+        private void DeleteFileButton_Click(object sender, EventArgs e)
+        {
+            DialogResult choice =
+                MessageBox.Show(
+                    "Warning: This action will delete the selected file from your hard drive AND your Zoodevio Library. Are you sure you want to proceed?",
+                    "Confirm File Deletion", MessageBoxButtons.YesNo);
+            if (choice == DialogResult.Yes)
+            {
+                this.Enabled = false;
+                Cursor.Current = Cursors.WaitCursor;
+                VideoFile file = Manager.CurrentFile;
+                // locate the file on disk and delete it
+                File.Delete(file.Path); 
+                // delete the file from the database
+                Files.DeleteFile(file);
+                this.Enabled = true;
+                Cursor.Current = Cursors.Default 
+            }
+            else
+            {
+                return;
+            }
+        }
+
         private void ColorPanel_Click(object sender, EventArgs e)
         {
             if (TagColorDialog.ShowDialog() == DialogResult.OK)

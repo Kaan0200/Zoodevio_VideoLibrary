@@ -245,5 +245,10 @@ namespace Zoodevio
             metadataViewControl.Visible = true;
             tableLayoutPanel2.ColumnStyles[1].Width = _metadataViewToggle ? 41 : 0;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

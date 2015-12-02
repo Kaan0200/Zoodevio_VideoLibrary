@@ -50,6 +50,7 @@
             this.ColorTagLabel = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.TagColorDialog = new System.Windows.Forms.ColorDialog();
+            this.deleteFileButton = new System.Windows.Forms.Button();
             this.MetadataControlGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +68,7 @@
             // URLTextBox
             // 
             this.URLTextBox.Location = new System.Drawing.Point(7, 109);
-            this.URLTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.URLTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.URLTextBox.Name = "URLTextBox";
             this.URLTextBox.Size = new System.Drawing.Size(201, 20);
             this.URLTextBox.TabIndex = 2;
@@ -75,7 +76,7 @@
             // GenreTextBox
             // 
             this.GenreTextBox.Location = new System.Drawing.Point(7, 72);
-            this.GenreTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.GenreTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.GenreTextBox.Name = "GenreTextBox";
             this.GenreTextBox.Size = new System.Drawing.Size(201, 20);
             this.GenreTextBox.TabIndex = 3;
@@ -93,7 +94,7 @@
             // TitleTextBox
             // 
             this.TitleTextBox.Location = new System.Drawing.Point(7, 36);
-            this.TitleTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TitleTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.TitleTextBox.Name = "TitleTextBox";
             this.TitleTextBox.Size = new System.Drawing.Size(156, 20);
             this.TitleTextBox.TabIndex = 5;
@@ -121,7 +122,7 @@
             // DescriptionTextBox
             // 
             this.DescriptionTextBox.Location = new System.Drawing.Point(7, 145);
-            this.DescriptionTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DescriptionTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.DescriptionTextBox.Multiline = true;
             this.DescriptionTextBox.Name = "DescriptionTextBox";
             this.DescriptionTextBox.Size = new System.Drawing.Size(201, 63);
@@ -129,6 +130,7 @@
             // 
             // MetadataControlGroupBox
             // 
+            this.MetadataControlGroupBox.Controls.Add(this.deleteFileButton);
             this.MetadataControlGroupBox.Controls.Add(this.ColorPickerPanel);
             this.MetadataControlGroupBox.Controls.Add(this.FiletypeValueLabel);
             this.MetadataControlGroupBox.Controls.Add(this.BitrateValueLabel);
@@ -149,9 +151,9 @@
             this.MetadataControlGroupBox.Controls.Add(this.DescriptionLabel);
             this.MetadataControlGroupBox.Controls.Add(this.DescriptionTextBox);
             this.MetadataControlGroupBox.Location = new System.Drawing.Point(2, 2);
-            this.MetadataControlGroupBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MetadataControlGroupBox.Margin = new System.Windows.Forms.Padding(2);
             this.MetadataControlGroupBox.Name = "MetadataControlGroupBox";
-            this.MetadataControlGroupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MetadataControlGroupBox.Padding = new System.Windows.Forms.Padding(2);
             this.MetadataControlGroupBox.Size = new System.Drawing.Size(212, 304);
             this.MetadataControlGroupBox.TabIndex = 9;
             this.MetadataControlGroupBox.TabStop = false;
@@ -162,7 +164,7 @@
             this.ColorPickerPanel.BackColor = System.Drawing.Color.White;
             this.ColorPickerPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ColorPickerPanel.Location = new System.Drawing.Point(58, 213);
-            this.ColorPickerPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ColorPickerPanel.Margin = new System.Windows.Forms.Padding(2);
             this.ColorPickerPanel.Name = "ColorPickerPanel";
             this.ColorPickerPanel.Size = new System.Drawing.Size(16, 17);
             this.ColorPickerPanel.TabIndex = 19;
@@ -201,12 +203,12 @@
             // 
             // SaveMetadataButton
             // 
-            this.SaveMetadataButton.Location = new System.Drawing.Point(28, 280);
-            this.SaveMetadataButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SaveMetadataButton.Location = new System.Drawing.Point(12, 280);
+            this.SaveMetadataButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveMetadataButton.Name = "SaveMetadataButton";
-            this.SaveMetadataButton.Size = new System.Drawing.Size(97, 19);
+            this.SaveMetadataButton.Size = new System.Drawing.Size(46, 19);
             this.SaveMetadataButton.TabIndex = 15;
-            this.SaveMetadataButton.Text = "Save Metadata";
+            this.SaveMetadataButton.Text = "Save";
             this.SaveMetadataButton.UseVisualStyleBackColor = true;
             this.SaveMetadataButton.Click += new System.EventHandler(this.SaveMetadataButton_Click);
             // 
@@ -254,7 +256,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Location = new System.Drawing.Point(147, 234);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(60, 65);
             this.pictureBox1.TabIndex = 10;
@@ -270,12 +272,23 @@
             this.ColorTagLabel.TabIndex = 9;
             this.ColorTagLabel.Text = "Color Tag";
             // 
+            // deleteFileButton
+            // 
+            this.deleteFileButton.Location = new System.Drawing.Point(67, 280);
+            this.deleteFileButton.Margin = new System.Windows.Forms.Padding(2);
+            this.deleteFileButton.Name = "deleteFileButton";
+            this.deleteFileButton.Size = new System.Drawing.Size(46, 19);
+            this.deleteFileButton.TabIndex = 20;
+            this.deleteFileButton.Text = "Delete";
+            this.deleteFileButton.UseVisualStyleBackColor = true;
+            this.deleteFileButton.Click += new System.EventHandler(this.DeleteFileButton_Click); 
+            // 
             // MetadataViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.MetadataControlGroupBox);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MetadataViewControl";
             this.Size = new System.Drawing.Size(216, 309);
             this.MetadataControlGroupBox.ResumeLayout(false);
@@ -308,5 +321,6 @@
         private System.Windows.Forms.Label LengthValueLabel;
         private System.Windows.Forms.ColorDialog TagColorDialog;
         private System.Windows.Forms.Panel ColorPickerPanel;
+        private System.Windows.Forms.Button deleteFileButton;
     }
 }

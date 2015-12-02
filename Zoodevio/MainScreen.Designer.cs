@@ -31,6 +31,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideSearchAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,10 +47,7 @@
             this.basicSearchControl = new Zoodevio.BasicSearchControl();
             this.libraryPanelControl = new Zoodevio.LibraryPanelControl();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.gridViewControl = new Zoodevio.GridViewControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
-            this.addFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -91,6 +90,20 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // addFilesToolStripMenuItem
+            // 
+            this.addFilesToolStripMenuItem.Name = "addFilesToolStripMenuItem";
+            this.addFilesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.addFilesToolStripMenuItem.Text = "Add file(s)...";
+            this.addFilesToolStripMenuItem.Click += new System.EventHandler(this.addFilesToolStripMenuItem_Click);
+            // 
+            // addFolderToolStripMenuItem
+            // 
+            this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
+            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.addFolderToolStripMenuItem.Text = "Add folder";
+            this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -220,7 +233,6 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.12619F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.87381F));
-            this.tableLayoutPanel2.Controls.Add(this.gridViewControl, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.metadataViewControl, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -230,39 +242,14 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(529, 326);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
-            // gridViewControl
-            // 
-            this.gridViewControl.AutoSize = true;
-            this.gridViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridViewControl.Location = new System.Drawing.Point(2, 2);
-            this.gridViewControl.Margin = new System.Windows.Forms.Padding(2);
-            this.gridViewControl.MinimumSize = new System.Drawing.Size(0, 310);
-            this.gridViewControl.Name = "gridViewControl";
-            this.gridViewControl.Size = new System.Drawing.Size(303, 322);
-            this.gridViewControl.TabIndex = 2;
-            // 
             // metadataViewControl
             // 
             this.metadataViewControl.Location = new System.Drawing.Point(309, 2);
-            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2);
+            this.metadataViewControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.metadataViewControl.Name = "metadataViewControl";
             this.metadataViewControl.Size = new System.Drawing.Size(215, 310);
             this.metadataViewControl.TabIndex = 0;
             this.metadataViewControl.Load += new System.EventHandler(this.metadataViewControl_Load);
-            // 
-            // addFilesToolStripMenuItem
-            // 
-            this.addFilesToolStripMenuItem.Name = "addFilesToolStripMenuItem";
-            this.addFilesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addFilesToolStripMenuItem.Text = "Add file(s)...";
-            this.addFilesToolStripMenuItem.Click += new System.EventHandler(this.addFilesToolStripMenuItem_Click);
-            // 
-            // addFolderToolStripMenuItem
-            // 
-            this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
-            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addFolderToolStripMenuItem.Text = "Add folder";
-            this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
             // 
             // MainScreen
             // 
@@ -285,7 +272,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,7 +290,6 @@
         private System.Windows.Forms.ToolStripMenuItem setLibraryRootToolStripMenuItem;
         private MetadataViewControl metadataViewControl;
         private BasicSearchControl basicSearchControl;
-        private GridViewControl gridViewControl;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceFolderHiarchyRefreshToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
