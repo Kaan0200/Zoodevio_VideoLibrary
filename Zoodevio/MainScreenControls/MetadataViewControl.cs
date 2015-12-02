@@ -134,7 +134,7 @@ namespace Zoodevio
                 // delete the file from the database
                 Files.DeleteFile(file);
                 this.Enabled = true;
-                Cursor.Current = Cursors.Default 
+                Cursor.Current = Cursors.Default;
             }
             else
             {
