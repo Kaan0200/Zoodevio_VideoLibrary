@@ -48,7 +48,7 @@ namespace Zoodevio.DataModel
                 {
                     // get the new file's ID
                     int id = Database.GetLastInsertID(_table);
-                    Response tagSuccess = AssociateFileTags(file.Tags, id); 
+                    Response tagSuccess = AssociateFileTags(file.Tags, id);
                     return (tagSuccess.Equals(Response.Success)) ? Response.Success : Response.FailedDatabase;
 
                 }

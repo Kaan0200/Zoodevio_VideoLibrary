@@ -190,7 +190,7 @@ namespace Zoodevio
 
         // This gets a list of default required tags a video file has
         // For now, this means the system tags (ids 1-4), thumbnail (9) and color (8). 
-        private static List<TagEntry> GetDefaultTags(FileInfo file)
+        public static List<TagEntry> GetDefaultTags(FileInfo file)
         {
             List<TagEntry> defaultTags = new List<TagEntry>();
             var ffprobe = new FFProbe();
