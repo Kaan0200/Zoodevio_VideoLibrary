@@ -16,7 +16,7 @@ namespace Zoodevio.DataModel.Objects
         // the folder's parent 
         // stored as int id to avoid redundant lookup chains
         public int ParentId;
-        public string Name;
+        public string Name { get; set; }
         public List<VideoFile> Files;
 
         #region Constructor

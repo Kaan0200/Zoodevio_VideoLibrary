@@ -37,7 +37,7 @@
             // folderTreeview
             // 
             this.folderTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.folderTreeview.Location = new System.Drawing.Point(2, 19);
+            this.folderTreeview.Location = new System.Drawing.Point(2, 20);
             this.folderTreeview.Margin = new System.Windows.Forms.Padding(2);
             this.folderTreeview.MinimumSize = new System.Drawing.Size(150, 4);
             this.folderTreeview.Name = "folderTreeview";
@@ -68,7 +68,8 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.07143F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.92857F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(245, 111);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(245, 112);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // LibraryPanelControl
@@ -80,7 +81,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LibraryPanelControl";
-            this.Size = new System.Drawing.Size(245, 111);
+            this.Size = new System.Drawing.Size(245, 112);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

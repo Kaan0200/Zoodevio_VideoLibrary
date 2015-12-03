@@ -231,7 +231,7 @@ namespace Zoodevio.DataModel
                 _dbConnection.Close();
             }
             _dbConnection.Open();
-            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + id + " = " + id, _dbConnection);
+            SQLiteCommand com = new SQLiteCommand("delete from " + table + " where " + identifier + " = " + id, _dbConnection);
             try
             {
                 com.ExecuteNonQuery();

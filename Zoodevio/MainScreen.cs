@@ -224,7 +224,16 @@ namespace Zoodevio
                 Cursor.Current = Cursors.Default;
             }
         }
-        
+
+        // deletes a highlighted folder 
+        private void deleteFolderToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            FolderDeleteScreen screen = new FolderDeleteScreen();
+            screen.StartPosition = FormStartPosition.CenterParent;
+            screen.ShowDialog(); 
+            _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+
+        }
 
         #endregion
 
@@ -247,6 +256,11 @@ namespace Zoodevio
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void libraryPanelControl_Load(object sender, EventArgs e)
         {
 
         }

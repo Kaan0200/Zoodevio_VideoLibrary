@@ -85,6 +85,12 @@
     <Compile Include="DataModel\Tests\ObjectsTests\VideoFile_Test.cs" />
     <Compile Include="DataModel\Tests\TablesTests\Files_Test.cs" />
     <Compile Include="DataModel\Tests\TablesTests\Tags_Test.cs" />
+    <Compile Include="FolderDeleteScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FolderDeleteScreen.Designer.cs">
+      <DependentUpon>FolderDeleteScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainScreenControls\BasicSearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     </Compile>
     <EmbeddedResource Include="CustomTagsScreen.resx">
       <DependentUpon>CustomTagsScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FolderDeleteScreen.resx">
+      <DependentUpon>FolderDeleteScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreen.resx">
       <DependentUpon>MainScreen.cs</DependentUpon>
