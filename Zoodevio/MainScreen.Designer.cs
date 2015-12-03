@@ -33,6 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideSearchAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gridViewControl = new Zoodevio.GridViewControl();
             this.metadataViewControl = new Zoodevio.MetadataViewControl();
-            this.deleteFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitterContainer)).BeginInit();
             this.mainSplitterContainer.Panel1.SuspendLayout();
@@ -97,16 +97,23 @@
             // addFilesToolStripMenuItem
             // 
             this.addFilesToolStripMenuItem.Name = "addFilesToolStripMenuItem";
-            this.addFilesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addFilesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.addFilesToolStripMenuItem.Text = "Add file(s)...";
             this.addFilesToolStripMenuItem.Click += new System.EventHandler(this.addFilesToolStripMenuItem_Click);
             // 
             // addFolderToolStripMenuItem
             // 
             this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
-            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.addFolderToolStripMenuItem.Text = "Add folder";
             this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
+            // 
+            // deleteFolderToolStripMenuItem
+            // 
+            this.deleteFolderToolStripMenuItem.Name = "deleteFolderToolStripMenuItem";
+            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.deleteFolderToolStripMenuItem.Text = "Delete folder...";
+            this.deleteFolderToolStripMenuItem.Click += new System.EventHandler(this.deleteFolderToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -218,6 +225,7 @@
             this.basicSearchControl.Name = "basicSearchControl";
             this.basicSearchControl.Size = new System.Drawing.Size(237, 70);
             this.basicSearchControl.TabIndex = 1;
+            this.basicSearchControl.Load += new System.EventHandler(this.basicSearchControl_Load);
             // 
             // libraryPanelControl
             // 
@@ -266,13 +274,6 @@
             this.metadataViewControl.Size = new System.Drawing.Size(215, 310);
             this.metadataViewControl.TabIndex = 0;
             this.metadataViewControl.Load += new System.EventHandler(this.metadataViewControl_Load);
-            // 
-            // deleteFolderToolStripMenuItem
-            // 
-            this.deleteFolderToolStripMenuItem.Name = "deleteFolderToolStripMenuItem";
-            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteFolderToolStripMenuItem.Text = "Delete folder...";
-            this.deleteFolderToolStripMenuItem.Click += new System.EventHandler(deleteFolderToolStripMenuItem_Click);
             // 
             // MainScreen
             // 

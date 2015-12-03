@@ -264,5 +264,10 @@ namespace Zoodevio
         {
 
         }
+
+        private void basicSearchControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

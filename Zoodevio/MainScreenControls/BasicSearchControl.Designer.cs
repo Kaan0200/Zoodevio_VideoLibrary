@@ -60,7 +60,6 @@
             // 
             // advancedSearchButton
             // 
-            this.advancedSearchButton.Enabled = false;
             this.advancedSearchButton.Location = new System.Drawing.Point(126, 40);
             this.advancedSearchButton.Margin = new System.Windows.Forms.Padding(2);
             this.advancedSearchButton.Name = "advancedSearchButton";
@@ -68,6 +67,7 @@
             this.advancedSearchButton.TabIndex = 1;
             this.advancedSearchButton.Text = "Advanced Search";
             this.advancedSearchButton.UseVisualStyleBackColor = true;
+            this.advancedSearchButton.Click += new System.EventHandler(advancedSearchButton_Click);
             // 
             // BasicSearchControl
             // 

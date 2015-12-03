@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Zoodevio.Managers;
 
@@ -36,6 +29,13 @@ namespace Zoodevio
         public void ResetFilterBox()
         {
             textBox1.Text = null;
+        }
+
+        private void advancedSearchButton_Click(object sender, EventArgs e)
+        {
+            AdvancedSearchScreen screen = new AdvancedSearchScreen();
+            screen.StartPosition = FormStartPosition.CenterParent;
+            screen.ShowDialog();
         }
     }
 }
