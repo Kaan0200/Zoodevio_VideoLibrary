@@ -90,12 +90,14 @@ namespace Zoodevio
 
                 // Pass to main screen manager to interact with DB
                  try { 
-                     _mainManager.SetLibraryRoot(rootURL);
-                     _mainManager.LibraryManager.RefreshLibraryFromDatabase();
-                     MessageBox.Show("Successfully set new library root!",
-                         "Zoodevio Video Library",
-                         MessageBoxButtons.OK,
-                         MessageBoxIcon.None);
+
+                    _mainManager.SetLibraryRoot(rootURL);
+                    _mainManager.LibraryManager.RefreshLibraryFromDatabase();
+                    _mainManager.FileManager.ClearView();
+                    MessageBox.Show("Successfully set new library root!",
+                        "Zoodevio Video Library",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.None);
                  }
                  catch (Exception ex)
                  {

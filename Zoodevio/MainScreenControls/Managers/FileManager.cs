@@ -41,6 +41,11 @@ namespace Zoodevio.Managers
             }
         }
 
+        public void ClearView()
+        {
+            _gridControl.ClearView();
+        }
+
         public void RefreshListView()
         {
             _gridControl.ClearView();

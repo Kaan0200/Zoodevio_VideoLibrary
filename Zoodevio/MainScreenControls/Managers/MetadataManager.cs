@@ -10,6 +10,8 @@ namespace Zoodevio.Managers
         private MainScreenManager _parentManager;
         private MetadataViewControl _control;
 
+        public MainScreenManager ParentManager => _parentManager;
+
         public MetadataManager(MainScreenManager _manager, MetadataViewControl metadataViewControl)
         {
             _parentManager = _manager;

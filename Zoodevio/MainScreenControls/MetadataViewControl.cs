@@ -147,6 +147,7 @@ namespace Zoodevio
                 Files.DeleteFile(file);
                 this.Enabled = true;
                 Cursor.Current = Cursors.Default;
+                Manager.ParentManager.FileManager.RefreshListView();
             }
             else
             {
