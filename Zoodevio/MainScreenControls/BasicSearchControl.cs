@@ -33,7 +33,7 @@ namespace Zoodevio
 
         private void advancedSearchButton_Click(object sender, EventArgs e)
         {
-            AdvancedSearchScreen screen = new AdvancedSearchScreen();
+            AdvancedSearchScreen screen = new AdvancedSearchScreen(Manager);
             screen.StartPosition = FormStartPosition.CenterParent;
             screen.ShowDialog();
         }

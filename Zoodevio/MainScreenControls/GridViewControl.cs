@@ -66,7 +66,7 @@ namespace Zoodevio
             {
                 Name = name,
                 Text = name,
-                Tag = f.Path,
+                Tag = f,//f.Path,
                 BackColor = Color.Azure,
                 SubItems =
                 { //TODO: get time working, it doesn't want to parse
@@ -106,10 +106,10 @@ namespace Zoodevio
             // Get selected item
             var item = gridView.SelectedItems[0];
             // Pass the file along to be displayed
-            var path = (string)item.Tag;
-            var files = Files.GetVideoFiles(path);
-            if (files.Count == 0) return;
-            var file = files[0];
+            //var path = (string)item.Tag;
+            //var files = Files.GetVideoFiles(path);
+            //if (files.Count == 0) return;
+            var file = (VideoFile)item.Tag;//files[0];
             Manager.DisplayVideoFileMetadata(file);
         }
 
@@ -120,7 +120,35 @@ namespace Zoodevio
 
             fullList.ForEach(item =>
             {
-                if (item.Name.Contains(searchString))
+                if (item.Name.ToLower().Contains(searchString.ToLower()))
+                {
+                    gridView.Items.Add(item);
+                }
+            });
+        }
+
+        public void AdvancedFilter(string searchString, CheckedListBox.CheckedItemCollection checkedItems)
+        {
+            // Start from scratch
+            gridView.Items.Clear();
+
+            // Repopulate if empty search
+            if (checkedItems.Count == 0 || searchString == "")
+            {
+                fullList.ForEach(item => gridView.Items.Add(item));
+                return;
+            }
+
+            // For each video file showing:
+            fullList.ForEach(item =>
+            {
+                // Big Linq Statement Translation:
+                //  - Find tag entries from file that match type of checked items
+                //  - Any entry that contains the search string, add that file to view
+                var file = (VideoFile)item.Tag;
+                if (checkedItems.Cast<Tag>().Select(tag => 
+                    file.Tags.Find(entry => entry.TypeId == tag.Id)).
+                        Any(match => match != null && match.Data.ToLower().Contains(searchString.ToLower())))
                 {
                     gridView.Items.Add(item);
                 }

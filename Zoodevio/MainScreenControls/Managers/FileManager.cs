@@ -62,6 +62,11 @@ namespace Zoodevio.Managers
             _gridControl.SimpleFilter(searchString);
         }
 
+        public void AdvancedFilter(string searchString, CheckedListBox.CheckedItemCollection checkedItems)
+        {
+            _gridControl.AdvancedFilter(searchString, checkedItems);
+        }
+
         public void EmptyFilter()
         {
             _gridControl.EmptyFilter();

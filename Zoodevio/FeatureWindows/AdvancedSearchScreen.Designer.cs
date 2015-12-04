@@ -77,6 +77,7 @@
             this.searchButton.TabIndex = 4;
             this.searchButton.Text = "Search!";
             this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // cancelButton
             // 
@@ -86,7 +87,7 @@
             this.cancelButton.TabIndex = 5;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // AdvancedSearchScreen
             // 
