@@ -25,5 +25,10 @@ namespace Zoodevio.Managers
         {
             DisplayVideoFileMetadata(Files.GetFile(fileId));
         }
+
+        public void Clear()
+        {
+            _control.ClearFields();
+        }
     }
 }

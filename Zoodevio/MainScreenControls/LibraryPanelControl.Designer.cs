@@ -43,8 +43,7 @@
             this.folderTreeview.Name = "folderTreeview";
             this.folderTreeview.Size = new System.Drawing.Size(241, 90);
             this.folderTreeview.TabIndex = 1;
-            this.folderTreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.folderTreeviewNode_Select);
-            this.folderTreeview.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.folderTreeview_MouseDoubleClick);
+            this.folderTreeview.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.folderTreeview_AfterSelect);
             // 
             // LibraryLabel
             // 

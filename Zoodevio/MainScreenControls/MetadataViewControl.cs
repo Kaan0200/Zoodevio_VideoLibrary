@@ -23,6 +23,18 @@ namespace Zoodevio
             InitializeComponent();
         }
 
+        public void ClearFields()
+        {
+            BitrateValueLabel.Text = "";
+            DescriptionTextBox.Text = "";
+            FiletypeValueLabel.Text = "";
+            GenreTextBox.Text = "";
+            LengthValueLabel.Text = "";
+            TitleTextBox.Text = "";
+            URLTextBox.Text = "";
+            pictureBox1.Image = null;
+        }
+
         public void PopulateFields(VideoFile inputFile)
         {
             ClearFields();
@@ -153,18 +165,6 @@ namespace Zoodevio
         private void BitrateLabel_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void ClearFields()
-        {
-            BitrateValueLabel.Text = "";
-            DescriptionTextBox.Text = "";
-            FiletypeValueLabel.Text = "";
-            GenreTextBox.Text = "";
-            LengthValueLabel.Text = "";
-            TitleTextBox.Text = "";
-            URLTextBox.Text = "";
-            pictureBox1.Image = null;
         }
     }
 }

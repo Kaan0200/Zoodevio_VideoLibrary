@@ -60,29 +60,18 @@ namespace Zoodevio
             }
         }
 
-        private void folderTreeview_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            // Get the selected node
-            var node = folderTreeview.SelectedNode;
-
-            // Send it to the list view
-            Manager.ChangedSelectedFolderNode(node);
-        }
-
-        private void folderTreeviewNode_Select(object sender, TreeNodeMouseClickEventArgs e)
+        private void folderTreeview_AfterSelect(object sender, TreeViewEventArgs e)
         {
             // sometimes there are bad selects, resulting in null node selection
-            if (folderTreeview.SelectedNode != null)
-            {
-                // only fire off method call if the selected node changed
-                if (_lastSelectedNode != folderTreeview.SelectedNode)
-                {
-                    // update
-                    _lastSelectedNode = folderTreeview.SelectedNode;
-                    // clean call
-                    Manager.ChangedSelectedFolderNode(folderTreeview.SelectedNode);
-                }
-            }
+            if (folderTreeview.SelectedNode == null) return;
+
+            // only fire off method call if the selected node changed
+            if (_lastSelectedNode == folderTreeview.SelectedNode) return;
+
+            // update
+            _lastSelectedNode = folderTreeview.SelectedNode;
+            // clean call
+            Manager.ChangedSelectedFolderNode(folderTreeview.SelectedNode);
         }
 
         // this method clears off the values in the treeview
@@ -90,5 +79,7 @@ namespace Zoodevio
         {
             folderTreeview.Nodes.Clear();
         }
+
+
     }
 }

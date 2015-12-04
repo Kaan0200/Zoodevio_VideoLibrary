@@ -24,7 +24,12 @@ namespace Zoodevio.Managers
             if (selection == null) return;
             currentSelection = selection;
             var files = Folders.GetVideoFilesInFolder(Convert.ToInt32(selection.Tag));
-            if (files.Count == 0) return;
+            _parentManager.MetadataManager.Clear();
+            if (files.Count == 0)
+            {
+                _gridControl.ClearView();
+                return;
+            }
             // if grid control, as in create icons for files
             if (_gridControl.Visible == true)
             {
